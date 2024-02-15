@@ -7,16 +7,13 @@ import taskflower.taskflower.user.exception.UserNotFoundException;
 @Service
 public class UserService {
 
-    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository) {
-        this.passwordEncoder = passwordEncoder;
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     public void signup(User signupUser) {
-        signupUser.setPassword(encode(signupUser.getPassword()));
         userRepository.save(signupUser);
     }
 
@@ -29,7 +26,7 @@ public class UserService {
         User user = getUserById(id);
         user.setName(updatedUser.getName());
         user.setEmail(updatedUser.getEmail());
-        user.setPassword(encode(updatedUser.getPassword()));
+        user.setPassword(updatedUser.getPassword());
 
         userRepository.save(user);
     }
@@ -38,9 +35,5 @@ public class UserService {
         // 삭제 성공 시, 결과 반환x, 실패할 경우 예외 처리
         User user = getUserById(id);
         userRepository.delete(user);
-    }
-
-    public String encode(String password) {
-        return passwordEncoder.encode(password);
     }
 }

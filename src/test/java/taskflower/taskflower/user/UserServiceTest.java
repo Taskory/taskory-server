@@ -37,7 +37,6 @@ class UserServiceTest {
         updateUser.setPassword("4321");
 
         userService.updateUser(userId, updateUser);
-        updateUser.setPassword(userService.getUserById(userId).getPassword());
 
         assertEquals(updateUser, userService.getUserById(userId));
     }
