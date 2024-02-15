@@ -1,14 +1,19 @@
 api:
   version: "/api/v1"
 
+app:
+#  cors 임시 방편으로 해결
+  cors:
+    allowedOrigins: http://localhost:3000, http://localhost:8080
+
+
 spring:
   config:
     import: application-secrets.yml
   jpa:
-    :hibernate:
     hibernate:
       ddl-auto: update
       dialect: org.hibernate.dialect.MariaDB103Dialect
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      open-in-view: false
+    open-in-view: false
