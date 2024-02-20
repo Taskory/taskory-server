@@ -1,14 +1,39 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
+import axios from "axios";
 
 export const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    // 로그인 처리 로직 추가
-    console.log('Email:', email);
-    console.log('Password:', password);
+  const fetchLogin = async () => {
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      // body: JSON.stringify({
+      //   email: "test@test.test",
+      //   password: "1234"
+      // }),
+    }
+    try {
+      await fetch("http://localhost:8080/api/v1/auth/login", requestOptions).then(res => {
+        res.json().then(result => {
+          console.log(result);
+        })
+      })
+    } catch (e) {
+      console.log(e);
+    }
+
+  }
+
+  const handleLogin = async (event: React.FormEvent) => {
+    event.preventDefault(); // 폼 제출 이벤트의 기본 동작 중지
+    await fetchLogin();
   };
+
+
 
   return (
     <div className="flex items-center justify-center h-screen bg-blue-50">
@@ -25,6 +50,7 @@ export const Login: React.FC = () => {
               className="mt-1 p-2 w-full rounded border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-500"
               placeholder="Enter your email"
               value={email}
+              autoComplete={"current-email"}
               onChange={e => setEmail(e.target.value)}
             />
           </div>
@@ -38,6 +64,7 @@ export const Login: React.FC = () => {
               className="mt-1 p-2 w-full rounded border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-500"
               placeholder="Enter your password"
               value={password}
+              autoComplete={"current-password"}
               onChange={e => setPassword(e.target.value)}
             />
           </div>
@@ -59,6 +86,7 @@ export const Login: React.FC = () => {
           <button
             type="submit"
             className="mt-4 w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+            onClick={handleLogin}
           >
             Login
           </button>
