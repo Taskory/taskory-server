@@ -3,6 +3,7 @@ package taskflower.taskflower.user;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
+import taskflower.taskflower.security.SignupRequset;
 
 @Entity
 //@Table(
@@ -23,4 +24,13 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    public User(SignupRequset signupRequset) {
+        this.name = signupRequset.getName();
+        this.email = signupRequset.getEmail();
+        this.password = signupRequset.getPassword();
+    }
+
+    public User() {
+
+    }
 }
