@@ -1,29 +1,38 @@
 package taskflower.taskflower.security;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import taskflower.taskflower.user.User;
 
 @RestController
 @RequestMapping("api/v1/auth")
 public class AuthController {
 
+    private final AuthenticationManager authenticationManager;
+    private final TokenProvider tokenProvider;
+
+    public AuthController(AuthenticationManager authenticationManager, TokenProvider tokenProvider) {
+        this.authenticationManager = authenticationManager;
+        this.tokenProvider = tokenProvider;
+    }
+
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody LoginRequset loginRequset) {
-        User user = new User();
-        user.setName("test");
-        user.setEmail("test@test.test");
-        user.setPassword("1234");
-        return ResponseEntity.ok().body(user);
-    }
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequset loginRequset) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequset.getEmail(),
+                        loginRequset.getPassword()
+                )
+        );
 
-    @GetMapping("/login")
-    public ResponseEntity<User> temp() {
-        User user = new User();
-        user.setName("test");
-        user.setEmail("test@test.test");
-        user.setPassword("1234");
-        return ResponseEntity.ok().body(user);
-    }
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        String token = tokenProvider.createToken(authentication);
+
+        return ResponseEntity.ok().body(new LoginResponse(token));
+    }
 }
