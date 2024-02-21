@@ -8,12 +8,18 @@ import taskflower.taskflower.user.exception.UserNotFoundException;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public void signup(User signupUser) {
+    public void signup(User signupUser) throws Exception {
+        if (userRepository.existsByEmail(signupUser.getEmail())) {
+            throw new Exception("Email address already exists");
+        }
+        signupUser.setPassword(passwordEncoder.encode(signupUser.getPassword()));
         userRepository.save(signupUser);
     }
 
@@ -26,8 +32,7 @@ public class UserService {
         User user = getUserById(id);
         user.setName(updatedUser.getName());
         user.setEmail(updatedUser.getEmail());
-        user.setPassword(updatedUser.getPassword());
-
+        user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         userRepository.save(user);
     }
 
