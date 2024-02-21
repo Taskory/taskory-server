@@ -7,17 +7,21 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import taskflower.taskflower.user.User;
+import taskflower.taskflower.user.UserService;
 
 @RestController
-@RequestMapping("api/v1/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final TokenProvider tokenProvider;
+    private final UserService userService;
 
-    public AuthController(AuthenticationManager authenticationManager, TokenProvider tokenProvider) {
+    public AuthController(AuthenticationManager authenticationManager, TokenProvider tokenProvider, UserService userService) {
         this.authenticationManager = authenticationManager;
         this.tokenProvider = tokenProvider;
+        this.userService = userService;
     }
 
     @PostMapping("/login")
@@ -34,5 +38,12 @@ public class AuthController {
         String token = tokenProvider.createToken(authentication);
 
         return ResponseEntity.ok().body(new LoginResponse(token));
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<SignupResponse> signup(@Valid @RequestBody SignupRequset signupRequset) throws Exception {
+        User user = new User(signupRequset);
+        userService.signup(user);
+        return ResponseEntity.ok().body(new SignupResponse("회원가입 성공"));
     }
 }
