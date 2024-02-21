@@ -16,7 +16,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("사용자 생성 및 조회")
-    void signup() {
+    void signup() throws Exception {
         User user = createTestUser();
 
         User signupUser = userService.getUserById(user.getId());
@@ -27,7 +27,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("사용자 수정")
-    void updateUser() {
+    void updateUser() throws Exception {
         User user = createTestUser();
         long userId = user.getId();
 
@@ -43,7 +43,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("사용자 삭제")
-    void deleteById() {
+    void deleteById() throws Exception {
         User user = createTestUser();
         long userId = user.getId();
 
@@ -53,7 +53,7 @@ class UserServiceTest {
         });
     }
 
-    private User createTestUser() {
+    private User createTestUser() throws Exception {
         User user = new User();
         user.setName("test");
         user.setEmail("test1234@gmail.com");
