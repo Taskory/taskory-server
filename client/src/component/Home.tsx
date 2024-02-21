@@ -1,7 +1,9 @@
 import {Login} from "./Login";
+import React from "react";
+import {Signup} from "./Signup";
 
-export const Home = () => {
+export const Home: React.FC = () => {
   return (
-    <><Login/></>
+    <><Login /></>
   );
 };
