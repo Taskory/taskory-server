@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, {createContext, ReactNode, useContext, useState} from 'react';
 
 // 사용자 인증 정보 타입 정의
 interface AuthContextType {
@@ -11,7 +11,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // AuthProvider 컴포넌트 생성
-export const AuthProvider: React.FC = ({ children }) => {
+export const AuthProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [token, setToken] = useState<string | null>(null);
 
   // 로그인 함수
