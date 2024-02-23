@@ -2,7 +2,15 @@ import React, {useEffect, useState} from "react";
 import {NavLink, useNavigate} from "react-router-dom";
 
 export const Header: React.FC = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (sessionStorage.getItem("token")) {
+      setIsLoggedIn(true);
+    }
+  }, [isLoggedIn]);
 
   const handleLogin = () => {
     navigate('/login');
@@ -11,6 +19,7 @@ export const Header: React.FC = () => {
 
   const handleLogout = () => {
     sessionStorage.removeItem("token");
+    setIsLoggedIn(false);
   };
 
   return (
