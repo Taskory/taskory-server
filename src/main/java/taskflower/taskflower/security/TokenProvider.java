@@ -14,15 +14,14 @@ import java.util.Date;
 public class TokenProvider {
 
     @Value("${app.token.expireMSec}")
-    private String expireMSec;
+    private long expireMSec;
 
-    @Value("${app.token.secretKey}")
-    private String key;
+    private SecretKey secretKey;
 
-    private SecretKey secretKey() {
-        byte[] keyBytes = Decoders.BASE64.decode( key);
-        return Keys.hmacShaKeyFor(keyBytes);
-    };
+    public TokenProvider(@Value("${app.token.secretKey}") String secretKey) {
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        this.secretKey = Keys.hmacShaKeyFor(keyBytes);
+    }
 
 
     public String createToken(Authentication authentication) {
@@ -31,12 +30,11 @@ public class TokenProvider {
         Date now = new Date();
         Date expireDate = new Date(now.getTime() + expireMSec);
 
-
         return Jwts.builder()
                 .subject(Long.toString(userDetails.getId()))
                 .issuedAt(now)
                 .expiration(expireDate)
-                .signWith(secretKey())
+                .signWith(secretKey)
                 .compact();
     }
 
