@@ -11,7 +11,7 @@ import taskflower.taskflower.user.UserRepository;
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
 
-    private static UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserDetailServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -19,8 +19,11 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) {
         User user = userRepository.findUserByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with email" + email);
+        }
 
         return new UserDetailsImpl(user);
     }
