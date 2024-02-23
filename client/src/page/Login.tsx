@@ -1,7 +1,9 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 export const Login: React.FC = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -21,6 +23,7 @@ export const Login: React.FC = () => {
         if (res.ok) {
           res.json().then(result => {
             sessionStorage.setItem('token', result.token);
+            navigate("/");
           });
         }
       })
