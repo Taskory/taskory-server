@@ -18,9 +18,11 @@ export const Login: React.FC = () => {
     }
     try {
       await fetch("http://localhost:8080/api/v1/auth/login", requestOptions).then(res => {
-        res.json().then(result => {
-          console.log(result);
-        })
+        if (res.ok) {
+          res.json().then(result => {
+            sessionStorage.setItem('token', result.token);
+          });
+        }
       })
     } catch (e) {
       console.log(e);
