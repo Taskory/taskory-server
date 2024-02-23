@@ -1,8 +1,8 @@
 import {Login} from "./Login";
 import React from "react";
 import {Signup} from "./Signup";
-import {Footer} from "./Footer";
-import {Header} from "./Header";
+import {Footer} from "../component/Footer";
+import {Header} from "../component/Header";
 
 export const Home: React.FC = () => {
   return (
