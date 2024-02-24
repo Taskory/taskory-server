@@ -1,5 +1,4 @@
-import {useEffect, useState} from "react";
-import axios from "axios";
+import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
 export const Login: React.FC = () => {
@@ -28,7 +27,8 @@ export const Login: React.FC = () => {
         }
       })
     } catch (e) {
-      console.log(e);
+      alert("로그인 오류");
+      // console.log(e);
     }
 
   }
