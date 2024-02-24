@@ -1,4 +1,4 @@
-package taskflower.taskflower.security.payload;
+package taskflower.taskflower.security.model;
 
 import lombok.Data;
 

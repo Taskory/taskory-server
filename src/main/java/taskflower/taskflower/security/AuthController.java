@@ -7,6 +7,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import taskflower.taskflower.security.model.LoginRequset;
+import taskflower.taskflower.security.model.LoginResponse;
+import taskflower.taskflower.security.model.SignupRequset;
+import taskflower.taskflower.security.model.SignupResponse;
 import taskflower.taskflower.user.User;
 import taskflower.taskflower.user.UserService;
 

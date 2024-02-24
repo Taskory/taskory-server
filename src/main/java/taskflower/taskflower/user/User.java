@@ -3,7 +3,7 @@ package taskflower.taskflower.user;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
-import taskflower.taskflower.security.SignupRequset;
+import taskflower.taskflower.security.model.SignupRequset;
 
 @Entity
 //@Table(
