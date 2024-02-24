@@ -40,5 +40,29 @@ public class Task {
     private ZonedDateTime createdTime;
 
     @Column(nullable = false)
-    private ZonedDateTime modifiedTime;
+    private ZonedDateTime updatedTime;
+
+    public Task(SaveTaskRequset saveTaskRequset) {
+        this.title = saveTaskRequset.getTitle();
+        this.description = saveTaskRequset.getDescription();
+        this.status = saveTaskRequset.getStatus();
+        this.tag = saveTaskRequset.getTag();
+        this.startTime = saveTaskRequset.getStartTime();
+        this.endTime = saveTaskRequset.getEndTime();
+        this.createdTime = ZonedDateTime.now();
+        this.updatedTime = ZonedDateTime.now();
+    }
+
+    public Task() {
+    }
+
+    public Task(UpdateTaskRequset updateTaskRequset) {
+        this.title = updateTaskRequset.getTitle();
+        this.description = updateTaskRequset.getDescription();
+        this.status = updateTaskRequset.getStatus();
+        this.tag = updateTaskRequset.getTag();
+        this.startTime = updateTaskRequset.getStartTime();
+        this.endTime = updateTaskRequset.getEndTime();
+        this.updatedTime = ZonedDateTime.now();
+    }
 }

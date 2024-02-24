@@ -13,7 +13,8 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public Task save(Task task) {
+    public Task save(SaveTaskRequset saveTaskRequset) {
+        Task task = new Task(saveTaskRequset);
         return taskRepository.save(task);
     }
 
@@ -26,7 +27,8 @@ public class TaskService {
         return taskRepository.findAllByEmail(email);
     }
 
-    public Task updateTask(long id, Task task) {
+    public Task updateTask(long id, UpdateTaskRequset updateTaskRequset) {
+        Task task = new Task(updateTaskRequset);
         task.setId(id);
         return taskRepository.save(task);
     }
