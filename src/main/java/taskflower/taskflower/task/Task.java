@@ -19,9 +19,8 @@ public class Task {
     @Column
     private String description;
 
-    @Column(nullable = false)
     @ManyToOne
-    private User email;
+    private User user;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -47,8 +46,8 @@ public class Task {
         this.description = saveTaskRequset.getDescription();
         this.status = saveTaskRequset.getStatus();
         this.tag = saveTaskRequset.getTag();
-        this.startTime = saveTaskRequset.getStartTime();
-        this.endTime = saveTaskRequset.getEndTime();
+        this.startTime = ZonedDateTime.parse(saveTaskRequset.getStartTime());
+        this.endTime = ZonedDateTime.parse(saveTaskRequset.getEndTime());
         this.createdTime = ZonedDateTime.now();
         this.updatedTime = ZonedDateTime.now();
     }
@@ -61,8 +60,8 @@ public class Task {
         this.description = updateTaskRequset.getDescription();
         this.status = updateTaskRequset.getStatus();
         this.tag = updateTaskRequset.getTag();
-        this.startTime = updateTaskRequset.getStartTime();
-        this.endTime = updateTaskRequset.getEndTime();
+        this.startTime = ZonedDateTime.parse(updateTaskRequset.getStartTime());
+        this.endTime = ZonedDateTime.parse(updateTaskRequset.getEndTime());
         this.updatedTime = ZonedDateTime.now();
     }
 }
