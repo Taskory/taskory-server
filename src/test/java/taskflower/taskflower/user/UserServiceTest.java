@@ -1,10 +1,19 @@
 package taskflower.taskflower.user;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithUserDetails;
+import taskflower.taskflower.security.AuthService;
+import taskflower.taskflower.security.UserDetailsImpl;
+import taskflower.taskflower.security.model.LoginRequset;
 import taskflower.taskflower.user.exception.UserNotFoundException;
+
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,6 +22,9 @@ class UserServiceTest {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AuthService authService;
 
     @Test
     @DisplayName("사용자 생성 및 조회")
@@ -36,9 +48,9 @@ class UserServiceTest {
         updateUser.setEmail("test1234@naver.com");
         updateUser.setPassword("4321");
 
-        userService.updateUser(userId, updateUser);
+        User updatedUser = userService.updateUser(userId, updateUser);
 
-        assertEquals(updateUser, userService.getUserById(userId));
+        assertEquals(updatedUser, userService.getUserById(userId));
     }
 
     @Test
@@ -54,12 +66,40 @@ class UserServiceTest {
     }
 
     private User createTestUser() throws Exception {
+        Random random = new Random();
+        StringBuilder email = new StringBuilder();
+
+        email.append((char) (random.nextInt(26) + 'a'));
+
+        String characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+            for (int i = 1; i < 10; i++) {
+                email.append(characters.charAt(random.nextInt(characters.length())));
+            }
+
+        email.append("@example.com");
+
         User user = new User();
         user.setName("test");
-        user.setEmail("test1234@gmail.com");
+        user.setEmail(email.toString());
         user.setPassword("1234");
 
-        userService.signup(user);
-        return user;
+        return userService.signup(user);
+    }
+
+    @Test
+    @DisplayName("로그인 및 로그인 유저 정보 읽어오기 테스트")
+    void findUserByAuthTest() throws Exception {
+        User user = createTestUser();
+
+        LoginRequset loginRequset = new LoginRequset();
+        loginRequset.setEmail(user.getEmail());
+        loginRequset.setPassword("1234");           // 회원가입 로직에서 비밀번호가 암호화되기 때문에 따로 설정
+
+        authService.authenticateUser(loginRequset);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User signupUser = userService.findUserByAuth();
+
+        Assertions.assertEquals(signupUser, user);
     }
 }
