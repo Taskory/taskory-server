@@ -18,12 +18,13 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void signup(User signupUser) throws Exception {
+    public User signup(User signupUser) throws Exception {
         if (userRepository.existsByEmail(signupUser.getEmail())) {
             throw new Exception("Email address already exists");
         }
         signupUser.setPassword(passwordEncoder.encode(signupUser.getPassword()));
         userRepository.save(signupUser);
+        return signupUser;
     }
 
     public User getUserById(long id) {
