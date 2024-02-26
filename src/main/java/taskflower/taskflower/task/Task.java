@@ -1,14 +1,16 @@
 package taskflower.taskflower.task;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import taskflower.taskflower.user.User;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
 public class Task {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,38 +32,18 @@ public class Task {
     private String tag;
 
     @Column(nullable = false)
-    private ZonedDateTime startTime;
+    private LocalDateTime startTime;
 
     @Column(nullable = false)
-    private ZonedDateTime endTime;
+    private LocalDateTime endTime;
 
     @Column(nullable = false)
-    private ZonedDateTime createdTime;
+    private LocalDateTime createdTime;
 
     @Column(nullable = false)
-    private ZonedDateTime updatedTime;
-
-    public Task(SaveTaskRequset saveTaskRequset) {
-        this.title = saveTaskRequset.getTitle();
-        this.description = saveTaskRequset.getDescription();
-        this.status = saveTaskRequset.getStatus();
-        this.tag = saveTaskRequset.getTag();
-        this.startTime = ZonedDateTime.parse(saveTaskRequset.getStartTime());
-        this.endTime = ZonedDateTime.parse(saveTaskRequset.getEndTime());
-        this.createdTime = ZonedDateTime.now();
-        this.updatedTime = ZonedDateTime.now();
-    }
+    private LocalDateTime updatedTime;
 
     public Task() {
-    }
 
-    public Task(UpdateTaskRequset updateTaskRequset) {
-        this.title = updateTaskRequset.getTitle();
-        this.description = updateTaskRequset.getDescription();
-        this.status = updateTaskRequset.getStatus();
-        this.tag = updateTaskRequset.getTag();
-        this.startTime = ZonedDateTime.parse(updateTaskRequset.getStartTime());
-        this.endTime = ZonedDateTime.parse(updateTaskRequset.getEndTime());
-        this.updatedTime = ZonedDateTime.now();
     }
 }
