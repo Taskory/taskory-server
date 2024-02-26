@@ -1,0 +1,40 @@
+import React, {useEffect, useState} from "react";
+import {Header} from "./Header";
+import {Route, Routes, useLocation} from "react-router-dom";
+import {Main} from "../component/Main";
+import {Login} from "../component/Login";
+import {Signup} from "../component/Signup";
+import {Footer} from "./Footer";
+import {Profile} from "../component/Profile";
+
+export const MainLayout: React.FC = () => {
+  const location = useLocation();
+  const currentPath = location.pathname;
+
+  if (currentPath !== '/login' && currentPath !== '/signup') {
+    return (
+      <>
+        <Header/>
+        <main className="flex-1 bg-blue-50">
+          <div className="container mx-auto py-8 min-h-screen">
+            <Routes>
+              <Route path="/" element={<Main/>}/>
+              <Route path="/profile" element={<Profile/>}/>
+            </Routes>
+          </div>
+        </main>
+        <Footer/>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+        </Routes>
+      </>
+    )
+
+  }
+};
