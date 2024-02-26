@@ -1,6 +1,9 @@
 import React, {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 export const Signup: React.FC = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -20,9 +23,9 @@ export const Signup: React.FC = () => {
 
     try {
       await fetch("http://localhost:8080/api/v1/auth/signup", requestOptions).then(res => {
-        res.json().then(result => {
-          console.log(result);
-        })
+        if (res.ok) {
+          navigate('/');
+        }
       })
     } catch (e) {
       console.log(e);
