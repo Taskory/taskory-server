@@ -5,6 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import taskflower.taskflower.security.UserDetailsImpl;
+import taskflower.taskflower.user.exception.UserExistsExeption;
 import taskflower.taskflower.user.exception.UserNotFoundException;
 
 @Service
@@ -18,13 +19,12 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User signup(User signupUser) throws Exception {
-        if (userRepository.existsByEmail(signupUser.getEmail())) {
-            throw new Exception("Email address already exists");
+    public User signup(User signupUser) throws UserExistsExeption {
+        if (userRepository.existsUserByEmail(signupUser.getEmail())) {
+            throw new UserExistsExeption("Sorry, this email is Already existed..");
         }
         signupUser.setPassword(passwordEncoder.encode(signupUser.getPassword()));
-        userRepository.save(signupUser);
-        return signupUser;
+        return userRepository.save(signupUser);
     }
 
     public User getUserById(long id) {
