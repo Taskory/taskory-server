@@ -3,7 +3,6 @@ package taskflower.taskflower.security;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -18,28 +17,21 @@ import taskflower.taskflower.user.UserService;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
     private final TokenProvider tokenProvider;
     private final UserService userService;
+    private final AuthService authService;
 
-    public AuthController(AuthenticationManager authenticationManager, TokenProvider tokenProvider, UserService userService) {
-        this.authenticationManager = authenticationManager;
+    public AuthController(TokenProvider tokenProvider, UserService userService, AuthService authService) {
         this.tokenProvider = tokenProvider;
         this.userService = userService;
+        this.authService = authService;
     }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequset loginRequset) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequset.getEmail(),
-                        loginRequset.getPassword()
-                )
-        );
+        Authentication auth = authService.authenticateUser(loginRequset);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String token = tokenProvider.createToken(authentication);
+        String token = tokenProvider.createToken(auth);
 
         return ResponseEntity.ok().body(new LoginResponse(token));
     }
