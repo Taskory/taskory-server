@@ -32,12 +32,13 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
     }
 
-    public void updateUser(long id, User updatedUser) {
+    public User updateUser(long id, User updatedUser) {
         User user = getUserById(id);
         user.setName(updatedUser.getName());
         user.setEmail(updatedUser.getEmail());
         user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         userRepository.save(user);
+        return user;
     }
 
     public void deleteById(long id) {
