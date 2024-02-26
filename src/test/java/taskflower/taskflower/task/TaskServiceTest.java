@@ -5,13 +5,23 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithUserDetails;
+import taskflower.taskflower.security.UserDetailsImpl;
+import taskflower.taskflower.user.User;
+import taskflower.taskflower.user.UserService;
+
+import java.util.List;
 
 @SpringBootTest
 class TaskServiceTest {
 
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private UserService userService;
 
     @Test
     @WithUserDetails(value = "test@test.test")      // Test userDetail(security test)
@@ -80,5 +90,25 @@ class TaskServiceTest {
         Assertions.assertThrows(TaskNotFoundExeption.class, () -> {
             taskService.getTaskById(task.getId());
         });
+    }
+
+    @Test
+    @WithUserDetails(value = "test@test.test")
+    @DisplayName("사용자의 모든 task 조회")
+    void findTaskByUser() {
+        SaveTaskRequset saveTaskRequset = new SaveTaskRequset();
+        saveTaskRequset.setTitle("test title");
+        saveTaskRequset.setDescription("test description.....");
+        saveTaskRequset.setStatus(Status.TODO);
+        saveTaskRequset.setStartTime(new int[]{2024, 2, 16, 10, 15});
+        saveTaskRequset.setEndTime(new int[]{2024, 3, 16, 10, 15});
+        saveTaskRequset.setTag("test tag");
+
+        Task task = taskService.save(saveTaskRequset);
+
+        User user = userService.findUserByAuth();
+        List<Task> savedTasks = taskService.findAllByUserEmail(user.getEmail());
+
+        Assertions.assertEquals(task, savedTasks.get(savedTasks.size() - 1));
     }
 }
