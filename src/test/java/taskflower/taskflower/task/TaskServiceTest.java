@@ -15,7 +15,7 @@ class TaskServiceTest {
 
     @Test
     @WithUserDetails(value = "test@test.test")      // Test userDetail(security test)
-    @DisplayName("Task 생성 및 조화")
+    @DisplayName("Task 생성 및 조회")
     void createTask() throws TaskNotFoundExeption {
         SaveTaskRequset saveTaskRequset = new SaveTaskRequset();
         saveTaskRequset.setTitle("test title");
@@ -35,6 +35,7 @@ class TaskServiceTest {
 
     @Test
     @WithUserDetails(value = "test@test.test")
+    @DisplayName("Task 수정")
     void updateTask() throws TaskNotFoundExeption {
         SaveTaskRequset saveTaskRequset = new SaveTaskRequset();
         saveTaskRequset.setTitle("test title");
@@ -60,4 +61,24 @@ class TaskServiceTest {
 
     }
 
+    @Test
+    @WithUserDetails(value = "test@test.test")
+    @DisplayName("task 삭제")
+    void deleteTask() {
+        SaveTaskRequset saveTaskRequset = new SaveTaskRequset();
+        saveTaskRequset.setTitle("test title");
+        saveTaskRequset.setDescription("test description.....");
+        saveTaskRequset.setStatus(Status.TODO);
+        saveTaskRequset.setStartTime(new int[]{2024, 2, 16, 10, 15});
+        saveTaskRequset.setEndTime(new int[]{2024, 3, 16, 10, 15});
+        saveTaskRequset.setTag("test tag");
+
+        Task task = taskService.save(saveTaskRequset);
+
+        taskService.deleteById(task.getId());
+
+        Assertions.assertThrows(TaskNotFoundExeption.class, () -> {
+            taskService.getTaskById(task.getId());
+        });
+    }
 }
