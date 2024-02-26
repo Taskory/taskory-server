@@ -16,6 +16,10 @@ export const Header: React.FC = () => {
     navigate('/login');
   };
 
+  const handleSignup = () => {
+    navigate('/signup');
+  };
+
 
   const handleLogout = () => {
     sessionStorage.removeItem("token");
@@ -33,11 +37,17 @@ export const Header: React.FC = () => {
               Logout
             </button>
           ) : (
-            // <NavLink to="/login" >Login</NavLink>
-            <button onClick={handleLogin}
-                    className="px-4 py-2 bg-white text-info font-semibold rounded hover:bg-opacity-75">
-              Login
-            </button>
+            <div className="flex space-x-2">
+              <button onClick={handleLogin}
+                      className="px-4 py-2 bg-white text-info font-semibold rounded hover:bg-opacity-75">
+                Login
+              </button>
+              <button onClick={handleSignup}
+                      className="px-4 py-2 bg-white text-info font-semibold rounded hover:bg-opacity-75">
+                Signup
+              </button>
+            </div>
+
           )}
 
         </div>
