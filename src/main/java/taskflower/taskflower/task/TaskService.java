@@ -1,11 +1,9 @@
 package taskflower.taskflower.task;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import taskflower.taskflower.security.UserDetailsImpl;
 import taskflower.taskflower.user.User;
 import taskflower.taskflower.user.UserRepository;
+import taskflower.taskflower.user.UserService;
 
 import java.util.List;
 
@@ -15,24 +13,25 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
     private final TaskMapper taskMapper;
+    private final UserService userService;
 
-    public TaskService(TaskRepository taskRepository, UserRepository userRepository, TaskMapper taskMapper) {
+    public TaskService(TaskRepository taskRepository, UserRepository userRepository, TaskMapper taskMapper, UserService userService) {
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
         this.taskMapper = taskMapper;
+        this.userService = userService;
     }
 
 
     public Task save(SaveTaskRequset saveTaskRequest) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
-        User user = userRepository.findUserByEmail(principal.getEmail());
+        User user = userService.findUserByAuth();
 
         Task task = taskMapper.convertSaveTaskRequestToTask(saveTaskRequest);
         task.setUser(user);
 
         return taskRepository.save(task);
     }
+
 
     public Task getTaskById(long id) throws TaskNotFoundExeption {
         return taskRepository.findById(id)
