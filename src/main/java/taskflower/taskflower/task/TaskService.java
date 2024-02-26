@@ -1,6 +1,5 @@
 package taskflower.taskflower.task;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -15,20 +14,23 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
+    private final TaskMapper taskMapper;
 
-    public TaskService(TaskRepository taskRepository, UserRepository userRepository) {
+    public TaskService(TaskRepository taskRepository, UserRepository userRepository, TaskMapper taskMapper) {
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
+        this.taskMapper = taskMapper;
     }
 
 
-    public Task save(SaveTaskRequset saveTaskRequset) {
+    public Task save(SaveTaskRequset saveTaskRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
         User user = userRepository.findUserByEmail(principal.getEmail());
 
-        Task task = new Task(saveTaskRequset);
+        Task task = taskMapper.convertSaveTaskRequestToTask(saveTaskRequest);
         task.setUser(user);
+
         return taskRepository.save(task);
     }
 
@@ -42,10 +44,10 @@ public class TaskService {
         return taskRepository.findAllByUser(user);
     }
 
-    public Task updateTask(long id, UpdateTaskRequset updateTaskRequset) {
-        Task task = new Task(updateTaskRequset);
-        task.setId(id);
-        return taskRepository.save(task);
+    public Task updateTask(long id, SaveTaskRequset saveTaskRequset) throws TaskNotFoundExeption {
+        Task task = this.getTaskById(id);
+        Task updateTask = taskMapper.updateTaskWithSaveTaskRequest(task, saveTaskRequset);
+        return taskRepository.save(updateTask);
     }
 
     public void deleteById(long id) {
