@@ -3,29 +3,31 @@ package taskflower.taskflower.security;
 import jakarta.transaction.Transactional;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import taskflower.taskflower.user.User;
-import taskflower.taskflower.user.UserRepository;
+import taskflower.taskflower.user.UserService;
+import taskflower.taskflower.user.exception.UserNotFoundException;
 
 @Service
-public class UserDetailServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserRepository userRepository;
 
-    public UserDetailServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    private final UserService userService;
+
+    public UserDetailsServiceImpl(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) {
-        User user = userRepository.findUserByEmail(email);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found with email" + email);
-        }
-
+        User user = userService.findUserByEmail(email);
         return new UserDetailsImpl(user);
     }
 
+    @Transactional
+    public UserDetails loadUserById(long userId) {
+        User user = userService.getUserById(userId);
+        return new UserDetailsImpl(user);
+    }
 }

@@ -52,4 +52,8 @@ public class UserService {
         UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
         return userRepository.findUserByEmail(principal.getEmail());
     }
+
+    public User findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
 }

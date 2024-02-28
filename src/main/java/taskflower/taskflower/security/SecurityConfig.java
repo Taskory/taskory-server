@@ -13,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -22,6 +23,17 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final TokenProvider tokenProvider;
+
+    public SecurityConfig(TokenProvider tokenProvider) {
+        this.tokenProvider = tokenProvider;
+    }
+
+    @Bean
+    public TokenFilter tokenFilter() {
+        return new TokenFilter(tokenProvider);
+    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -51,10 +63,11 @@ public class SecurityConfig {
 //                url 권한 매칭 설정
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()                   // 권한 허용
-//                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/user/**").hasRole("USER")
 //                        .requestMatchers("/api/v1/user/**").hasAnyRole("ADMIN", "USER")
-                        .anyRequest().authenticated());
-
+                        .anyRequest().authenticated())
+//                jwt token filter 추가
+                .addFilterBefore(tokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

@@ -1,8 +1,10 @@
 package taskflower.taskflower.security;
 
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Service
+@Slf4j
 public class TokenProvider {
 
     @Value("${app.token.expireMSec}")
@@ -38,4 +41,33 @@ public class TokenProvider {
                 .compact();
     }
 
+    public boolean validationToken(String jwt) {
+        try {
+            Jwts.parser()
+                    .verifyWith(secretKey)
+                    .build()
+                    .parseSignedClaims(jwt);
+            return true;
+        } catch (SignatureException exception) {
+            log.error("Invalid JWT signature");
+        } catch (MalformedJwtException exception) {
+            log.error("Invalid JWT");
+        } catch (ExpiredJwtException exception) {
+            log.error("Expired JWT");
+        } catch (UnsupportedJwtException exception) {
+            log.error("unsupported JWT");
+        } catch (IllegalArgumentException exception) {
+            log.error("JWT claims starting is empty");
+        }
+        return false;
+    }
+
+    public long getUserIdFromToken(String jwt) {
+        Claims claims = Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(jwt)
+                .getPayload();
+        return Long.parseLong(claims.getSubject());
+    }
 }
