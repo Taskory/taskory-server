@@ -15,9 +15,9 @@ export const Signup: React.FC = () => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        name: "test",
-        email: "test@test.test",
-        password: "1234"
+        name: name,
+        email: email,
+        password: password
       }),
     }
 
@@ -28,7 +28,7 @@ export const Signup: React.FC = () => {
         }
       })
     } catch (e) {
-      console.log(e);
+      alert("회원가입 오류");
     }
 
   }
