@@ -1,10 +1,12 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {useCookies} from "react-cookie";
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [cookies, setCookie] = useCookies(['token']);
 
   const fetchLogin = async () => {
     const requestOptions = {
@@ -13,22 +15,23 @@ export const Login: React.FC = () => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        email: "test@test.test",
-        password: "1234"
+        email: email,
+        password: password
       }),
     }
     try {
       await fetch("http://localhost:8080/api/v1/auth/login", requestOptions).then(res => {
         if (res.ok) {
           res.json().then(result => {
-            sessionStorage.setItem('token', result.token);
+            setCookie('token', result.token);
             navigate("/");
           });
+        } else {
+          alert("이메일 및 비밀번호가 잘못되었습니다.")
         }
       })
     } catch (e) {
       alert("로그인 오류");
-      // console.log(e);
     }
 
   }
