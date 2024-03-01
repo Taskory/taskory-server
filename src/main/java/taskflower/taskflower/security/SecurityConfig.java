@@ -1,5 +1,6 @@
 package taskflower.taskflower.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,15 +25,11 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final TokenProvider tokenProvider;
+    private final TokenFilter tokenFilter;
 
-    public SecurityConfig(TokenProvider tokenProvider) {
-        this.tokenProvider = tokenProvider;
-    }
-
-    @Bean
-    public TokenFilter tokenFilter() {
-        return new TokenFilter(tokenProvider);
+    @Autowired
+    public SecurityConfig(TokenFilter tokenFilter) {
+        this.tokenFilter = tokenFilter;
     }
 
     @Bean
@@ -67,7 +64,7 @@ public class SecurityConfig {
 //                        .requestMatchers("/api/v1/user/**").hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated())
 //                jwt token filter 추가
-                .addFilterBefore(tokenFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

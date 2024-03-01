@@ -1,33 +1,35 @@
 package taskflower.taskflower.security;
 
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import taskflower.taskflower.user.User;
+import taskflower.taskflower.user.UserRepository;
 import taskflower.taskflower.user.UserService;
 import taskflower.taskflower.user.exception.UserNotFoundException;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
+    private final UserRepository userRepository;
 
-    private final UserService userService;
-
-    public UserDetailsServiceImpl(UserService userService) {
-        this.userService = userService;
+    @Autowired
+    public UserDetailsServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) {
-        User user = userService.findUserByEmail(email);
+        User user = userRepository.findUserByEmail(email);
         return new UserDetailsImpl(user);
     }
 
     @Transactional
     public UserDetails loadUserById(long userId) {
-        User user = userService.getUserById(userId);
+        User user = userRepository.findById(userId).orElseThrow();
         return new UserDetailsImpl(user);
     }
 }
