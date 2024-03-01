@@ -5,6 +5,8 @@ export const Profile: React.FC = () => {
   const [cookies, setCookie] = useCookies(['token']);
 
 
+
+
   useEffect(() => {
     const requsetOptions = {
       headers: {
@@ -12,12 +14,20 @@ export const Profile: React.FC = () => {
         'Authorization': 'Bearer ' + cookies.token
       },
       method: 'GET'
-    }
-    fetch("http://localhost:8080/api/v1/user/profile", requsetOptions)
-      .then(res => {
-        console.log(res);
-      })
-  }, []);
+    };
+    const requestProfile = async () => {
+      await fetch("http://localhost:8080/api/v1/user/profile", requsetOptions)
+        .then(res => {
+          res.json().then(result => {
+            console.log(result);
+            return result;
+            }
+          )
+        });
+    };
+    requestProfile()
+
+  })
 
   return (
     <>

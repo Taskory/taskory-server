@@ -60,7 +60,7 @@ public class SecurityConfig {
 //                url 권한 매칭 설정
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()                   // 권한 허용
-                        .requestMatchers("/api/v1/user/**").authenticated()
+                        .requestMatchers("/api/v1/user/**").permitAll()
 //                        .requestMatchers("/api/v1/user/**").hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated())
 //                jwt token filter 추가
