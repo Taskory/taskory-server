@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, {useEffect, useState} from 'react';
 import {useCookies} from "react-cookie";
 import {useNavigate} from "react-router-dom";
@@ -50,7 +49,7 @@ export const Profile: React.FC = () => {
     <div className="flex justify-between px-30 sm:px-60">
       {/* Sidebar */}
       <div className="text-black w-72">
-        <img src="profile_image_url" alt="Profile" className="w-16 h-16 rounded-full mr-4" />
+        <img src="profile_image_url" alt="Profile" className="w-16 h-16 rounded-full mr-4"/>
         <div className="p-6 flex items-center justify-between">
           <div className="flex items-center">
             <div>
@@ -59,7 +58,8 @@ export const Profile: React.FC = () => {
             </div>
           </div>
           <button className="focus:outline-none">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" />
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor"/>
           </button>
         </div>
         <nav className="mt-8">
@@ -90,31 +90,5 @@ export const Profile: React.FC = () => {
         {/* Add user profile content here */}
       </div>
     </div>
-=======
-import {useCookies} from "react-cookie";
-import {useEffect} from "react";
-
-export const Profile: React.FC = () => {
-  const [cookies, setCookie] = useCookies(['token']);
-
-
-  useEffect(() => {
-    const requsetOptions = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + cookies.token
-      },
-      method: 'GET'
-    }
-    fetch("http://localhost:8080/api/v1/user/profile", requsetOptions)
-      .then(res => {
-        console.log(res);
-      })
-  }, []);
-
-  return (
-    <>
-    </>
->>>>>>> feat/task
   );
 };
