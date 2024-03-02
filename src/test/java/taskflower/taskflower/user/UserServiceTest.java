@@ -7,10 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.test.context.support.WithUserDetails;
 import taskflower.taskflower.security.AuthService;
-import taskflower.taskflower.security.UserDetailsImpl;
 import taskflower.taskflower.security.model.LoginRequset;
+import taskflower.taskflower.user.exception.UserExistsExeption;
 import taskflower.taskflower.user.exception.UserNotFoundException;
 
 import java.util.Random;
@@ -28,7 +27,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("사용자 생성 및 조회")
-    void signup() throws Exception {
+    void signup() throws Exception, UserExistsExeption {
         User user = createTestUser();
 
         User signupUser = userService.getUserById(user.getId());
@@ -39,7 +38,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("사용자 수정")
-    void updateUser() throws Exception {
+    void updateUser() throws Exception, UserExistsExeption {
         User user = createTestUser();
         long userId = user.getId();
 
@@ -55,7 +54,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("사용자 삭제")
-    void deleteById() throws Exception {
+    void deleteById() throws Exception, UserExistsExeption {
         User user = createTestUser();
         long userId = user.getId();
 
@@ -65,7 +64,7 @@ class UserServiceTest {
         });
     }
 
-    private User createTestUser() throws Exception {
+    private User createTestUser() throws UserExistsExeption {
         Random random = new Random();
         StringBuilder email = new StringBuilder();
 
@@ -85,7 +84,6 @@ class UserServiceTest {
 
         return userService.signup(user);
     }
-
 
 //    <<권한을 통해 사용자 정보을 읽어오는 것은 JWT 토큰으로 대체>>
 //    @Test
