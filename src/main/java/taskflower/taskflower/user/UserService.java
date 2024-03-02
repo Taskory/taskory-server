@@ -47,9 +47,10 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    public User findUserByAuth() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
-        return userRepository.findUserByEmail(principal.getEmail());
-    }
+//    <<권한을 통해 사용자 정보을 읽어오는 것은 JWT 토큰으로 대체>>
+//    public User findUserByAuth() {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
+//        return userRepository.findUserByEmail(principal.getEmail());
+//    }
 }
