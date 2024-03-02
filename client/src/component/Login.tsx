@@ -44,7 +44,7 @@ export const Login: React.FC = () => {
 
 
   return (
-    <div className="flex items-center justify-center h-screen bg-blue-50">
+    <div className="flex items-center justify-center h-screen ">
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
         <h2 className="text-3xl font-semibold text-center mb-4">Login</h2>
         <form onSubmit={handleLogin}>

@@ -15,7 +15,7 @@ export const MainLayout: React.FC = () => {
     return (
       <>
         <Header/>
-        <main className="flex-1 bg-blue-50">
+        <main className="flex-1">
           <div className="container mx-auto py-8 min-h-screen">
             <Routes>
               <Route path="/" element={<Home/>}/>
