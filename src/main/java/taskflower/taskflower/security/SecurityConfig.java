@@ -1,5 +1,6 @@
 package taskflower.taskflower.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +24,16 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class SecurityConfig {
 
+<<<<<<< HEAD
+=======
+    private final TokenFilter tokenFilter;
+
+    @Autowired
+    public SecurityConfig(TokenFilter tokenFilter) {
+        this.tokenFilter = tokenFilter;
+    }
+
+>>>>>>> ca6424c (feat: 각 요청에 대해 TokenFilter 기능 추가)
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
@@ -53,7 +64,13 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/auth/**").permitAll()                   // 권한 허용
 //                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
 //                        .requestMatchers("/api/v1/user/**").hasAnyRole("ADMIN", "USER")
+<<<<<<< HEAD
                         .anyRequest().authenticated());
+=======
+                        .anyRequest().authenticated())
+//                jwt token filter 추가
+                .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
+>>>>>>> ca6424c (feat: 각 요청에 대해 TokenFilter 기능 추가)
 
         return http.build();
     }
