@@ -24,8 +24,6 @@ public class TaskService {
 
 
     public Task save(SaveTaskRequset saveTaskRequest) {
-        User user = userService.findUserByAuth();
-
         Task task = taskMapper.convertSaveTaskRequestToTask(saveTaskRequest);
         task.setUser(user);
 

@@ -85,20 +85,21 @@ class UserServiceTest {
         return userService.signup(user);
     }
 
-    @Test
-    @DisplayName("로그인 및 로그인 유저 정보 읽어오기 테스트")
-    void findUserByAuthTest() throws UserExistsExeption {
-        User user = createTestUser();
-
-        LoginRequset loginRequset = new LoginRequset();
-        loginRequset.setEmail(user.getEmail());
-        loginRequset.setPassword("1234");           // 회원가입 로직에서 비밀번호가 암호화되기 때문에 따로 설정
-
-        authService.authenticateUser(loginRequset);
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User signupUser = userService.findUserByAuth();
-
-        Assertions.assertEquals(signupUser, user);
-    }
+//    <<권한을 통해 사용자 정보을 읽어오는 것은 JWT 토큰으로 대체>>
+//    @Test
+//    @DisplayName("로그인 및 로그인 유저 정보 읽어오기 테스트")
+//    void findUserByAuthTest() throws Exception {
+//        User user = createTestUser();
+//
+//        LoginRequset loginRequset = new LoginRequset();
+//        loginRequset.setEmail(user.getEmail());
+//        loginRequset.setPassword("1234");           // 회원가입 로직에서 비밀번호가 암호화되기 때문에 따로 설정
+//
+//        authService.authenticateUser(loginRequset);
+//
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        User signupUser = userService.findUserByAuth();
+//
+//        Assertions.assertEquals(signupUser, user);
+//    }
 }

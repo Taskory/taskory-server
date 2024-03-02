@@ -1,10 +1,7 @@
 package taskflower.taskflower.user;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import taskflower.taskflower.security.UserDetailsImpl;
 import taskflower.taskflower.user.exception.UserExistsExeption;
 import taskflower.taskflower.user.exception.UserNotFoundException;
 
@@ -47,13 +44,10 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    public User findUserByAuth() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
-        return userRepository.findUserByEmail(principal.getEmail());
-    }
-
-    public User findUserByEmail(String email) {
-        return userRepository.findUserByEmail(email);
-    }
+//    <<권한을 통해 사용자 정보을 읽어오는 것은 JWT 토큰으로 대체>>
+//    public User findUserByAuth() {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
+//        return userRepository.findUserByEmail(principal.getEmail());
+//    }
 }

@@ -65,7 +65,6 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
 //                jwt token filter 추가
                 .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 

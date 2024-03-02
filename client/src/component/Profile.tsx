@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, {useEffect, useState} from 'react';
 import {useCookies} from "react-cookie";
 import {useNavigate} from "react-router-dom";
@@ -89,5 +90,31 @@ export const Profile: React.FC = () => {
         {/* Add user profile content here */}
       </div>
     </div>
+=======
+import {useCookies} from "react-cookie";
+import {useEffect} from "react";
+
+export const Profile: React.FC = () => {
+  const [cookies, setCookie] = useCookies(['token']);
+
+
+  useEffect(() => {
+    const requsetOptions = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + cookies.token
+      },
+      method: 'GET'
+    }
+    fetch("http://localhost:8080/api/v1/user/profile", requsetOptions)
+      .then(res => {
+        console.log(res);
+      })
+  }, []);
+
+  return (
+    <>
+    </>
+>>>>>>> feat/task
   );
 };

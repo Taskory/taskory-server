@@ -7,8 +7,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import taskflower.taskflower.user.User;
 import taskflower.taskflower.user.UserRepository;
-import taskflower.taskflower.user.UserService;
-import taskflower.taskflower.user.exception.UserNotFoundException;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
