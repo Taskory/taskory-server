@@ -33,17 +33,12 @@ export const Header: React.FC = () => {
     navigate('/profile');
   };
 
-  const handleHome = () => {
-    navigate("/");
-  };
+
 
   return (
     <>
       <header className="bg-info text-white p-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <button onClick={handleHome}>
-            <h1 className="text-2xl font-semibold">TaskFlower </h1>
-          </button>
+        <div className="container mx-auto flex items-center justify-end">
           {cookies.token ? (
               <div className="flex space-x-2">
                 <button onClick={handleProfile}
