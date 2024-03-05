@@ -23,7 +23,7 @@ public class TaskService {
     }
 
 
-    public Task save(SaveTaskRequset saveTaskRequest) {
+    public Task save(SaveTaskRequset saveTaskRequest, User user) {
         Task task = taskMapper.convertSaveTaskRequestToTask(saveTaskRequest);
         task.setUser(user);
 

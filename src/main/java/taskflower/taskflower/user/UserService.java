@@ -16,6 +16,10 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    public boolean existsUser(String email) {
+        return userRepository.existsUserByEmail(email);
+    }
+
     public User signup(User signupUser) throws UserExistsExeption {
         if (userRepository.existsUserByEmail(signupUser.getEmail())) {
             throw new UserExistsExeption("Sorry, this email is Already existed..");
@@ -40,6 +44,7 @@ public class UserService {
 
     public void deleteById(long id) {
         // 삭제 성공 시, 결과 반환x, 실패할 경우 예외 처리
+        // Task 테이블과 연관되기 때문에 로직 수정 필요!!!!
         User user = getUserById(id);
         userRepository.delete(user);
     }
@@ -50,4 +55,8 @@ public class UserService {
 //        UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
 //        return userRepository.findUserByEmail(principal.getEmail());
 //    }
+
+    public User findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
 }

@@ -22,9 +22,6 @@ class UserServiceTest {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private AuthService authService;
-
     @Test
     @DisplayName("사용자 생성 및 조회")
     void signup() throws Exception, UserExistsExeption {
