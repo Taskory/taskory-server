@@ -7,7 +7,7 @@ import {Signup} from "../component/Signup";
 import {Footer} from "./component/Footer";
 import {Profile} from "../component/Profile";
 import {SideBar} from "./component/SideBar";
-import {Dashboard} from "../component/Dashboard";
+import {Dashboard} from "../component/dashboard/Dashboard";
 
 export const MainLayout: React.FC = () => {
   const location = useLocation();

@@ -11,7 +11,7 @@ export const SideBar: React.FC = () => {
     navigate("/");
   };
   return (
-    <div className="h-screen flex flex-col justify-between bg-gray-800 text-white p-4 min-h-screen">
+    <div className="bg-gray-800 min-h-full flex flex-col justify-between text-white p-4">
       {/* Sidebar Header */}
       <div className="mb-8">
         <button onClick={handleHome}>
@@ -21,23 +21,19 @@ export const SideBar: React.FC = () => {
       </div>
 
       {/* Sidebar Navigation */}
-      <div>
-        <button onClick={handleDashboard}
-                className="block p-2 rounded hover:bg-gray-700 w-full">
+      <div className="flex flex-col">
+        <button onClick={handleDashboard} className="block p-2 rounded hover:bg-gray-700 w-full">
           Dashboard
         </button>
-        <button
-          className="block p-2 rounded hover:bg-gray-700 w-full">
-         ??
+        <button className="block p-2 rounded hover:bg-gray-700 w-full">
+          ??
         </button>
-        <button
-          className="block p-2 rounded hover:bg-gray-700 w-full">
-         ??
+        <button className="block p-2 rounded hover:bg-gray-700 w-full">
+          ??
         </button>
       </div>
-
       {/* Sidebar Footer */}
-      <div>
+      <div className="h-full flex flex-col justify-end">
         <p className="text-xs">© 2024 Your Company</p>
       </div>
     </div>
