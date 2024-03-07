@@ -45,15 +45,15 @@ class TaskServiceTest {
     @DisplayName("Task 생성 및 조회")
     void createTask() throws TaskNotFoundExeption {
 
-        SaveTaskRequset saveTaskRequset = new SaveTaskRequset();
-        saveTaskRequset.setTitle("test title");
-        saveTaskRequset.setDescription("test description.....");
-        saveTaskRequset.setStatus(Status.TODO);
-        saveTaskRequset.setStartTime(new int[]{2024, 2, 16, 10, 15});
-        saveTaskRequset.setEndTime(new int[]{2024, 3, 16, 10, 15});
-        saveTaskRequset.setTag("test tag");
+        TaskDto taskDto = new TaskDto();
+        taskDto.setTitle("test title");
+        taskDto.setDescription("test description.....");
+        taskDto.setStatus(Status.TODO);
+        taskDto.setStartTime(new int[]{2024, 2, 16, 10, 15});
+        taskDto.setEndTime(new int[]{2024, 3, 16, 10, 15});
+        taskDto.setTag("test tag");
 
-        Task savedTask = taskService.save(saveTaskRequset, signupRequest);
+        Task savedTask = taskService.save(taskDto, signupRequest);
 
         System.out.println(savedTask.toString());
 
@@ -65,17 +65,17 @@ class TaskServiceTest {
 //    @WithUserDetails(value = "test@test.test")
     @DisplayName("Task 수정")
     void updateTask() throws TaskNotFoundExeption {
-        SaveTaskRequset saveTaskRequset = new SaveTaskRequset();
-        saveTaskRequset.setTitle("test title");
-        saveTaskRequset.setDescription("test description.....");
-        saveTaskRequset.setStatus(Status.TODO);
-        saveTaskRequset.setStartTime(new int[]{2024, 2, 16, 10, 15});
-        saveTaskRequset.setEndTime(new int[]{2024, 3, 16, 10, 15});
-        saveTaskRequset.setTag("test tag");
+        TaskDto taskDto = new TaskDto();
+        taskDto.setTitle("test title");
+        taskDto.setDescription("test description.....");
+        taskDto.setStatus(Status.TODO);
+        taskDto.setStartTime(new int[]{2024, 2, 16, 10, 15});
+        taskDto.setEndTime(new int[]{2024, 3, 16, 10, 15});
+        taskDto.setTag("test tag");
 
-        Task savedTask = taskService.save(saveTaskRequset, signupRequest);
+        Task savedTask = taskService.save(taskDto, signupRequest);
 
-        SaveTaskRequset updateTaskRequset = new SaveTaskRequset();
+        TaskDto updateTaskRequset = new TaskDto();
         updateTaskRequset.setTitle("abcdefg");
         updateTaskRequset.setDescription("............description");
         updateTaskRequset.setStatus(Status.PROGRESS);
@@ -93,15 +93,15 @@ class TaskServiceTest {
 //    @WithUserDetails(value = "test@test.test")
     @DisplayName("task 삭제")
     void deleteTask() {
-        SaveTaskRequset saveTaskRequset = new SaveTaskRequset();
-        saveTaskRequset.setTitle("test title");
-        saveTaskRequset.setDescription("test description.....");
-        saveTaskRequset.setStatus(Status.TODO);
-        saveTaskRequset.setStartTime(new int[]{2024, 2, 16, 10, 15});
-        saveTaskRequset.setEndTime(new int[]{2024, 3, 16, 10, 15});
-        saveTaskRequset.setTag("test tag");
+        TaskDto taskDto = new TaskDto();
+        taskDto.setTitle("test title");
+        taskDto.setDescription("test description.....");
+        taskDto.setStatus(Status.TODO);
+        taskDto.setStartTime(new int[]{2024, 2, 16, 10, 15});
+        taskDto.setEndTime(new int[]{2024, 3, 16, 10, 15});
+        taskDto.setTag("test tag");
 
-        Task task = taskService.save(saveTaskRequset, signupRequest);
+        Task task = taskService.save(taskDto, signupRequest);
 
         taskService.deleteById(task.getId());
 
@@ -114,15 +114,15 @@ class TaskServiceTest {
 //    @WithUserDetails(value = "test@test.test")
     @DisplayName("사용자의 모든 task 조회")
     void findTaskByUser() {
-        SaveTaskRequset saveTaskRequset = new SaveTaskRequset();
-        saveTaskRequset.setTitle("test title");
-        saveTaskRequset.setDescription("test description.....");
-        saveTaskRequset.setStatus(Status.TODO);
-        saveTaskRequset.setStartTime(new int[]{2024, 2, 16, 10, 15});
-        saveTaskRequset.setEndTime(new int[]{2024, 3, 16, 10, 15});
-        saveTaskRequset.setTag("test tag");
+        TaskDto taskDto = new TaskDto();
+        taskDto.setTitle("test title");
+        taskDto.setDescription("test description.....");
+        taskDto.setStatus(Status.TODO);
+        taskDto.setStartTime(new int[]{2024, 2, 16, 10, 15});
+        taskDto.setEndTime(new int[]{2024, 3, 16, 10, 15});
+        taskDto.setTag("test tag");
 
-        Task task = taskService.save(saveTaskRequset, signupRequest);
+        Task task = taskService.save(taskDto, signupRequest);
 
         List<Task> savedTasks = taskService.findAllByUserEmail(signupRequest.getEmail());
 

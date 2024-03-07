@@ -3,7 +3,7 @@ package taskflower.taskflower.task;
 import lombok.Data;
 
 @Data
-public class SaveTaskRequset {
+public class TaskDto {
     private String title;
 
     private String description;

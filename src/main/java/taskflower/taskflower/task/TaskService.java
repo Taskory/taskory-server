@@ -23,8 +23,8 @@ public class TaskService {
     }
 
 
-    public Task save(SaveTaskRequset saveTaskRequest, User user) {
-        Task task = taskMapper.convertSaveTaskRequestToTask(saveTaskRequest);
+    public Task save(TaskDto saveTaskRequest, User user) {
+        Task task = taskMapper.convertTaskDtoToTask(saveTaskRequest);
         task.setUser(user);
 
         return taskRepository.save(task);
@@ -41,9 +41,9 @@ public class TaskService {
         return taskRepository.findAllByUser(user);
     }
 
-    public Task updateTask(long id, SaveTaskRequset saveTaskRequset) throws TaskNotFoundExeption {
+    public Task updateTask(long id, TaskDto taskDto) throws TaskNotFoundExeption {
         Task task = this.getTaskById(id);
-        Task updateTask = taskMapper.updateTaskWithSaveTaskRequest(task, saveTaskRequset);
+        Task updateTask = taskMapper.updateTaskWithSaveTaskRequest(task, taskDto);
         return taskRepository.save(updateTask);
     }
 

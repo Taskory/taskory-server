@@ -24,9 +24,9 @@ public class TaskConroller {
     }
 
     @PostMapping
-    public ResponseEntity<Task> save(@CurrentUser UserDetailsImpl userDetails, @RequestBody SaveTaskRequset saveTaskRequset) {
+    public ResponseEntity<Task> save(@CurrentUser UserDetailsImpl userDetails, @RequestBody TaskDto taskDto) {
         User user = userService.getUserById(userDetails.getId());
-        Task task = taskService.save(saveTaskRequset, user);
+        Task task = taskService.save(taskDto, user);
 
         return ResponseEntity.ok().body(task);
 

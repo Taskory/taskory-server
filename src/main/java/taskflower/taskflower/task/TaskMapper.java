@@ -10,7 +10,7 @@ public interface TaskMapper {
 
     @Mapping(target = "startTime", expression = "java(convertLocalDateTimeToArray(task.getStartTime()))")
     @Mapping(target = "endTime", expression = "java(convertLocalDateTimeToArray(task.getEndTime()))")
-    SaveTaskRequset convertTaskToSaveTaskRequest(Task task);
+    TaskDto convertTaskToTaskDto(Task task);
 
     @Mapping(target = "startTime", expression = "java(convertArrayToLocalDateTime(saveTaskRequest.getStartTime()))")
     @Mapping(target = "endTime", expression = "java(convertArrayToLocalDateTime(saveTaskRequest.getEndTime()))")
@@ -18,16 +18,16 @@ public interface TaskMapper {
     @Mapping(target = "updatedTime", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
-    Task convertSaveTaskRequestToTask(SaveTaskRequset saveTaskRequest);
+    Task convertTaskDtoToTask(TaskDto saveTaskRequest);
 
-    default Task updateTaskWithSaveTaskRequest(Task task, SaveTaskRequset saveTaskRequset) {
-        LocalDateTime startTime = convertArrayToLocalDateTime(saveTaskRequset.getStartTime());
-        LocalDateTime endTime = convertArrayToLocalDateTime(saveTaskRequset.getEndTime());
+    default Task updateTaskWithSaveTaskRequest(Task task, TaskDto taskDto) {
+        LocalDateTime startTime = convertArrayToLocalDateTime(taskDto.getStartTime());
+        LocalDateTime endTime = convertArrayToLocalDateTime(taskDto.getEndTime());
 
-        task.setTitle(saveTaskRequset.getTitle());
-        task.setDescription(saveTaskRequset.getDescription());
-        task.setStatus(saveTaskRequset.getStatus());
-        task.setTag(saveTaskRequset.getTag());
+        task.setTitle(taskDto.getTitle());
+        task.setDescription(taskDto.getDescription());
+        task.setStatus(taskDto.getStatus());
+        task.setTag(taskDto.getTag());
         task.setStartTime(startTime);
         task.setEndTime(endTime);
         task.setUpdatedTime(LocalDateTime.now());
