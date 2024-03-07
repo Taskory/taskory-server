@@ -2,14 +2,17 @@ import React, {useEffect, useState} from "react";
 import { DayPicker } from "react-day-picker";
 import {Task} from "./TaskInterface";
 import './calendar.css';
+import {useCookies} from "react-cookie";
 
 interface TaskModalProps {
-  closeModal: () => void
-  inputChange: () => void
-  saveTask: () => void
+  closeModal: () => void,
+  inputChange: () => void,
+  saveTask: () => void,
+  taskId: number | null
 }
 
-export const TaskModal: React.FC<TaskModalProps> = ({closeModal, inputChange, saveTask}) => {
+export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, inputChange, saveTask, taskId }) => {
+  const [cookies] = useCookies(['token']);
   const date = new Date();
   const [startDate, setStartDate] = useState<number[]>([
     date.getFullYear(),
@@ -35,6 +38,30 @@ export const TaskModal: React.FC<TaskModalProps> = ({closeModal, inputChange, sa
     startTime: startDate,
     endTime: endDate,
   });
+
+  useEffect(() => {
+    if (taskId) {
+      fetch('http://localhost:8080/api/v1/task/' + taskId, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer " + cookies.token,
+        },
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Success:', data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+  }, [taskId])
 
   const handleCloseModal = () => {
     closeModal();

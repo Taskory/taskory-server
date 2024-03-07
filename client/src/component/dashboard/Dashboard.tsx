@@ -9,6 +9,7 @@ export const Dashboard: React.FC = () => {
   const navigate = useNavigate();
 
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [currentTaskId, setCurrentTaskId] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const [cookies, setCookie] = useCookies();
@@ -75,7 +76,10 @@ export const Dashboard: React.FC = () => {
       });
   }
 
-  const handleOpenModal = () => {
+  const handleOpenModal = (id?: number | null) => {
+    if (id) {
+      setCurrentTaskId(id);
+    }
     setIsModalOpen(true);
   }
 
@@ -90,17 +94,17 @@ export const Dashboard: React.FC = () => {
   return (
     <>
       <div>
-        <button className="p-4 bg-gray-200 rounded-full" onClick={handleOpenModal}>
+        <button className="p-4 bg-gray-200 rounded-full" onClick={() => {handleOpenModal()}}>
           Create Task
         </button>
         <div>
-          {tasks.map((task) => (
-            <TaskCard key={task.id} task={task} />
-          ))}
+          {tasks.map((task) =>
+            <TaskCard key={task.id} task={task} onClick={() => {handleOpenModal(task.id)}}/>
+          )}
         </div>
       </div>
       {isModalOpen && (
-        <TaskModal closeModal={handleCloseModal} inputChange={handleInputChange} saveTask={handleSaveTask}/>
+        <TaskModal closeModal={handleCloseModal} inputChange={handleInputChange} saveTask={handleSaveTask} taskId={currentTaskId}/>
       )}
     </>
   );

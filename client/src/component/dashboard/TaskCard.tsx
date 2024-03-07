@@ -2,10 +2,11 @@ import React from 'react';
 import {Task} from "./TaskInterface";
 
 interface TaskCardProps {
-  task: Task;
+  task: Task,
+  onClick: () => void
 }
 
-export const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
+export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
   const getStatusColor = (status: string): string => {
     switch (status) {
       case 'TODO':
@@ -20,7 +21,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
   };
 
   return (
-    <div className="border rounded p-4 mb-4">
+    <div className="border rounded p-4 mb-4" onClick={onClick}>
       <h2 className="text-lg font-semibold">{task.title}</h2>
       <p className="text-gray-600">{task.description}</p>
       <div className="flex items-center mt-2">
