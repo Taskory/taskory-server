@@ -55,13 +55,15 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, inputChange, s
           return response.json();
         })
         .then(data => {
-          console.log(data)
           setTask(data);
+          setStartDate(data.startTime);
+          setEndDate(data.endTime);
         })
         .catch(error => {
           console.error('Error:', error);
         });
     }
+    console.log(task);
   }, [taskId])
 
   const handleCloseModal = () => {
@@ -195,7 +197,12 @@ const TimeField: React.FC<TimeFieldProps> = ({date, setDate}) => {
   };
 
   const dateFormat = (date: number[]) => {
-    return `${date[0].toString()}.${date[1].toString()}.${date[2].toString()} - ${date[3].toString()}:${date[4].toString()}`;
+    const formattedMonth = date[1] < 10 ? `0${date[1]}` : date[1].toString();
+    const formattedDay = date[2] < 10 ? `0${date[2]}` : date[2].toString();
+    const formattedHour = date[3] < 10 ? `0${date[3]}` : date[3].toString();
+    const formattedMinute = date[4] < 10 ? `0${date[4]}` : date[4].toString();
+
+    return `${date[0]}.${formattedMonth}.${formattedDay} - ${formattedHour}:${formattedMinute}`;
   }
 
 
