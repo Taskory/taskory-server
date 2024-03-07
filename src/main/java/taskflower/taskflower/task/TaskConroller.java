@@ -42,14 +42,14 @@ public class TaskConroller {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Task> findTaskById(@PathVariable String id) {
-        Task task;
+    public ResponseEntity<TaskDto> findTaskById(@PathVariable String id) {
+        TaskDto taskResponse;
         try {
-            task = taskService.getTaskById(Long.parseLong(id));
+            taskResponse = taskService.getTaskById(Long.parseLong(id));
         } catch (TaskNotFoundExeption e) {
             throw new RuntimeException(e);
         }
-        return ResponseEntity.ok().body(task);
+        return ResponseEntity.ok().body(taskResponse);
     }
 }
 

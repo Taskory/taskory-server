@@ -31,9 +31,10 @@ public class TaskService {
     }
 
 
-    public Task getTaskById(long id) throws TaskNotFoundExeption {
-        return taskRepository.findById(id)
+    public TaskDto getTaskById(long id) throws TaskNotFoundExeption {
+        Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundExeption("Task not found by id: " + id));
+        return taskMapper.convertTaskToTaskDto(task);
     }
 
     public List<Task> findAllByUserEmail(String email) {
@@ -42,7 +43,7 @@ public class TaskService {
     }
 
     public Task updateTask(long id, TaskDto taskDto) throws TaskNotFoundExeption {
-        Task task = this.getTaskById(id);
+        Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundExeption("Task not found by id: " + id));
         Task updateTask = taskMapper.updateTaskWithSaveTaskRequest(task, taskDto);
         return taskRepository.save(updateTask);
     }
