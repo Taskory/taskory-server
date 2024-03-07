@@ -1,6 +1,7 @@
 package taskflower.taskflower.task;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import taskflower.taskflower.security.CurrentUser;
@@ -16,6 +17,7 @@ public class TaskConroller {
 
     private UserService userService;
     private TaskService taskService;
+
     @Autowired
     public TaskConroller(UserService userService, TaskService taskService) {
         this.userService = userService;
@@ -40,4 +42,15 @@ public class TaskConroller {
         return ResponseEntity.ok().body(tasks);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Task> getTaskById(@RequestParam Long id) {
+        Task task;
+        try {
+            task = taskService.getTaskById(id);
+        } catch (TaskNotFoundExeption e) {
+            throw new RuntimeException(e);
+        }
+        return ResponseEntity.ok().body(task);
+    }
 }
+
