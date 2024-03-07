@@ -55,7 +55,8 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, inputChange, s
           return response.json();
         })
         .then(data => {
-          console.log('Success:', data);
+          console.log(data)
+          setTask(data);
         })
         .catch(error => {
           console.error('Error:', error);
