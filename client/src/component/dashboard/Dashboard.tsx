@@ -104,7 +104,7 @@ export const Dashboard: React.FC = () => {
         </div>
       </div>
       {isModalOpen && (
-        <TaskModal closeModal={handleCloseModal} inputChange={handleInputChange} saveTask={handleSaveTask} taskId={currentTaskId}/>
+        <TaskModal closeModal={handleCloseModal} saveTask={handleSaveTask} taskId={currentTaskId}/>
       )}
     </>
   );

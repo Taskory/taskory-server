@@ -6,28 +6,13 @@ import {useCookies} from "react-cookie";
 
 interface TaskModalProps {
   closeModal: () => void,
-  inputChange: () => void,
   saveTask: () => void,
   taskId: number | null
 }
 
-export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, inputChange, saveTask, taskId }) => {
+export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, saveTask, taskId }) => {
   const [cookies] = useCookies(['token']);
   const date = new Date();
-  const [startDate, setStartDate] = useState<number[]>([
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate(),
-    date.getHours(),
-    date.getMinutes()
-  ]);
-  const [endDate, setEndDate] = useState<number[]>([
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate(),
-    date.getHours(),
-    date.getMinutes()
-  ]);
 
   const [task, setTask] = useState<Task>({
     id: null,
@@ -35,8 +20,20 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, inputChange, s
     description: '',
     status: 'TODO',
     tag: '',
-    startTime: startDate,
-    endTime: endDate,
+    startTime: [
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      date.getHours(),
+      date.getMinutes()
+    ],
+    endTime: [
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      date.getHours(),
+      date.getMinutes()
+    ]
   });
 
   useEffect(() => {
@@ -55,23 +52,17 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, inputChange, s
           return response.json();
         })
         .then(data => {
+          console.log(data);
           setTask(data);
-          setStartDate(data.startTime);
-          setEndDate(data.endTime);
         })
         .catch(error => {
           console.error('Error:', error);
         });
     }
-    console.log(task);
-  }, [taskId])
+  }, [taskId]);
 
   const handleCloseModal = () => {
     closeModal();
-  };
-
-  const handleInputChange = () => {
-    inputChange();
   };
 
   const handleSaveTask = () => {
@@ -98,20 +89,19 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, inputChange, s
                   <div className="mt-2">
                     <div className="mb-4">
                       <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
-                      <input type="text" name="title" id="title" value={task.title} onChange={handleInputChange}
+                      <input type="text" name="title" id="title" value={task.title} onChange={(e) => setTask({...task, title: e.target.value})}
                              className="mt-1 p-1 w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-500 border"/>
                     </div>
                     <div className="mb-4">
                       <label htmlFor="description"
                              className="block text-sm font-medium text-gray-700">Description</label>
-                      <textarea name="description" id="description" value={task.description}
-                                onChange={handleInputChange}
+                      <textarea name="description" id="description" value={task.description} onChange={(e) => setTask(({...task, description: e.target.value}))}
                                 className="mt-1 p-1 w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-500 border"/>
                     </div>
                     <div className="mb-4 flex w-full space-x-4">
                       <div className="w-full">
                         <label htmlFor="status" className="block text-sm font-medium text-gray-700">Status</label>
-                        <select name="status" id="status" value={task.status} onChange={handleInputChange}
+                        <select name="status" id="status" value={task.status} onChange={(e) => setTask({...task, status: e.target.value})}
                                 className="mt-1 p-1 w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-500 border">
                           <option value="TODO">TODO</option>
                           <option value="PROGRESS">PROGRESS</option>
@@ -120,18 +110,18 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, inputChange, s
                       </div>
                       <div className="w-full">
                         <label htmlFor="tag" className="block text-sm font-medium text-gray-700">Tag</label>
-                        <input type="text" name="tag" id="tag" value={task.tag} onChange={handleInputChange}
+                        <input type="text" name="tag" id="tag" value={task.tag} onChange={(e) => setTask({...task, tag:e.target.value})}
                                className="mt-1 p-1 w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-500 border"/>
                       </div>
                     </div>
                     <div className="mb-4 space-y-4">
                       <div>
                         <label htmlFor="startTime" className="block text-sm font-medium text-gray-700">Start Time</label>
-                        <TimeField date={startDate} setDate={setStartDate}/>
+                        <TimeField date={task.startTime} setDate={(startTime) => setTask({...task, startTime})}/>
                       </div>
                       <div>
                         <label htmlFor="endTime" className="block text-sm font-medium text-gray-700">End Time</label>
-                        <TimeField date={endDate} setDate={setEndDate}/>
+                        <TimeField date={task.endTime} setDate={(endTime) => setTask({...task, endTime})}/>
                       </div>
                     </div>
                   </div>
