@@ -6,15 +6,14 @@ import {useCookies} from "react-cookie";
 
 interface TaskModalProps {
   closeModal: () => void,
-  saveTask: () => void,
   taskId: number | null
 }
 
-export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, saveTask, taskId }) => {
+export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
   const [cookies] = useCookies(['token']);
   const date = new Date();
 
-  const [task, setTask] = useState<Task>({
+  const initTask: Task = {
     id: null,
     title: '',
     description: '',
@@ -34,10 +33,11 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, saveTask, task
       date.getHours(),
       date.getMinutes()
     ]
-  });
+  };
+  const [task, setTask] = useState<Task>(initTask);
 
   useEffect(() => {
-    if (taskId) {
+    if (taskId !== null) {
       fetch('http://localhost:8080/api/v1/task/' + taskId.toString(), {
         method: 'GET',
         headers: {
@@ -52,22 +52,45 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, saveTask, task
           return response.json();
         })
         .then(data => {
-          console.log(data);
           setTask(data);
         })
         .catch(error => {
           console.error('Error:', error);
         });
+    } else {
+      setTask(initTask);
     }
-  }, [taskId]);
+  }, [taskId, task]);
 
   const handleCloseModal = () => {
     closeModal();
   };
 
   const handleSaveTask = () => {
-    saveTask();
-  };
+    try {
+      fetch('http://localhost:8080/api/v1/task', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer " + cookies.token,
+        },
+        body: JSON.stringify(task),
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          alert("Success Save");
+          return response.json();
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      handleCloseModal();
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   return (
     <>
@@ -153,35 +176,27 @@ interface TimeFieldProps {
 
 const TimeField: React.FC<TimeFieldProps> = ({date, setDate}) => {
   const [isCalendarOpend, setIsCalendarOpend] = useState<boolean>(false);
-  const [tempDate, setTempDate] = useState<Date>(new Date(
-    date[0],
-    date[1],
-    date[2],
-    date[3],
-    date[4]
-  ));
-  const [hour, setHour] = useState<number>(date[3]);
-  const [minute, setMinute] = useState<number>(date[4]);
-
+  const tempDate = new Date();
+  const [hours, setHours] = useState<number>(date[3]);
+  const [minutes, setMinutes] = useState<number>(date[4]);
   useEffect(() => {
     setDate([
-      parseInt(tempDate.toLocaleDateString().split(".")[0]),
-      parseInt(tempDate.toLocaleDateString().split(".")[1]),
-      parseInt(tempDate.toLocaleDateString().split(".")[2]),
-      hour,
-      minute
+      date ? date[0] : tempDate.getFullYear(),
+      date ? date[1] : tempDate.getMonth(),
+      date ? date[2] : tempDate.getDay(),
+      date ? date[3] : tempDate.getHours(),
+      date ? date[4] : tempDate.getMinutes()
     ]);
-  }, [tempDate, hour, minute])
+  }, [])
 
   const onDateChange = (tempDate: Date | undefined) => {
     if (tempDate) {
-      setTempDate(tempDate);
       setDate([
-        parseInt(tempDate.toLocaleDateString().split(".")[0]),
-        parseInt(tempDate.toLocaleDateString().split(".")[1]),
-        parseInt(tempDate.toLocaleDateString().split(".")[2]),
-        hour,
-        minute
+        tempDate.getFullYear(),
+        tempDate.getMonth(),
+        tempDate.getDay(),
+        hours,
+        minutes
       ]);
     }
   };
@@ -218,16 +233,16 @@ const TimeField: React.FC<TimeFieldProps> = ({date, setDate}) => {
                   <p className="mr-4 font-bold">Time: </p>
                   <input
                     type="number"
-                    value={hour}
-                    onChange={(e) => setHour(parseInt(e.target.value))}
+                    value={hours}
+                    onChange={(e) => setHours(parseInt(e.target.value))}
                     min={0}
                     max={23}
                   />
                   <span className="mx-1">:</span>
                   <input
                     type="number"
-                    value={minute}
-                    onChange={(e) => setMinute(parseInt(e.target.value))}
+                    value={minutes}
+                    onChange={(e) => setMinutes(parseInt(e.target.value))}
                     min={0}
                     max={59}
                   />

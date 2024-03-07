@@ -43,42 +43,13 @@ export const Dashboard: React.FC = () => {
 
   }, []);
 
-  const handleSaveTask = () => {
-    const data: Task = {
-      id: null,
-      title: "Task Title",
-      description: "Task Description",
-      status: "PROGRESS", // TODO, PROGRESS, DONE 중 하나 선택
-      tag: "Task Tag",
-      startTime: [2024, 2, 15, 10, 0],
-      endTime: [2024, 2, 15, 12, 0],
-    };
 
-    fetch('http://localhost:8080/api/v1/task', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer " + cookies.token,
-      },
-      body: JSON.stringify(data),
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('Success:', data);
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-  }
 
   const handleOpenModal = (id?: number | null) => {
     if (id) {
       setCurrentTaskId(id);
+    } else {
+      setCurrentTaskId(null);
     }
     setIsModalOpen(true);
   }
@@ -101,7 +72,7 @@ export const Dashboard: React.FC = () => {
   return (
     <>
       <div>
-        <button className="p-4 bg-gray-200 rounded-full" onClick={() => handleOpenModal()}>
+        <button className="p-4 bg-gray-200 rounded-full" onClick={() => handleOpenModal(null)}>
           Create Task
         </button>
         <div>
@@ -117,7 +88,7 @@ export const Dashboard: React.FC = () => {
         </div>
       </div>
       {isModalOpen && (
-        <TaskModal closeModal={handleCloseModal} saveTask={handleSaveTask} taskId={currentTaskId} />
+        <TaskModal closeModal={handleCloseModal} taskId={currentTaskId} />
       )}
     </>
   );
