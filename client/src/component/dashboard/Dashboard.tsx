@@ -87,24 +87,37 @@ export const Dashboard: React.FC = () => {
     setIsModalOpen(false);
   }
 
-  const handleInputChange = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const tasksPerPage = 5;
+  const indexOfLastTask = currentPage * tasksPerPage;
+  const indexOfFirstTask = indexOfLastTask - tasksPerPage;
+  const currentTasks = tasks.slice(indexOfFirstTask, indexOfLastTask);
 
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
   }
+
 
   return (
     <>
       <div>
-        <button className="p-4 bg-gray-200 rounded-full" onClick={() => {handleOpenModal()}}>
+        <button className="p-4 bg-gray-200 rounded-full" onClick={() => handleOpenModal()}>
           Create Task
         </button>
         <div>
-          {tasks.map((task) =>
-            <TaskCard key={task.id} task={task} onClick={() => {handleOpenModal(task.id)}}/>
-          )}
+          {currentTasks.map((task) => (
+            <TaskCard key={task.id} task={task} onClick={() => handleOpenModal(task.id)} />
+          ))}
+        </div>
+        {/* Pagination */}
+        <div className="w-full flex flex-row justify-center space-x-4">
+          {Array.from({ length: Math.ceil(tasks.length / tasksPerPage) }).map((_, index) => (
+            <button className={`btn ${index + 1 === currentPage ? 'font-black' : ''}`} key={index} onClick={() => handlePageChange(index + 1)}>{index + 1}</button>
+          ))}
         </div>
       </div>
       {isModalOpen && (
-        <TaskModal closeModal={handleCloseModal} saveTask={handleSaveTask} taskId={currentTaskId}/>
+        <TaskModal closeModal={handleCloseModal} saveTask={handleSaveTask} taskId={currentTaskId} />
       )}
     </>
   );
