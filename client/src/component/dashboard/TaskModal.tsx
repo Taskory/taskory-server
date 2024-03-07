@@ -41,7 +41,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, inputChange, s
 
   useEffect(() => {
     if (taskId) {
-      fetch('http://localhost:8080/api/v1/task/' + taskId, {
+      fetch('http://localhost:8080/api/v1/task/' + taskId.toString(), {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

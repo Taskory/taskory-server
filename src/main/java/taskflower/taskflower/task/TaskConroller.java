@@ -1,7 +1,6 @@
 package taskflower.taskflower.task;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import taskflower.taskflower.security.CurrentUser;
@@ -43,10 +42,10 @@ public class TaskConroller {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Task> getTaskById(@RequestParam Long id) {
+    public ResponseEntity<Task> findTaskById(@PathVariable String id) {
         Task task;
         try {
-            task = taskService.getTaskById(id);
+            task = taskService.getTaskById(Long.parseLong(id));
         } catch (TaskNotFoundExeption e) {
             throw new RuntimeException(e);
         }
