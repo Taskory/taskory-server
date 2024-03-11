@@ -100,31 +100,31 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
     }
   }
 
-  const handleUpdateTask = () => {
+  const handleUpdateTask = async () => {
     try {
-      fetch(`http://localhost:8080/api/v1/task/${taskId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': "Bearer " + cookies.token,
-        },
-        body: JSON.stringify(task),
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          alert("Success Save");
-          return response.json();
-        })
-        .catch(error => {
-          console.error('Error:', error);
+      if (taskId) {
+
+        const response = await fetch(`http://localhost:8080/api/v1/task/` + taskId.toString(), {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': "Bearer " + cookies.token,
+          },
+          body: JSON.stringify(task),
         });
-      handleCloseModal();
-    } catch (e) {
-      console.error(e);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        alert("Success Save");
+        handleCloseModal();
+      }
+    } catch (error) {
+      console.error('Error:', error);
     }
   }
+
 
   return (
     <>

@@ -40,7 +40,7 @@ export const Dashboard: React.FC = () => {
         console.error('Error:', error);
       });
 
-  }, []);
+  }, [cookies.token, isModalOpen]);
 
 
 
