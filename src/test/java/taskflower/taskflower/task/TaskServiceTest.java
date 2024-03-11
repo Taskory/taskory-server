@@ -16,12 +16,14 @@ class TaskServiceTest {
 
     private final TaskService taskService;
     private final UserService userService;
+    private final TaskMapper taskMapper;
 
 
     @Autowired
-    public TaskServiceTest(TaskService taskService, UserService userService) {
+    public TaskServiceTest(TaskService taskService, UserService userService, TaskMapper taskMapper) {
         this.taskService = taskService;
         this.userService = userService;
+        this.taskMapper = taskMapper;
     }
 
     private User signupRequest;
@@ -57,7 +59,7 @@ class TaskServiceTest {
 
         System.out.println(savedTask.toString());
 
-        Assertions.assertEquals(savedTask, taskService.getTaskById(savedTask.getId()));
+        Assertions.assertEquals(taskMapper.convertTaskToTaskDto(savedTask), taskService.getTaskById(savedTask.getId()));
     }
 
 
@@ -83,7 +85,8 @@ class TaskServiceTest {
         updateTaskRequset.setEndTime(new int[]{2024, 3, 11, 10, 15});
         updateTaskRequset.setTag("test tag");
 
-        Task updatedTask = taskService.updateTask(savedTask.getId(), updateTaskRequset);
+        TaskDto updatedTask = taskService.updateTask(savedTask.getId(), updateTaskRequset);
+
 
         Assertions.assertEquals(updatedTask, taskService.getTaskById(savedTask.getId()));
 

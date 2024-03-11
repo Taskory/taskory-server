@@ -51,5 +51,16 @@ public class TaskConroller {
         }
         return ResponseEntity.ok().body(taskResponse);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TaskDto> updateTaskById(@PathVariable String id, @RequestBody TaskDto taskDto) {
+        TaskDto taskResponse;
+        try {
+            taskResponse = taskService.updateTask(Long.parseLong(id), taskDto);
+        } catch (TaskNotFoundExeption e) {
+            throw new RuntimeException(e);
+        }
+        return ResponseEntity.ok().body(taskResponse);
+    }
 }
 
