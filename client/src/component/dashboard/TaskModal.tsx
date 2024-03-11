@@ -32,9 +32,18 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
   });
 
   useEffect(() => {
-    setTask({...task, startTime: startDateArray});
-    setTask({...task, endTime: endDateArray});
-  }, [startDateArray, endDateArray, task]);
+    setTask(prevTask => ({
+      ...prevTask,
+      startTime: startDateArray
+    }));
+  }, [startDateArray]);
+
+  useEffect(() => {
+    setTask(prevTask => ({
+      ...prevTask,
+      endTime: endDateArray
+    }));
+  }, [endDateArray]);
 
   useEffect(() => {
     if (taskId !== null) {
@@ -91,12 +100,38 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
     }
   }
 
+  const handleUpdateTask = () => {
+    try {
+      fetch(`http://localhost:8080/api/v1/task/${taskId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer " + cookies.token,
+        },
+        body: JSON.stringify(task),
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          alert("Success Save");
+          return response.json();
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      handleCloseModal();
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   return (
     <>
       <div className="modal modal-open">
         <div className="modal-box">
           <p className="text-lg font-bold">Task detail</p>
-          <button className="btn btn-sm btn-circle absolute right-4 top-4 text-lg font-bold bg-red-400" onClick={closeModal}>X</button>
+          <button className="btn btn-sm btn-circle absolute right-4 top-4 text-lg font-bold bg-red-400" onClick={handleCloseModal}>X</button>
           <form method="dialog">
             <div className="mb-4">
               <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
@@ -139,22 +174,18 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
                 <TimeField date={task.endTime} setDate={(endTime) => setEndDateArray(endTime)}/>
               </div>
             </div>
-            {taskId ? (
-              <button type="button" onClick={handleSaveTask}
-                      className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
-                Update Task
-              </button>
-            ) : (
-              <button type="button" onClick={handleSaveTask}
-                      className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
-                Save Task
-              </button>
-            )}
-            <button type="button" onClick={handleCloseModal}
-                    className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm">
-              Cancel
-            </button>
           </form>
+          {taskId ? (
+            <button type="button" onClick={handleUpdateTask}
+                    className="btn absolute right-4 bottom-4">
+              Update Task
+            </button>
+          ) : (
+            <button type="button" onClick={handleSaveTask}
+                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
+              Save Task
+            </button>
+          )}
         </div>
       </div>
     </>
