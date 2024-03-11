@@ -12,7 +12,7 @@ export const Header: React.FC = () => {
     if (cookies.token) {
       setIsLoggedIn(true);
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, cookies.token]);
 
   const handleLogin = () => {
     navigate('/login');
@@ -33,40 +33,60 @@ export const Header: React.FC = () => {
     navigate('/profile');
   };
 
+  const handleHome = () => {
+    navigate('/');
+  }
 
 
   return (
     <>
-      <header className="bg-info text-white p-4">
-        <div className="container mx-auto flex items-center justify-end">
-          {cookies.token ? (
-              <div className="flex space-x-2">
+      <div className="navbar bg-base-100">
+        <div className="flex-none">
+          <button className="btn btn-square btn-ghost">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 className="inline-block w-5 h-5 stroke-current">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        </div>
+        <div className="flex-1" onClick={handleHome}>
+          <p className="btn btn-ghost text-xl">Task Flower</p>
+        </div>
+        <div className="flex-none">
+          <div className="join">
+            {cookies.token ? (
+              <>
                 <button onClick={handleProfile}
-                        className="px-4 py-2 bg-white text-info font-semibold rounded hover:bg-opacity-75">
+                        className="join-item px-4 py-4 font-semibold btn-ghost">
                   Profile
                 </button>
                 <button onClick={handleLogout}
-                        className="px-4 py-2 bg-white text-info font-semibold rounded hover:bg-opacity-75">
+                        className="join-item px-4 py-4 font-semibold btn-ghost">
                   Logout
                 </button>
-              </div>
-
-          ) : (
-            <div className="flex space-x-2">
-              <button onClick={handleLogin}
-                      className="px-4 py-2 bg-white text-info font-semibold rounded hover:bg-opacity-75">
-                Login
-              </button>
-              <button onClick={handleSignup}
-                      className="px-4 py-2 bg-white text-info font-semibold rounded hover:bg-opacity-75">
-                Signup
-              </button>
-            </div>
-
-          )}
-
+                <button className="join-item btn  btn-ghost">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                       className="inline-block w-5 h-5 stroke-current">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                          d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path>
+                  </svg>
+                </button>
+              </>
+            ) : (
+              <>
+                <button onClick={handleLogin}
+                        className="join-item px-4 py-4 font-semibold btn-ghost">
+                  Login
+                </button>
+                <button onClick={handleSignup}
+                        className="join-item px-4 py-4 font-semibold btn-ghost">
+                  Signup
+                </button>
+              </>
+            )}
+          </div>
         </div>
-      </header>
+      </div>
     </>
   );
 };

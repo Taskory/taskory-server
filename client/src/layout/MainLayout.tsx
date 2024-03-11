@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {Header} from "./component/Header";
 import {Route, Routes, useLocation} from "react-router-dom";
 import {Home} from "../component/Home";
@@ -16,13 +16,12 @@ export const MainLayout: React.FC = () => {
   if (currentPath !== '/login' && currentPath !== '/signup') {
     return (
       <>
+        <div className="w-full">
+          <Header />
+        </div>
         <div className="flex">
-          {/* SideBar */}
           <SideBar />
-
-          {/* Main Content */}
-          <div className="flex flex-col flex-1  min-h-screen">
-            <Header />
+          <div className="flex flex-col flex-1 min-h-screen">
             <main className="flex-1">
               <div className="container mx-auto py-8">
                 <Routes>

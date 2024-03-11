@@ -87,9 +87,9 @@ export const Login: React.FC = () => {
                 Remember me
               </label>
             </div>
-            <a href="#" className="text-sm text-blue-500 hover:underline">
-              Forgot your password?
-            </a>
+            {/*<a href="#" className="text-sm text-blue-500 hover:underline">*/}
+            {/*  Forgot your password?*/}
+            {/*</a>*/}
           </div>
           <button
             type="submit"
