@@ -71,7 +71,7 @@ export const Dashboard: React.FC = () => {
   return (
     <>
       <div>
-        <button className="p-4 bg-gray-200 rounded-full" onClick={() => handleOpenModal(null)}>
+        <button className="btn btn-sm" onClick={() => handleOpenModal(null)}>
           Create Task
         </button>
         <div>

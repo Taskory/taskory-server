@@ -20,6 +20,8 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
     }
   };
 
+  console.log(task);
+
   return (
     <div className="border rounded p-4 mb-4" onClick={onClick}>
       <h2 className="text-lg font-semibold">{task.title}</h2>
@@ -29,10 +31,6 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
           {task.status}
         </span>
         <span className="text-gray-500 ml-2">{task.tag}</span>
-      </div>
-      <div className="mt-4">
-        <p className="text-sm text-gray-500">Start Time: {task.startTime}</p>
-        <p className="text-sm text-gray-500">End Time: {task.endTime}</p>
       </div>
     </div>
   );
