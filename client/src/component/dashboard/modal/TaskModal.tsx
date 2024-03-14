@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from "react";
-import { DayPicker } from "react-day-picker";
-import {Task} from "./TaskInterface";
-import './calendar.css';
+import {Task} from "../TaskInterface";
+import '../calendar.css';
 import {useCookies} from "react-cookie";
+import { TimeField } from "./component/TimeField";
+import {TagField} from "./component/TagField";
 
 interface TaskModalProps {
   closeModal: () => void,
@@ -26,7 +27,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
     title: '',
     description: '',
     status: 'TODO',
-    tag: '',
+    tags: [],
     startTime: startDateArray,
     endTime: endDateArray
   });
@@ -61,7 +62,11 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
           return response.json();
         })
         .then(data => {
-          // console.log(data);
+
+          ////////////////////////////////////////////////////////////////////////
+          // test 용
+          console.log(data);
+          ////////////////////////////////////////////////////////////////////////
           setTask(data);
         })
         .catch(error => {
@@ -146,7 +151,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
                         onChange={(e) => setTask(({...task, description: e.target.value}))}
                         className="mt-1 p-1 w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-500 border"/>
             </div>
-            <div className="mb-4 flex w-full space-x-4">
+            <div className="mb-4">
               <div className="w-full">
                 <label htmlFor="status" className="block text-sm font-medium text-gray-700">Status</label>
                 <select name="status" id="status" value={task.status}
@@ -157,12 +162,9 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
                   <option value="DONE">DONE</option>
                 </select>
               </div>
-              <div className="w-full">
-                <label htmlFor="tag" className="block text-sm font-medium text-gray-700">Tag</label>
-                <input type="text" name="tag" id="tag" value={task.tag}
-                       onChange={(e) => setTask({...task, tag: e.target.value})}
-                       className="mt-1 p-1 w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-500 border"/>
-              </div>
+            </div>
+            <div className="mb-4">
+              <TagField />
             </div>
             <div className="mb-4 space-y-4">
               <div>
@@ -193,80 +195,3 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
 };
 
 
-interface TimeFieldProps {
-  date: number[];
-  setDate: (date: number[]) => void
-}
-
-const TimeField: React.FC<TimeFieldProps> = ({ date, setDate }) => {
-  const [isCalendarOpend, setIsCalendarOpend] = useState<boolean>(false);
-  const [tempDate, setTempDate] = useState<Date>(new Date(date[0], date[1], date[2]));
-  const [hours, setHours] = useState<number>(date[3]);
-  const [minutes, setMinutes] = useState<number>(date[4]);
-
-  useEffect(() => {
-    setTempDate(new Date(date[0], date[1], date[2]));
-    setHours(date[3]);
-    setMinutes(date[4]);
-    console.log(date);
-  }, []);
-
-  useEffect(() => {
-    setDate([
-      tempDate.getFullYear(),
-      tempDate.getMonth(),
-      tempDate.getDate(),
-      (hours) ? hours : 0,
-      (minutes) ? minutes : 0
-    ]);
-  }, [tempDate, hours, minutes]);
-
-  const dateFormat = (date: number[]) => {
-    const formattedMonth = (date[1] + 1).toString().padStart(2, '0');
-    const formattedDay = date[2].toString().padStart(2, '0');
-    const formattedHour = date[3].toString().padStart(2, '0');
-    const formattedMinute = date[4].toString().padStart(2, '0');
-
-    return `${date[0]}.${formattedMonth}.${formattedDay} - ${formattedHour}:${formattedMinute}`;
-  };
-
-  const handleSaveDateTime = () => {
-    setIsCalendarOpend(false);
-  };
-
-  return (
-    <div className="">
-      <div className="">
-        <p onClick={() => setIsCalendarOpend(prev => !prev)}>{dateFormat(date)}</p>
-      </div>
-      {isCalendarOpend && (
-        <div>
-          <DayPicker
-            mode={"single"}
-            selected={tempDate}
-            onDayClick={(tempDate) => setTempDate(tempDate)}
-          />
-          <div className="flex">
-            <p className="mr-4 font-bold">Time: </p>
-            <input
-              type="number"
-              value={date[3]}
-              onChange={(e) => setHours(parseInt(e.target.value))}
-              min={0}
-              max={23}
-            />
-            <span className="mx-1">:</span>
-            <input
-              type="number"
-              value={date[4]}
-              onChange={(e) => setMinutes(parseInt(e.target.value))}
-              min={0}
-              max={59}
-            />
-          </div>
-          <button className="border rounded-lg p-1" onClick={handleSaveDateTime}>save</button>
-        </div>
-      )}
-    </div>
-  );
-};

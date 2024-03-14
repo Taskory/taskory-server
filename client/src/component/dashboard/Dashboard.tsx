@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useCookies} from "react-cookie";
 import {useNavigate} from "react-router-dom";
 import {TaskCard} from "./TaskCard";
-import {TaskModal} from "./TaskModal";
+import {TaskModal} from "./modal/TaskModal";
 import {Task} from "./TaskInterface";
 
 export const Dashboard: React.FC = () => {

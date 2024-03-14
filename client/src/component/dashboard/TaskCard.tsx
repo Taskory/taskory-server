@@ -20,7 +20,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
     }
   };
 
-  console.log(task);
+  // console.log(task);
 
   return (
     <div className="border rounded p-4 mb-4" onClick={onClick}>
@@ -30,7 +30,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
         <span className={`px-2 py-1 rounded text-sm ${getStatusColor(task.status)}`}>
           {task.status}
         </span>
-        <span className="text-gray-500 ml-2">{task.tag}</span>
+        <span className="text-gray-500 ml-2">{task.tags}</span>
       </div>
     </div>
   );

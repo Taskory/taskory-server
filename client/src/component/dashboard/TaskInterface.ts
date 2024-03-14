@@ -3,7 +3,7 @@ export interface Task {
   title: string;
   description: string;
   status: string;
-  tag: string;
+  tags: string[];
   startTime: number[];
   endTime: number[];
 }
