@@ -1,11 +1,12 @@
 package taskflower.taskflower.task;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Data;
+import taskflower.taskflower.task.tag.Tag;
 import taskflower.taskflower.user.User;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Data
@@ -28,8 +29,9 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column
-    private String tag;
+//    단방향 참조
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Tag> tags;
 
     @Column(nullable = false)
     private LocalDateTime startTime;
@@ -42,8 +44,4 @@ public class Task {
 
     @Column(nullable = false)
     private LocalDateTime updatedTime;
-
-    public Task() {
-
-    }
 }

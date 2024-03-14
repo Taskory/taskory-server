@@ -24,7 +24,7 @@ public class TagService {
     }
 
     public TagDto save(TagDto tagDto, User user) throws TagExistException {
-        if (tagRepository.existsByName(tagDto.getName())) {
+        if (tagRepository.existsByNameAndUser(tagDto.getName(), user)) {
             throw new TagExistException("Tag already exists");
         }
         Tag tag = tagMapper.convertTagDtoToTag(tagDto);

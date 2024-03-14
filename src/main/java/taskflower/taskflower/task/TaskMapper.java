@@ -20,14 +20,14 @@ public interface TaskMapper {
     @Mapping(target = "user", ignore = true)
     Task convertTaskDtoToTask(TaskDto saveTaskRequest);
 
-    default Task updateTaskWithSaveTaskRequest(Task task, TaskDto taskDto) {
+    default Task updateTaskWithTaskDto(Task task, TaskDto taskDto) {
         LocalDateTime startTime = convertArrayToLocalDateTime(taskDto.getStartTime());
         LocalDateTime endTime = convertArrayToLocalDateTime(taskDto.getEndTime());
 
         task.setTitle(taskDto.getTitle());
         task.setDescription(taskDto.getDescription());
         task.setStatus(taskDto.getStatus());
-        task.setTag(taskDto.getTag());
+        task.setTags(taskDto.getTags());
         task.setStartTime(startTime);
         task.setEndTime(endTime);
         task.setUpdatedTime(LocalDateTime.now());

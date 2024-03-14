@@ -10,5 +10,5 @@ import java.util.List;
 public interface TagRepository extends JpaRepository<Tag, Long> {
     List<Tag> findAllByUser(User user);
 
-    boolean existsByName(String name);
+    boolean existsByNameAndUser(String tagName, User user);
 }

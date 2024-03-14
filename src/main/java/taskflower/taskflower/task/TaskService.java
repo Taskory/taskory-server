@@ -5,7 +5,6 @@ import taskflower.taskflower.user.User;
 import taskflower.taskflower.user.UserRepository;
 import taskflower.taskflower.user.UserService;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -45,7 +44,9 @@ public class TaskService {
 
     public TaskDto updateTask(long id, TaskDto taskDto) throws TaskNotFoundExeption {
         Task preTask = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundExeption("Task not found by id: " + id));
-        Task task = taskMapper.updateTaskWithSaveTaskRequest(preTask, taskDto);
+
+        Task task = taskMapper.updateTaskWithTaskDto(preTask, taskDto);
+
         Task uppdatedTask = taskRepository.save(task);
 
         return taskMapper.convertTaskToTaskDto(uppdatedTask);

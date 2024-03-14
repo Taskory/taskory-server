@@ -4,12 +4,16 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import taskflower.taskflower.security.model.SignupRequset;
+import taskflower.taskflower.task.tag.*;
+import taskflower.taskflower.task.tag.Tag;
 import taskflower.taskflower.user.User;
 import taskflower.taskflower.user.UserService;
 import taskflower.taskflower.user.exception.UserExistsExeption;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 @SpringBootTest
 class TaskServiceTest {
@@ -17,35 +21,44 @@ class TaskServiceTest {
     private final TaskService taskService;
     private final UserService userService;
     private final TaskMapper taskMapper;
+    private final TagService tagService;
+    private final TagMapper tagMapper;
 
 
     @Autowired
-    public TaskServiceTest(TaskService taskService, UserService userService, TaskMapper taskMapper) {
+    public TaskServiceTest(TaskService taskService, UserService userService, TaskMapper taskMapper, TagService tagService, TagMapper tagMapper) {
         this.taskService = taskService;
         this.userService = userService;
         this.taskMapper = taskMapper;
+        this.tagService = tagService;
+        this.tagMapper = tagMapper;
     }
 
-    private User signupRequest;
+    private User testUser;
 
     @BeforeEach
     void setUser() throws UserExistsExeption {
-        signupRequest = createTestUser();
+        testUser = createTestUser();
     }
 
     @AfterEach
     void deleteUser() {
-        List<Task> tasks = taskService.findAllByUserEmail(signupRequest.getEmail());
+        List<Task> tasks = taskService.findAllByUserEmail(testUser.getEmail());
         for (Task task : tasks) {
             taskService.deleteById(task.getId());
         }
-        userService.deleteById(signupRequest.getId());
+
+        List<TagDto> tags = tagService.findAllByUserEmail(testUser.getEmail());
+        for (TagDto tagDto : tags) {
+            tagService.deleteById(tagDto.getId());
+        }
+        userService.deleteById(testUser.getId());
     }
 
     @Test
 //    @WithUserDetails(value = "test@test.test")      // Test userDetail(security test)
     @DisplayName("Task 생성 및 조회")
-    void createTask() throws TaskNotFoundExeption {
+    void createTask() throws TaskNotFoundExeption, TagExistException {
 
         TaskDto taskDto = new TaskDto();
         taskDto.setTitle("test title");
@@ -53,11 +66,9 @@ class TaskServiceTest {
         taskDto.setStatus(Status.TODO);
         taskDto.setStartTime(new int[]{2024, 2, 16, 10, 15});
         taskDto.setEndTime(new int[]{2024, 3, 16, 10, 15});
-        taskDto.setTag("test tag");
+        taskDto.setTags(getTestTags());
 
-        Task savedTask = taskService.save(taskDto, signupRequest);
-
-        System.out.println(savedTask.toString());
+        Task savedTask = taskService.save(taskDto, testUser);
 
         Assertions.assertEquals(taskMapper.convertTaskToTaskDto(savedTask), taskService.getTaskById(savedTask.getId()));
     }
@@ -66,16 +77,16 @@ class TaskServiceTest {
     @Test
 //    @WithUserDetails(value = "test@test.test")
     @DisplayName("Task 수정")
-    void updateTask() throws TaskNotFoundExeption {
+    void updateTask() throws TaskNotFoundExeption, TagExistException {
         TaskDto taskDto = new TaskDto();
         taskDto.setTitle("test title");
         taskDto.setDescription("test description.....");
         taskDto.setStatus(Status.TODO);
         taskDto.setStartTime(new int[]{2024, 2, 16, 10, 15});
         taskDto.setEndTime(new int[]{2024, 3, 16, 10, 15});
-        taskDto.setTag("test tag");
+        taskDto.setTags(getTestTags());
 
-        Task savedTask = taskService.save(taskDto, signupRequest);
+        Task savedTask = taskService.save(taskDto, testUser);
 
         TaskDto updateTaskRequset = new TaskDto();
         updateTaskRequset.setTitle("abcdefg");
@@ -83,7 +94,7 @@ class TaskServiceTest {
         updateTaskRequset.setStatus(Status.PROGRESS);
         updateTaskRequset.setStartTime(new int[]{2024, 2, 19, 10, 15});
         updateTaskRequset.setEndTime(new int[]{2024, 3, 11, 10, 15});
-        updateTaskRequset.setTag("test tag");
+        updateTaskRequset.setTags(getTestTags());
 
         TaskDto updatedTask = taskService.updateTask(savedTask.getId(), updateTaskRequset);
 
@@ -95,16 +106,16 @@ class TaskServiceTest {
     @Test
 //    @WithUserDetails(value = "test@test.test")
     @DisplayName("task 삭제")
-    void deleteTask() {
+    void deleteTask() throws TagExistException {
         TaskDto taskDto = new TaskDto();
         taskDto.setTitle("test title");
         taskDto.setDescription("test description.....");
         taskDto.setStatus(Status.TODO);
         taskDto.setStartTime(new int[]{2024, 2, 16, 10, 15});
         taskDto.setEndTime(new int[]{2024, 3, 16, 10, 15});
-        taskDto.setTag("test tag");
+        taskDto.setTags(getTestTags());
 
-        Task task = taskService.save(taskDto, signupRequest);
+        Task task = taskService.save(taskDto, testUser);
 
         taskService.deleteById(task.getId());
 
@@ -116,18 +127,18 @@ class TaskServiceTest {
     @Test
 //    @WithUserDetails(value = "test@test.test")
     @DisplayName("사용자의 모든 task 조회")
-    void findTaskByUser() {
+    void findTaskByUser() throws TagExistException {
         TaskDto taskDto = new TaskDto();
         taskDto.setTitle("test title");
         taskDto.setDescription("test description.....");
         taskDto.setStatus(Status.TODO);
         taskDto.setStartTime(new int[]{2024, 2, 16, 10, 15});
         taskDto.setEndTime(new int[]{2024, 3, 16, 10, 15});
-        taskDto.setTag("test tag");
+        taskDto.setTags(getTestTags());
 
-        Task task = taskService.save(taskDto, signupRequest);
+        Task task = taskService.save(taskDto, testUser);
 
-        List<Task> savedTasks = taskService.findAllByUserEmail(signupRequest.getEmail());
+        List<Task> savedTasks = taskService.findAllByUserEmail(testUser.getEmail());
 
         Assertions.assertEquals(task, savedTasks.get(savedTasks.size() - 1));
     }
@@ -157,5 +168,26 @@ class TaskServiceTest {
         User user = new User(signupRequest);
 
         return userService.signup(user);
+    }
+
+    private Set<Tag> getTestTags() {
+        TagDto tagDto = new TagDto();
+        tagDto.setName("test Tag");
+
+        TagDto savedTagDto;
+        try {
+            savedTagDto = tagService.save(tagDto, testUser);
+        } catch (TagExistException exception) {
+            List<TagDto> tags = tagService.findAllByUserEmail(testUser.getEmail());
+            savedTagDto = tags.get(tags.size() - 1);
+        }
+
+        Tag savedTag = tagMapper.convertTagDtoToTag(savedTagDto);
+        savedTag.setUser(testUser);
+        Set<Tag> tags = new HashSet<>();
+        tags.add(savedTag);
+
+        return tags;
+
     }
 }

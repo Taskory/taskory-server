@@ -1,6 +1,9 @@
 package taskflower.taskflower.task;
 
 import lombok.Data;
+import taskflower.taskflower.task.tag.Tag;
+
+import java.util.Set;
 
 @Data
 public class TaskDto {
@@ -10,7 +13,7 @@ public class TaskDto {
 
     private Status status;
 
-    private String tag;
+    private Set<Tag> tags;
 
     private int[] startTime;
 
