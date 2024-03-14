@@ -6,52 +6,51 @@ import taskflower.taskflower.user.User;
 import taskflower.taskflower.user.UserService;
 import taskflower.taskflower.user.exception.UserNotFoundException;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class TagService {
 
     private final TagRepository tagRepository;
     private final UserService userService;
+    private final TagMapper tagMapper;
 
     @Autowired
-    public TagService(TagRepository tagRepository, UserService userService) {
+    public TagService(TagRepository tagRepository, UserService userService, TagMapper tagMapper) {
         this.tagRepository = tagRepository;
         this.userService = userService;
+        this.tagMapper = tagMapper;
     }
 
-    public TagDto save(TagDto tagDto, User user) {
-        Tag tag = new Tag();
+    public TagDto save(TagDto tagDto, User user) throws TagExistException {
+        if (tagRepository.existsByName(tagDto.getName())) {
+            throw new TagExistException("Tag already exists");
+        }
+        Tag tag = tagMapper.convertTagDtoToTag(tagDto);
         tag.setUser(user);
-        tag.setName(tagDto.getName());
 
         Tag savedTag = tagRepository.save(tag);
 
-        TagDto result = new TagDto();
-        result.setName(savedTag.getName());
-
-        return result;
-
+        return tagMapper.converTagToTagDto(savedTag);
     }
 
     public TagDto getTagById(Long id) throws TagNotFoundException {
-        Tag tag = tagRepository.findById(id).orElseThrow(() -> new TagNotFoundException("Tag not found"));
+        Tag tag = tagRepository.findById(id)
+                .orElseThrow(() -> new TagNotFoundException("Tag not found"));
 
-        TagDto result = new TagDto();
-        result.setName(tag.getName());
-        return result;
+        return tagMapper.converTagToTagDto(tag);
     }
 
-    public Set<TagDto> findAllByUserEmail(String email) {
+    public List<TagDto> findAllByUserEmail(String email) {
         try {
             User user = userService.findUserByEmail(email);
-            Set<Tag> tags = tagRepository.findAllByUser(user);
+            List<Tag> tags = tagRepository.findAllByUser(user);
 
-            Set<TagDto> result = new HashSet<>();
+            List<TagDto> result = new ArrayList<>();
+
             for (Tag tag : tags) {
-                TagDto tagDto = new TagDto();
-                tagDto.setName(tag.getName());
+                TagDto tagDto = tagMapper.converTagToTagDto(tag);
                 result.add(tagDto);
             }
 
@@ -67,10 +66,7 @@ public class TagService {
 
         Tag updatedTag = tagRepository.save(tag);
 
-        TagDto result = new TagDto();
-        result.setName(updatedTag.getName());
-
-        return result;
+        return tagMapper.converTagToTagDto(updatedTag);
     }
 
     public void deleteById(Long id) {

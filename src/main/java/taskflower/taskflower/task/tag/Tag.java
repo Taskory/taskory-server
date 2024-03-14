@@ -16,7 +16,6 @@ public class Tag {
     @NotNull
     private String name;
 
-    @Column
     @NotNull
     @ManyToOne
     private User user;
