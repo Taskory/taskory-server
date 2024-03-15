@@ -22,6 +22,8 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
   ];
   const [startDateArray, setStartDateArray] = useState<number[]>(currentDate);
   const [endDateArray, setEndDateArray] = useState<number[]>(currentDate);
+  const [tags, setTags] = useState<string[]>([]);
+
   const [task, setTask] = useState<Task>({
     id: null,
     title: '',
@@ -47,6 +49,13 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
   }, [endDateArray]);
 
   useEffect(() => {
+    setTask(prevTask => ({
+      ...prevTask,
+      tags: tags
+    }));
+  }, [tags]);
+
+  useEffect(() => {
     if (taskId !== null) {
       fetch('http://localhost:8080/api/v1/task/' + taskId.toString(), {
         method: 'GET',
@@ -65,7 +74,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
 
           ////////////////////////////////////////////////////////////////////////
           // test 용
-          console.log(data);
+          // console.log(data);
           ////////////////////////////////////////////////////////////////////////
           setTask(data);
         })
@@ -164,7 +173,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
               </div>
             </div>
             <div className="mb-4">
-              <TagField />
+              <TagField tags={task.tags} onChangeTags={(tags: string[]) => setTags(tags)}/>
             </div>
             <div className="mb-4 space-y-4">
               <div>

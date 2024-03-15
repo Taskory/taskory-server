@@ -16,7 +16,7 @@ export const TimeField: React.FC<TimeFieldProps> = ({ date, setDate }) => {
     setTempDate(new Date(date[0], date[1], date[2]));
     setHours(date[3]);
     setMinutes(date[4]);
-    console.log(date);
+    // console.log(date);
   }, []);
 
   useEffect(() => {
