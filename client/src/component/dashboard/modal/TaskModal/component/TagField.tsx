@@ -47,35 +47,30 @@ export const TagField: React.FC<TagFieldProps> = ({ selectedTags, setSelectedTag
 
   return (
     <>
-      <div>
-        <label htmlFor="tags" className="block text-sm font-medium text-gray-700">
-          Tags
-        </label>
-        <details className="dropdown dropdown-top">
-          <summary className="m-1 btn btn-sm">
-            <div>
-              {selectedTags.map((tag) => (
-                <p key={tag.id}>#{tag.name}</p>
+          <label htmlFor="tags" className="block text-sm font-medium text-gray-700">
+            Tags
+          </label>
+          <details className="dropdown dropdown-top">
+            <summary className="m-1 btn btn-xs">Select</summary>
+            <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
+              {allTags.map((tag) => (
+                <div className="form-control" key={tag.id}>
+                  <label className="label cursor-pointer">
+                    <span className="label-text">{tag.name}</span>
+                    <input
+                      type="checkbox"
+                      className="checkbox"
+                      defaultChecked={selectedTags.some((selectedTag) => selectedTag.id === tag.id)}
+                      onChange={(e) => handleCheckboxChange(e, tag)}
+                    />
+                  </label>
+                </div>
               ))}
-            </div>
-          </summary>
-          <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
-            {allTags.map((tag) => (
-              <div className="form-control" key={tag.id}>
-                <label className="label cursor-pointer">
-                  <span className="label-text">{tag.name}</span>
-                  <input
-                    type="checkbox"
-                    className="checkbox"
-                    defaultChecked={selectedTags.some((selectedTag) => selectedTag.id === tag.id)}
-                    onChange={(e) => handleCheckboxChange(e, tag)}
-                  />
-                </label>
-              </div>
-            ))}
-          </ul>
-        </details>
-      </div>
+            </ul>
+          </details>
+          {selectedTags.map((tag) => (
+            <p key={tag.id}>#{tag.name}</p>
+          ))}
     </>
   );
 };
