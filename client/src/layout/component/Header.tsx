@@ -49,8 +49,8 @@ export const Header: React.FC = () => {
             </svg>
           </button>
         </div>
-        <div className="flex-1" onClick={handleHome}>
-          <p className="btn btn-ghost text-xl">Task Flower</p>
+        <div className="flex-1" >
+          <p className="btn btn-ghost text-xl" onClick={handleHome}>Task Flower</p>
         </div>
         <div className="flex-none">
           <div className="join">

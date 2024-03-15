@@ -1,9 +1,9 @@
 import React from 'react';
-import {Task} from "./TaskInterface";
+import { Task } from "./TaskInterface";
 
 interface TaskCardProps {
-  task: Task,
-  onClick: () => void
+  task: Task;
+  onClick: () => void;
 }
 
 export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
@@ -20,8 +20,6 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
     }
   };
 
-  // console.log(task);
-
   return (
     <div className="border rounded p-4 mb-4" onClick={onClick}>
       <h2 className="text-lg font-semibold">{task.title}</h2>
@@ -30,7 +28,11 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
         <span className={`px-2 py-1 rounded text-sm ${getStatusColor(task.status)}`}>
           {task.status}
         </span>
-        <span className="text-gray-500 ml-2">{task.tags}</span>
+        <div className="flex">
+          {task.tags.map((tag, index) => ( // index를 key로 사용
+            <span key={index} className="text-gray-500 ml-2">{tag.name}</span>
+          ))}
+        </div>
       </div>
     </div>
   );

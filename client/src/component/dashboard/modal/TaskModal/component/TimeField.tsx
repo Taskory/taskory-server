@@ -7,7 +7,6 @@ interface TimeFieldProps {
 }
 
 export const TimeField: React.FC<TimeFieldProps> = ({ date, setDate }) => {
-  const [isCalendarOpend, setIsCalendarOpend] = useState<boolean>(false);
   const [tempDate, setTempDate] = useState<Date>(new Date(date[0], date[1], date[2]));
   const [hours, setHours] = useState<number>(date[3]);
   const [minutes, setMinutes] = useState<number>(date[4]);
@@ -38,17 +37,11 @@ export const TimeField: React.FC<TimeFieldProps> = ({ date, setDate }) => {
     return `${date[0]}.${formattedMonth}.${formattedDay} - ${formattedHour}:${formattedMinute}`;
   };
 
-  const handleSaveDateTime = () => {
-    setIsCalendarOpend(false);
-  };
-
   return (
     <div className="">
-      <div className="">
-        <p onClick={() => setIsCalendarOpend(prev => !prev)}>{dateFormat(date)}</p>
-      </div>
-      {isCalendarOpend && (
-        <div>
+      <details className="dropdown dropdown-bottom">
+        <summary className="m-1 btn btn-sm">{dateFormat(date)}</summary>
+        <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
           <DayPicker
             mode={"single"}
             selected={tempDate}
@@ -72,9 +65,8 @@ export const TimeField: React.FC<TimeFieldProps> = ({ date, setDate }) => {
               max={59}
             />
           </div>
-          <button className="border rounded-lg p-1" onClick={handleSaveDateTime}>save</button>
-        </div>
-      )}
+        </ul>
+      </details>
     </div>
   );
 };

@@ -4,6 +4,7 @@ import '../../calendar.css';
 import {useCookies} from "react-cookie";
 import { TimeField } from "./component/TimeField";
 import {TagField} from "./component/TagField";
+import {tagInterface} from "../TagModal/TagInterface";
 
 interface TaskModalProps {
   closeModal: () => void,
@@ -22,7 +23,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
   ];
   const [startDateArray, setStartDateArray] = useState<number[]>(currentDate);
   const [endDateArray, setEndDateArray] = useState<number[]>(currentDate);
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<tagInterface[]>([]);
 
   const [task, setTask] = useState<Task>({
     id: null,
@@ -144,38 +145,12 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
     <>
       <div className="modal modal-open">
         <div className="modal-box">
-          <p className="text-lg font-bold">Task detail</p>
           <button className="btn btn-sm btn-circle absolute right-4 top-4 text-lg font-bold bg-red-400" onClick={handleCloseModal}>X</button>
+          <div>
+            <p className="text-lg font-bold">Task detail</p>
+          </div>
           <form method="dialog">
-            <div className="mb-4">
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
-              <input type="text" name="title" id="title" value={task.title}
-                     onChange={(e) => setTask({...task, title: e.target.value})}
-                     className="mt-1 p-1 w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-500 border"/>
-            </div>
-            <div className="mb-4">
-              <label htmlFor="description"
-                     className="block text-sm font-medium text-gray-700">Description</label>
-              <textarea name="description" id="description" value={task.description}
-                        onChange={(e) => setTask(({...task, description: e.target.value}))}
-                        className="mt-1 p-1 w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-500 border"/>
-            </div>
-            <div className="mb-4">
-              <div className="w-full">
-                <label htmlFor="status" className="block text-sm font-medium text-gray-700">Status</label>
-                <select name="status" id="status" value={task.status}
-                        onChange={(e) => setTask({...task, status: e.target.value})}
-                        className="mt-1 p-1 w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-500 border">
-                  <option value="TODO">TODO</option>
-                  <option value="PROGRESS">PROGRESS</option>
-                  <option value="DONE">DONE</option>
-                </select>
-              </div>
-            </div>
-            <div className="mb-4">
-              {/*<TagField tags={task.tags} onChangeTags={(tags) => setTags(tags)}/>*/}
-            </div>
-            <div className="mb-4 space-y-4">
+            <div className="mb-4 my-4 flex justify-start">
               <div>
                 <label htmlFor="startTime" className="block text-sm font-medium text-gray-700">Start Time</label>
                 <TimeField date={task.startTime} setDate={(startTime) => setStartDateArray(startTime)}/>
@@ -184,6 +159,34 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
                 <label htmlFor="endTime" className="block text-sm font-medium text-gray-700">End Time</label>
                 <TimeField date={task.endTime} setDate={(endTime) => setEndDateArray(endTime)}/>
               </div>
+            </div>
+            <div className="mb-4">
+              <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
+              <input type="text" name="title" id="title" value={task.title}
+                     onChange={(e) => setTask({...task, title: e.target.value})}
+                     className="input mt-1 p-1 w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-500 "/>
+            </div>
+            <div className="mb-4">
+              <label htmlFor="description"
+                     className="block text-sm font-medium text-gray-700">Description</label>
+              <textarea name="description" id="description" value={task.description}
+                        onChange={(e) => setTask(({...task, description: e.target.value}))}
+                        className="textarea mt-1 p-1 w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-500 border"/>
+            </div>
+            <div className="mb-4">
+              <div className="w-full">
+                <label htmlFor="status" className="block text-sm font-medium text-gray-700">Status</label>
+                <select name="status" id="status" value={task.status}
+                        onChange={(e) => setTask({...task, status: e.target.value})}
+                        className="select mt-1 p-1 w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-500 border">
+                  <option value="TODO">TODO</option>
+                  <option value="PROGRESS">PROGRESS</option>
+                  <option value="DONE">DONE</option>
+                </select>
+              </div>
+            </div>
+            <div className="mb-4">
+              <TagField selectedTags={task.tags} setSelectedTags={(tags) => setTags(tags)}/>
             </div>
           </form>
           {taskId ? (
