@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {Task} from "../TaskInterface";
-import '../calendar.css';
+import {Task} from "../../TaskInterface";
+import '../../calendar.css';
 import {useCookies} from "react-cookie";
 import { TimeField } from "./component/TimeField";
 import {TagField} from "./component/TagField";

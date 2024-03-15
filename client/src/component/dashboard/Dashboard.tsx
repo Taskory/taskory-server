@@ -2,17 +2,19 @@ import React, {useEffect, useState} from "react";
 import {useCookies} from "react-cookie";
 import {useNavigate} from "react-router-dom";
 import {TaskCard} from "./TaskCard";
-import {TaskModal} from "./modal/TaskModal";
+import {TaskModal} from "./modal/TaskModal/TaskModal";
 import {Task} from "./TaskInterface";
+import {TagModal} from "./modal/TagModal/TagModal";
 
 export const Dashboard: React.FC = () => {
   const navigate = useNavigate();
 
   const [tasks, setTasks] = useState<Task[]>([]);
   const [currentTaskId, setCurrentTaskId] = useState<number | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState<boolean>(false);
+  const [isTagModalOpen, setIsTagModalOpen] = useState<boolean>(false);
 
-  const [cookies, setCookie] = useCookies();
+  const [cookies] = useCookies();
 
   useEffect(() => {
     if (!cookies.token) {
@@ -40,21 +42,21 @@ export const Dashboard: React.FC = () => {
         console.error('Error:', error);
       });
 
-  }, [cookies.token, isModalOpen]);
+  }, [cookies.token, isTaskModalOpen]);
 
 
 
-  const handleOpenModal = (id?: number | null) => {
+  const handleOpenTaskModal = (id?: number | null) => {
     if (id) {
       setCurrentTaskId(id);
     } else {
       setCurrentTaskId(null);
     }
-    setIsModalOpen(true);
+    setIsTaskModalOpen(true);
   }
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
+    setIsTaskModalOpen(false);
   }
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -67,16 +69,29 @@ export const Dashboard: React.FC = () => {
     setCurrentPage(pageNumber);
   }
 
+  const handleTagModal = () => {
+    if (isTagModalOpen) {
+      setIsTagModalOpen(false);
+    } else {
+      setIsTagModalOpen(true);
+    }
+  }
+
 
   return (
     <>
       <div>
-        <button className="btn btn-sm" onClick={() => handleOpenModal(null)}>
-          Create Task
-        </button>
+        <div className="flex">
+          <button className="btn btn-sm" onClick={() => handleOpenTaskModal(null)}>
+            Create Task
+          </button>
+          <button className="btn btn-sm" onClick={() => handleTagModal()}>
+            Tag manage
+          </button>
+        </div>
         <div>
           {currentTasks.map((task) => (
-            <TaskCard key={task.id} task={task} onClick={() => handleOpenModal(task.id)} />
+            <TaskCard key={task.id} task={task} onClick={() => handleOpenTaskModal(task.id)} />
           ))}
         </div>
         {/* Pagination */}
@@ -86,8 +101,11 @@ export const Dashboard: React.FC = () => {
           ))}
         </div>
       </div>
-      {isModalOpen && (
+      {isTaskModalOpen && (
         <TaskModal closeModal={handleCloseModal} taskId={currentTaskId} />
+      )}
+      {isTagModalOpen && (
+        <TagModal closeModal={handleTagModal} />
       )}
     </>
   );
