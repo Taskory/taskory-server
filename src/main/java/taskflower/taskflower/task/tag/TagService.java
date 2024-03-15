@@ -60,8 +60,8 @@ public class TagService {
         }
     }
 
-    public TagDto update(Long id, TagDto tagDto) throws TagNotFoundException {
-        Tag tag = tagRepository.findById(id).orElseThrow(TagNotFoundException::new);
+    public TagDto update(TagDto tagDto) throws TagNotFoundException {
+        Tag tag = tagRepository.findById(tagDto.getId()).orElseThrow(TagNotFoundException::new);
         tag.setName(tagDto.getName());
 
         Tag updatedTag = tagRepository.save(tag);

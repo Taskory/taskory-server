@@ -55,12 +55,13 @@ class TagServiceTest {
     @Test
     @DisplayName("Tag 수정 테스트")
     void updateTag() throws TagNotFoundException, TagExistException {
-        TagDto savedTag = getSavedTag();
+        TagDto tagDto = getSavedTag();
+        tagDto.setName(getRandomTagName());
 
-        TagDto updateTag = new TagDto();
-        updateTag.setName(getRandomTagName());
+        TagDto updatedTag = tagService.update(tagDto);
 
-        tagService.update(savedTag.getId(), updateTag);
+        Assertions.assertEquals(tagDto, updatedTag);
+
     }
 
     @Test

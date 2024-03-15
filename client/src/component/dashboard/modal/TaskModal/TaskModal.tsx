@@ -173,7 +173,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
               </div>
             </div>
             <div className="mb-4">
-              <TagField tags={task.tags} onChangeTags={(tags: string[]) => setTags(tags)}/>
+              {/*<TagField tags={task.tags} onChangeTags={(tags) => setTags(tags)}/>*/}
             </div>
             <div className="mb-4 space-y-4">
               <div>

@@ -42,4 +42,20 @@ public class TagController {
             return ResponseEntity.badRequest().body(new BadRequestResponse(exception.getMessage()));
         }
     }
+
+    @PutMapping
+    public ResponseEntity<?> update(@RequestBody TagDto tagDto) {
+        try {
+            TagDto result = tagService.update(tagDto);
+            return ResponseEntity.ok().body(result);
+        } catch (TagNotFoundException e) {
+            return ResponseEntity.badRequest().body(new BadRequestResponse(e.getMessage()));
+        }
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        tagService.deleteById(id);
+        return ResponseEntity.ok().body("The Tag is successfully deleted ");
+    }
 }

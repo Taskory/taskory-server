@@ -1,16 +1,13 @@
 import React, {useEffect, useState} from "react";
 import '../../calendar.css';
 import {useCookies} from "react-cookie";
+import {tagInterface} from "./TagInterface";
 
 
 interface TagModalProps {
   closeModal: () => void,
 }
 
-interface tagInterface {
-  id: number | null;
-  name: string;
-}
 export const TagModal: React.FC<TagModalProps> = ({closeModal}) => {
   const [editingTagId, setEditingTagId] = useState<number | null>(null);
   const [tags, setTags] = useState<tagInterface[]>([]);
@@ -56,6 +53,12 @@ export const TagModal: React.FC<TagModalProps> = ({closeModal}) => {
   };
 
   const handleCreate = () => {
+    if (!inputTag) return;
+    if (inputTag.name.length === 0) {
+      alert("내용을 입력해주세요.")
+      return;
+    }
+
     fetch('http://localhost:8080/api/v1/task/tag', {
       method: 'POST',
       headers: {
@@ -107,7 +110,7 @@ export const TagModal: React.FC<TagModalProps> = ({closeModal}) => {
   }
 
   const handleDelete = (id: number | null) => {
-    if (!id) {
+    if (id) {
       fetch('http://localhost:8080/api/v1/task/tag/' + id , {
         method: 'DELETE',
         headers: {
@@ -119,12 +122,8 @@ export const TagModal: React.FC<TagModalProps> = ({closeModal}) => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
-          return response.json();
-        })
-        .then(data => {
-          // test 용
           fetchGetTags();
-          console.log(data);
+          return response.json();
         })
         .catch(error => {
           console.error('Error:', error);
@@ -168,6 +167,7 @@ export const TagModal: React.FC<TagModalProps> = ({closeModal}) => {
               <input className="w-full " type="text" name="input_tag" id="input_tag" value={inputTag.name}
                      onChange={(e) => setInputTag({...inputTag, name: e.target.value})}
                      placeholder="Type here"
+                     disabled={(editingTagId !== null)}
               />
               <button className="btn btn-sm font-bold bg-blue-300 mx-2" onClick={handleCreate}>Add</button>
             </div>
