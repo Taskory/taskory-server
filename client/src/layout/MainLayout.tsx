@@ -7,7 +7,7 @@ import {Signup} from "../component/Signup";
 import {Footer} from "./component/Footer";
 import {Profile} from "../component/Profile";
 import {SideBar} from "./component/SideBar";
-import {Dashboard} from "../component/dashboard/Dashboard";
+import {TaskBoard} from "../component/task/TaskBoard";
 
 export const MainLayout: React.FC = () => {
   const location = useLocation();
@@ -27,7 +27,7 @@ export const MainLayout: React.FC = () => {
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/profile" element={<Profile />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/task" element={<TaskBoard />} />
                 </Routes>
               </div>
             </main>

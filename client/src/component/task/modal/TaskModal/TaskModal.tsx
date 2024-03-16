@@ -36,6 +36,30 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
   });
 
   useEffect(() => {
+    if (taskId !== null) {
+      fetch('http://localhost:8080/api/v1/task/' + taskId.toString(), {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer " + cookies.token,
+        },
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          setTask(data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+  }, [cookies.token, taskId]);
+
+  useEffect(() => {
     setTask(prevTask => ({
       ...prevTask,
       startTime: startDateArray
@@ -56,34 +80,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
     }));
   }, [tags]);
 
-  useEffect(() => {
-    if (taskId !== null) {
-      fetch('http://localhost:8080/api/v1/task/' + taskId.toString(), {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': "Bearer " + cookies.token,
-        },
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(data => {
 
-          ////////////////////////////////////////////////////////////////////////
-          // test 용
-          // console.log(data);
-          ////////////////////////////////////////////////////////////////////////
-          setTask(data);
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
-    }
-  }, [cookies.token, taskId]);
 
   const handleCloseModal = () => {
     closeModal();
@@ -115,23 +112,22 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
     }
   }
 
-  const handleUpdateTask = async () => {
+  const handleUpdateTask = () => {
     try {
       if (taskId) {
 
-        const response = await fetch(`http://localhost:8080/api/v1/task/` + taskId.toString(), {
+        fetch(`http://localhost:8080/api/v1/task/` + taskId.toString(), {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': "Bearer " + cookies.token,
           },
           body: JSON.stringify(task),
+        }).then(response => {
+          response.json().then(result => {
+            console.log(result);
+          })
         });
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        const data = await response.json();
         alert("Success Save");
         handleCloseModal();
       }
@@ -196,7 +192,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
             </button>
           ) : (
             <button type="button" onClick={handleSaveTask}
-                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
+                    className="btn absolute right-4 bottom-4">
               Save Task
             </button>
           )}

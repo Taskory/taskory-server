@@ -6,7 +6,7 @@ import {TaskModal} from "./modal/TaskModal/TaskModal";
 import {Task} from "./TaskInterface";
 import {TagModal} from "./modal/TagModal/TagModal";
 
-export const Dashboard: React.FC = () => {
+export const TaskBoard: React.FC = () => {
   const navigate = useNavigate();
 
   const [tasks, setTasks] = useState<Task[]>([]);
