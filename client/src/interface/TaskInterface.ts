@@ -1,11 +1,11 @@
-import {tagInterface} from "./modal/TagModal/TagInterface";
+import {TagInterface} from "./TagInterface";
 
-export interface Task {
+export interface TaskInterface {
   id: number | null;
   title: string;
   description: string;
   status: string;
-  tags: tagInterface[];
+  tags: TagInterface[];
   startTime: number[];
   endTime: number[];
 }

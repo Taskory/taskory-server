@@ -7,6 +7,7 @@ import {Footer} from "./component/Footer";
 import {Profile} from "../component/Profile";
 import {TaskBoard} from "../component/task/TaskBoard";
 import {NavBar} from "./component/NavBar";
+import {TaskCalendar} from "../component/calendar/TaskCalendar";
 
 export const MainLayout: React.FC = () => {
   const location = useLocation();
@@ -26,6 +27,7 @@ export const MainLayout: React.FC = () => {
                   <Route path="/" element={<Home />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/task" element={<TaskBoard />} />
+                  <Route path="/calendar" element={<TaskCalendar />} />
                 </Routes>
               </div>
             </main>

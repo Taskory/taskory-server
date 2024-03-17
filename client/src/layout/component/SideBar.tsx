@@ -19,6 +19,7 @@ export const SideBar: React.FC = () => {
           <li><a href="/" className="justify-center text-lg">Home</a></li>
           <li><a href="/dashboard" className="justify-center text-lg">Dashboard</a></li>
           <li><a href="/task" className="justify-center text-lg">Task</a></li>
+          <li><a href="/calendar" className="justify-center text-lg">Calendar</a></li>
         </ul>
       </div>
     </div>

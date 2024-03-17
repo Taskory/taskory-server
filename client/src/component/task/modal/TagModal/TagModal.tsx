@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import '../../calendar.css';
 import {useCookies} from "react-cookie";
-import {tagInterface} from "./TagInterface";
+import {TagInterface} from "../../../../interface/TagInterface";
 
 
 interface TagModalProps {
@@ -10,9 +10,9 @@ interface TagModalProps {
 
 export const TagModal: React.FC<TagModalProps> = ({closeModal}) => {
   const [editingTagId, setEditingTagId] = useState<number | null>(null);
-  const [tags, setTags] = useState<tagInterface[]>([]);
-  const [preTags, setPreTags] = useState<tagInterface[]>([]);
-  const [inputTag, setInputTag] = useState<tagInterface>({
+  const [tags, setTags] = useState<TagInterface[]>([]);
+  const [preTags, setPreTags] = useState<TagInterface[]>([]);
+  const [inputTag, setInputTag] = useState<TagInterface>({
     id: null,
     name: ""
   });
@@ -83,7 +83,7 @@ export const TagModal: React.FC<TagModalProps> = ({closeModal}) => {
       });
   };
 
-  const handleUpdate = (tag: tagInterface) => {
+  const handleUpdate = (tag: TagInterface) => {
     fetch('http://localhost:8080/api/v1/task/tag', {
       method: 'PUT',
       headers: {

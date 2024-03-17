@@ -3,13 +3,13 @@ import {useCookies} from "react-cookie";
 import {useNavigate} from "react-router-dom";
 import {TaskCard} from "./TaskCard";
 import {TaskModal} from "./modal/TaskModal/TaskModal";
-import {Task} from "./TaskInterface";
+import {TaskInterface} from "../../interface/TaskInterface";
 import {TagModal} from "./modal/TagModal/TagModal";
 
 export const TaskBoard: React.FC = () => {
   const navigate = useNavigate();
 
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<TaskInterface[]>([]);
   const [currentTaskId, setCurrentTaskId] = useState<number | null>(null);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState<boolean>(false);
   const [isTagModalOpen, setIsTagModalOpen] = useState<boolean>(false);

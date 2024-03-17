@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { tagInterface } from "../../TagModal/TagInterface";
+import { TagInterface } from "../../../../../interface/TagInterface";
 
 interface TagFieldProps {
-  selectedTags: tagInterface[];
-  setSelectedTags: (tags: tagInterface[]) => void;
+  selectedTags: TagInterface[];
+  setSelectedTags: (tags: TagInterface[]) => void;
 }
 
 export const TagField: React.FC<TagFieldProps> = ({ selectedTags, setSelectedTags }) => {
   const [cookies] = useCookies();
-  const [allTags, setAllTags] = useState<tagInterface[]>([]);
+  const [allTags, setAllTags] = useState<TagInterface[]>([]);
 
   useEffect(() => {
     fetch("http://localhost:8080/api/v1/task/tag", {
@@ -34,7 +34,7 @@ export const TagField: React.FC<TagFieldProps> = ({ selectedTags, setSelectedTag
   }, [cookies.token]);
 
   // 체크박스 클릭 시 이벤트 핸들러
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, tag: tagInterface) => {
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, tag: TagInterface) => {
     const isChecked = e.target.checked;
     if (isChecked) {
       // 선택된 태그 리스트에 추가

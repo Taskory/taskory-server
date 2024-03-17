@@ -1,4 +1,4 @@
-export interface tagInterface {
+export interface TagInterface {
   id: number | null;
   name: string;
 }

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Task } from "./TaskInterface";
+import { TaskInterface } from "../../interface/TaskInterface";
 
 interface TaskCardProps {
-  task: Task;
+  task: TaskInterface;
   onClick: () => void;
 }
 

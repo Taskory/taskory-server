@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {Task} from "../../TaskInterface";
+import {TaskInterface} from "../../../../interface/TaskInterface";
 import '../../calendar.css';
 import {useCookies} from "react-cookie";
 import { TimeField } from "./component/TimeField";
 import {TagField} from "./component/TagField";
-import {tagInterface} from "../TagModal/TagInterface";
+import {TagInterface} from "../../../../interface/TagInterface";
 
 interface TaskModalProps {
   closeModal: () => void,
@@ -23,9 +23,9 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
   ];
   const [startDateArray, setStartDateArray] = useState<number[]>(currentDate);
   const [endDateArray, setEndDateArray] = useState<number[]>(currentDate);
-  const [tags, setTags] = useState<tagInterface[]>([]);
+  const [tags, setTags] = useState<TagInterface[]>([]);
 
-  const [task, setTask] = useState<Task>({
+  const [task, setTask] = useState<TaskInterface>({
     id: null,
     title: '',
     description: '',
