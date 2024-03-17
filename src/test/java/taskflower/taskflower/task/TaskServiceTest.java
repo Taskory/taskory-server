@@ -43,8 +43,8 @@ class TaskServiceTest {
 
     @AfterEach
     void deleteUser() {
-        List<Task> tasks = taskService.findAllByUserEmail(testUser.getEmail());
-        for (Task task : tasks) {
+        List<TaskDto> tasks = taskService.findAllByUserEmail(testUser.getEmail());
+        for (TaskDto task : tasks) {
             taskService.deleteById(task.getId());
         }
 
@@ -68,9 +68,9 @@ class TaskServiceTest {
         taskDto.setEndTime(new int[]{2024, 3, 16, 10, 15});
         taskDto.setTags(getTestTags());
 
-        Task savedTask = taskService.save(taskDto, testUser);
+        TaskDto savedTask = taskService.save(taskDto, testUser);
 
-        Assertions.assertEquals(taskMapper.convertTaskToTaskDto(savedTask), taskService.getTaskById(savedTask.getId()));
+        Assertions.assertEquals(savedTask, taskService.getTaskById(savedTask.getId()));
     }
 
 
@@ -86,7 +86,7 @@ class TaskServiceTest {
         taskDto.setEndTime(new int[]{2024, 3, 16, 10, 15});
         taskDto.setTags(getTestTags());
 
-        Task savedTask = taskService.save(taskDto, testUser);
+        TaskDto savedTask = taskService.save(taskDto, testUser);
 
         TaskDto updateTaskRequset = new TaskDto();
         updateTaskRequset.setTitle("abcdefg");
@@ -115,7 +115,7 @@ class TaskServiceTest {
         taskDto.setEndTime(new int[]{2024, 3, 16, 10, 15});
         taskDto.setTags(getTestTags());
 
-        Task task = taskService.save(taskDto, testUser);
+        TaskDto task = taskService.save(taskDto, testUser);
 
         taskService.deleteById(task.getId());
 
@@ -136,9 +136,9 @@ class TaskServiceTest {
         taskDto.setEndTime(new int[]{2024, 3, 16, 10, 15});
         taskDto.setTags(getTestTags());
 
-        Task task = taskService.save(taskDto, testUser);
+        TaskDto task = taskService.save(taskDto, testUser);
 
-        List<Task> savedTasks = taskService.findAllByUserEmail(testUser.getEmail());
+        List<TaskDto> savedTasks = taskService.findAllByUserEmail(testUser.getEmail());
 
         Assertions.assertEquals(task, savedTasks.get(savedTasks.size() - 1));
     }

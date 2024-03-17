@@ -5,6 +5,7 @@ import taskflower.taskflower.user.User;
 import taskflower.taskflower.user.UserRepository;
 import taskflower.taskflower.user.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,11 +24,11 @@ public class TaskService {
     }
 
 
-    public Task save(TaskDto saveTaskRequest, User user) {
+    public TaskDto save(TaskDto saveTaskRequest, User user) {
         Task task = taskMapper.convertTaskDtoToTask(saveTaskRequest);
         task.setUser(user);
-
-        return taskRepository.save(task);
+        Task savedTask = taskRepository.save(task);
+        return taskMapper.convertTaskToTaskDto(savedTask);
     }
 
 
@@ -37,9 +38,17 @@ public class TaskService {
         return taskMapper.convertTaskToTaskDto(task);
     }
 
-    public List<Task> findAllByUserEmail(String email) {
+    public List<TaskDto> findAllByUserEmail(String email) {
         User user = userRepository.findUserByEmail(email);
-        return taskRepository.findAllByUser(user);
+        List<Task> tasks = taskRepository.findAllByUser(user);
+
+        List<TaskDto> result = new ArrayList<>();
+
+        for (Task task : tasks) {
+            result.add(taskMapper.convertTaskToTaskDto(task));
+        }
+
+        return result;
     }
 
     public TaskDto updateTask(long id, TaskDto taskDto) throws TaskNotFoundExeption {

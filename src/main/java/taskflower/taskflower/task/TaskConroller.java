@@ -1,6 +1,7 @@
 package taskflower.taskflower.task;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import taskflower.taskflower.security.CurrentUser;
@@ -14,8 +15,8 @@ import java.util.List;
 @RequestMapping("/api/v1/task")
 public class TaskConroller {
 
-    private UserService userService;
-    private TaskService taskService;
+    private final UserService userService;
+    private final TaskService taskService;
 
     @Autowired
     public TaskConroller(UserService userService, TaskService taskService) {
@@ -24,43 +25,44 @@ public class TaskConroller {
     }
 
     @PostMapping
-    public ResponseEntity<Task> save(@CurrentUser UserDetailsImpl userDetails, @RequestBody TaskDto taskDto) {
+    public ResponseEntity<TaskDto> save(@CurrentUser UserDetailsImpl userDetails, @RequestBody TaskDto taskDto) {
         User user = userService.getUserById(userDetails.getId());
-        Task task = taskService.save(taskDto, user);
+        TaskDto task = taskService.save(taskDto, user);
 
         return ResponseEntity.ok().body(task);
 
     }
 
     @GetMapping
-    public ResponseEntity<List<Task>> findAllByUser(@CurrentUser UserDetailsImpl userDetails) {
+    public ResponseEntity<List<TaskDto>> findAllByUser(@CurrentUser UserDetailsImpl userDetails) {
         User user = userService.getUserById(userDetails.getId());
 
-        List<Task> tasks = taskService.findAllByUserEmail(user.getEmail());
+        List<TaskDto> tasks = taskService.findAllByUserEmail(user.getEmail());
 
         return ResponseEntity.ok().body(tasks);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TaskDto> findTaskById(@PathVariable String id) {
+    public ResponseEntity<?> findTaskById(@PathVariable String id) {
         TaskDto taskResponse;
         try {
             taskResponse = taskService.getTaskById(Long.parseLong(id));
+            return ResponseEntity.ok().body(taskResponse);
         } catch (TaskNotFoundExeption e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return ResponseEntity.ok().body(taskResponse);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TaskDto> updateTaskById(@PathVariable String id, @RequestBody TaskDto taskDto) {
+    public ResponseEntity<?> updateTaskById(@PathVariable String id, @RequestBody TaskDto taskDto) {
         TaskDto taskResponse;
         try {
             taskResponse = taskService.updateTask(Long.parseLong(id), taskDto);
+            return ResponseEntity.ok().body(taskResponse);
         } catch (TaskNotFoundExeption e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return ResponseEntity.ok().body(taskResponse);
+
     }
 }
 
