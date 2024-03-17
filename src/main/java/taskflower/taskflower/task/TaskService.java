@@ -14,20 +14,21 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
     private final TaskMapper taskMapper;
-    private final UserService userService;
 
     public TaskService(TaskRepository taskRepository, UserRepository userRepository, TaskMapper taskMapper, UserService userService) {
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
         this.taskMapper = taskMapper;
-        this.userService = userService;
     }
 
 
-    public TaskDto save(TaskDto saveTaskRequest, User user) {
+    public TaskDto save(TaskDto saveTaskRequest, User user) throws TaskTitleExistException {
+        if (taskRepository.existsByTitleAndUser(saveTaskRequest.getTitle(), user)) throw new TaskTitleExistException();
+
         Task task = taskMapper.convertTaskDtoToTask(saveTaskRequest);
         task.setUser(user);
         Task savedTask = taskRepository.save(task);
+
         return taskMapper.convertTaskToTaskDto(savedTask);
     }
 

@@ -20,7 +20,6 @@ class TaskServiceTest {
 
     private final TaskService taskService;
     private final UserService userService;
-    private final TaskMapper taskMapper;
     private final TagService tagService;
     private final TagMapper tagMapper;
 
@@ -29,7 +28,6 @@ class TaskServiceTest {
     public TaskServiceTest(TaskService taskService, UserService userService, TaskMapper taskMapper, TagService tagService, TagMapper tagMapper) {
         this.taskService = taskService;
         this.userService = userService;
-        this.taskMapper = taskMapper;
         this.tagService = tagService;
         this.tagMapper = tagMapper;
     }
@@ -58,7 +56,7 @@ class TaskServiceTest {
     @Test
 //    @WithUserDetails(value = "test@test.test")      // Test userDetail(security test)
     @DisplayName("Task 생성 및 조회")
-    void createTask() throws TaskNotFoundExeption, TagExistException {
+    void createTask() throws TaskNotFoundExeption, TaskTitleExistException {
 
         TaskDto taskDto = new TaskDto();
         taskDto.setTitle("test title");
@@ -77,7 +75,7 @@ class TaskServiceTest {
     @Test
 //    @WithUserDetails(value = "test@test.test")
     @DisplayName("Task 수정")
-    void updateTask() throws TaskNotFoundExeption, TagExistException {
+    void updateTask() throws TaskNotFoundExeption, TaskTitleExistException {
         TaskDto taskDto = new TaskDto();
         taskDto.setTitle("test title");
         taskDto.setDescription("test description.....");
@@ -106,7 +104,7 @@ class TaskServiceTest {
     @Test
 //    @WithUserDetails(value = "test@test.test")
     @DisplayName("task 삭제")
-    void deleteTask() throws TagExistException {
+    void deleteTask() throws TaskTitleExistException {
         TaskDto taskDto = new TaskDto();
         taskDto.setTitle("test title");
         taskDto.setDescription("test description.....");
@@ -127,7 +125,7 @@ class TaskServiceTest {
     @Test
 //    @WithUserDetails(value = "test@test.test")
     @DisplayName("사용자의 모든 task 조회")
-    void findTaskByUser() throws TagExistException {
+    void findTaskByUser() throws TaskTitleExistException {
         TaskDto taskDto = new TaskDto();
         taskDto.setTitle("test title");
         taskDto.setDescription("test description.....");

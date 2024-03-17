@@ -1,6 +1,7 @@
 package taskflower.taskflower.task;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import taskflower.taskflower.task.tag.Tag;
 import taskflower.taskflower.user.User;
@@ -17,12 +18,14 @@ public class Task {
     private Long id;
 
     @Column(nullable = false)
+    @NotNull
     private String title;
 
     @Column
     private String description;
 
     @ManyToOne
+    @NotNull
     private User user;
 
     @Column

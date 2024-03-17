@@ -25,20 +25,20 @@ public class TaskConroller {
     }
 
     @PostMapping
-    public ResponseEntity<TaskDto> save(@CurrentUser UserDetailsImpl userDetails, @RequestBody TaskDto taskDto) {
-        User user = userService.getUserById(userDetails.getId());
-        TaskDto task = taskService.save(taskDto, user);
-
-        return ResponseEntity.ok().body(task);
-
+    public ResponseEntity<?> save(@CurrentUser UserDetailsImpl userDetails, @RequestBody TaskDto taskDto) {
+        try {
+            User user = userService.getUserById(userDetails.getId());
+            TaskDto task = taskService.save(taskDto, user);
+            return ResponseEntity.ok().body(task);
+        } catch (TaskTitleExistException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @GetMapping
     public ResponseEntity<List<TaskDto>> findAllByUser(@CurrentUser UserDetailsImpl userDetails) {
         User user = userService.getUserById(userDetails.getId());
-
         List<TaskDto> tasks = taskService.findAllByUserEmail(user.getEmail());
-
         return ResponseEntity.ok().body(tasks);
     }
 

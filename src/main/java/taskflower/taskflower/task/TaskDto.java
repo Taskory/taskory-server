@@ -1,5 +1,6 @@
 package taskflower.taskflower.task;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import taskflower.taskflower.task.tag.Tag;
 
@@ -9,6 +10,7 @@ import java.util.Set;
 public class TaskDto {
     private Long id;
 
+    @NotNull
     private String title;
 
     private String description;
