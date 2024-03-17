@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { TaskInterface } from "../../interface/TaskInterface";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import 'react-big-calendar/lib/css/react-big-calendar.css'; // Import default styles
+import './custom-calendar-styles.css'; // Import custom styles
 
 interface EventInterface {
   id: number;
@@ -63,13 +64,12 @@ export const TaskCalendar: React.FC = () => {
   }, [cookies.token, navigate]);
 
   return (
-    <div style={{ height: 500 }}>
+    <div style={{ height: 500 }} className="">
       <Calendar
         localizer={localizer}
         events={events}
         startAccessor="start"
         endAccessor="end"
-        style={{ margin: '50px' }}
       />
     </div>
   );
