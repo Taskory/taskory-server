@@ -1,16 +1,21 @@
-import React, {useState} from "react";
-import {useNavigate} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
 import {SideBar} from "./SideBar";
 import {useCookies} from "react-cookie";
 
 export const NavBar: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [cookies, setCookie] = useCookies(['token']);
-  
+  const [pathArray, setPathArray] = useState(["home"]);
 
-  const handleHome = () => {
-    navigate('/');
-  }
+  useEffect(() => {
+    const currentPath = location.pathname.split("/");
+    const pathArray = ["home"];
+    currentPath.map(path => {
+      if (path.length > 0) setPathArray([...pathArray, path]);
+    })
+  }, [location.pathname]);
 
   const handleLogin = () => {
     navigate('login');
@@ -36,7 +41,7 @@ export const NavBar: React.FC = () => {
         <SideBar />
         </div>
         <div className="flex-1">
-          <p className="btn btn-ghost text-xl" onClick={handleHome}>Task Flower</p>
+          <a href="/" className="btn btn-ghost text-xl">Task Flower</a>
         </div>
         <div className="flex-none">
             {cookies.token ? (
@@ -71,6 +76,15 @@ export const NavBar: React.FC = () => {
                 </button>
               </>
             )}
+        </div>
+      </div>
+      <div className="w-full flex border bg-gray-50">
+        <div className="text-sm breadcrumbs mx-24 flex">
+          <ul>
+            {pathArray.map((path, index) => {
+              return <li key={index}>{path}</li>
+            })}
+          </ul>
         </div>
       </div>
     </>
