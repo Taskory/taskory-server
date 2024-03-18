@@ -5,7 +5,8 @@ import { TaskInterface } from "../../interface/TaskInterface";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import 'react-big-calendar/lib/css/react-big-calendar.css'; // Import default styles
-import './custom-calendar-styles.css'; // Import custom styles
+import './custom-calendar-styles.css';
+import {TaskModal} from "../task/modal/TaskModal/TaskModal"; // Import custom styles
 
 interface EventInterface {
   id: number;
@@ -19,6 +20,8 @@ const localizer = momentLocalizer(moment);
 
 export const TaskCalendar: React.FC = () => {
   const [events, setEvents] = useState<EventInterface[]>([]);
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState<boolean>();
+  const [currentTaskId, setCurrentTaskId] = useState<number | null>(null);
   const navigate = useNavigate();
   const [cookies] = useCookies();
 
@@ -46,7 +49,6 @@ export const TaskCalendar: React.FC = () => {
       })
       .then(data => {
         // Map tasks to events format required by react-big-calendar
-        console.log(data);
         const mappedEvents = data
           .filter((task: TaskInterface) => task.id !== null) // Filter out tasks with null id
           .map((task: TaskInterface) => ({
@@ -61,16 +63,31 @@ export const TaskCalendar: React.FC = () => {
       .catch(error => {
         console.error('Error:', error);
       });
-  }, [cookies.token, navigate]);
+  }, [cookies.token, navigate, isTaskModalOpen]);
+
+
+  const handleOpenTaskModal = (id: number) => {
+    setCurrentTaskId(id);
+    setIsTaskModalOpen(true);
+  }
 
   return (
-    <div style={{ height: 500 }} className="">
-      <Calendar
-        localizer={localizer}
-        events={events}
-        startAccessor="start"
-        endAccessor="end"
-      />
-    </div>
+    <>
+      <div className="">
+        <button className="btn btn-sm btn-circle bg-yellow-300">?</button>
+      </div>
+      <div style={{height: 500}} className="">
+        <Calendar
+          localizer={localizer}
+          events={events}
+          startAccessor="start"
+          endAccessor="end"
+          onDoubleClickEvent={(e) => handleOpenTaskModal(e.id)}
+        />
+        {isTaskModalOpen && (
+          <TaskModal closeModal={() => setIsTaskModalOpen(false)} taskId={currentTaskId}/>
+        )}
+      </div>
+    </>
   );
 };

@@ -11,7 +11,7 @@ interface TaskModalProps {
   taskId: number | null
 }
 
-export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
+export const TaskModal: React.FC<TaskModalProps> = ({closeModal, taskId}) => {
   const [cookies] = useCookies(['token']);
   const date = new Date();
   const currentDate = [
@@ -81,7 +81,6 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
   }, [tags]);
 
 
-
   const handleCloseModal = () => {
     closeModal();
   };
@@ -141,7 +140,9 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
     <>
       <div className="modal modal-open">
         <div className="modal-box">
-          <button className="btn btn-sm btn-circle absolute right-4 top-4 text-lg font-bold bg-red-400" onClick={handleCloseModal}>X</button>
+          <button className="btn btn-sm btn-circle absolute right-4 top-4 text-lg font-bold bg-red-400"
+                  onClick={handleCloseModal}>X
+          </button>
           <div>
             <p className="text-lg font-bold">Task detail</p>
           </div>
@@ -185,17 +186,21 @@ export const TaskModal: React.FC<TaskModalProps> = ({ closeModal, taskId }) => {
               <TagField selectedTags={task.tags} setSelectedTags={(tags) => setTags(tags)}/>
             </div>
           </form>
-          {taskId ? (
-            <button type="button" onClick={handleUpdateTask}
-                    className="btn absolute right-4 bottom-4">
-              Update Task
-            </button>
-          ) : (
-            <button type="button" onClick={handleSaveTask}
-                    className="btn absolute right-4 bottom-4">
-              Save Task
-            </button>
-          )}
+          <div className="flex justify-end">
+            {taskId ? (
+              <button type="button" onClick={handleUpdateTask}
+                      className="btn btn-sm"
+              >
+                Update Task
+              </button>
+            ) : (
+              <button type="button" onClick={handleSaveTask}
+                      className="btn btn-sm"
+              >
+                Save Task
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </>
