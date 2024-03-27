@@ -2,7 +2,7 @@ package taskflower.taskflower.user;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import taskflower.taskflower.user.exception.UserExistsExeption;
+import taskflower.taskflower.user.exception.UserAlreadyExistedException;
 import taskflower.taskflower.user.exception.UserNotFoundException;
 
 @Service
@@ -20,9 +20,9 @@ public class UserService {
         return userRepository.existsUserByEmail(email);
     }
 
-    public User signup(User signupUser) throws UserExistsExeption {
+    public User signup(User signupUser) throws UserAlreadyExistedException {
         if (userRepository.existsUserByEmail(signupUser.getEmail())) {
-            throw new UserExistsExeption("Sorry, this email is Already existed..");
+            throw new UserAlreadyExistedException("Sorry, this email is Already existed..");
         }
         signupUser.setPassword(passwordEncoder.encode(signupUser.getPassword()));
         return userRepository.save(signupUser);

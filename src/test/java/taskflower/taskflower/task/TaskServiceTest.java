@@ -3,12 +3,12 @@ package taskflower.taskflower.task;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import taskflower.taskflower.security.model.SignupRequset;
+import taskflower.taskflower.security.payload.SignupRequset;
 import taskflower.taskflower.task.tag.*;
 import taskflower.taskflower.task.tag.Tag;
 import taskflower.taskflower.user.User;
 import taskflower.taskflower.user.UserService;
-import taskflower.taskflower.user.exception.UserExistsExeption;
+import taskflower.taskflower.user.exception.UserAlreadyExistedException;
 
 import java.util.HashSet;
 import java.util.List;
@@ -35,7 +35,7 @@ class TaskServiceTest {
     private User testUser;
 
     @BeforeEach
-    void setUser() throws UserExistsExeption {
+    void setUser() throws UserAlreadyExistedException {
         testUser = createTestUser();
     }
 
@@ -141,7 +141,7 @@ class TaskServiceTest {
         Assertions.assertEquals(task, savedTasks.get(savedTasks.size() - 1));
     }
 
-    private User createTestUser() throws UserExistsExeption {
+    private User createTestUser() throws UserAlreadyExistedException {
 
         Random random;
         StringBuilder email;

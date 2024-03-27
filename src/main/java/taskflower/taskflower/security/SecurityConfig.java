@@ -18,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import taskflower.taskflower.security.oauth2.CustomOAuth2UserService;
 
 import java.util.Arrays;
 
@@ -26,10 +27,14 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     private final TokenFilter tokenFilter;
+    private final HttpCookieAuthorizationRequestRepository httpCookieAuthorizationRequestRepository;
+    private final CustomOAuth2UserService customOauth2UserService;
 
     @Autowired
-    public SecurityConfig(TokenFilter tokenFilter) {
+    public SecurityConfig(TokenFilter tokenFilter, HttpCookieAuthorizationRequestRepository httpCookieAuthorizationRequestRepository, CustomOAuth2UserService customOauth2UserService) {
         this.tokenFilter = tokenFilter;
+        this.httpCookieAuthorizationRequestRepository = httpCookieAuthorizationRequestRepository;
+        this.customOauth2UserService = customOauth2UserService;
     }
 
     @Bean
@@ -63,9 +68,22 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/user/**").permitAll()
                         .requestMatchers("/api/v1/task/**").permitAll()
 //                        .requestMatchers("/api/v1/user/**").hasAnyRole("ADMIN", "USER")
+//                        OAuth2 Match
+                        .requestMatchers("/oauth2/**").permitAll()
                         .anyRequest().authenticated())
 //                jwt token filter 추가
-                .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class)
+
+//                OAuth2 설정
+                .oauth2Login(oauth -> oauth
+                        .authorizationEndpoint(endPoint -> endPoint
+                                .baseUri("/oauth2/authorize")
+                                .authorizationRequestRepository(httpCookieAuthorizationRequestRepository))
+                        .redirectionEndpoint(endPoint -> endPoint
+                                .baseUri("/oauth2/callback/**"))
+                        .userInfoEndpoint(endPoint -> endPoint
+                                .userService(customOauth2UserService)));
+
         return http.build();
     }
 

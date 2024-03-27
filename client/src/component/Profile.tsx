@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useCookies} from "react-cookie";
 import {useNavigate} from "react-router-dom";
+import googleLogo from "../assets/images/google-logo.png";
+import { GOOGLE_AUTH_URL } from '../constants';
 
 interface UserState {
   email: string;
@@ -46,49 +48,57 @@ export const Profile: React.FC = () => {
     requestProfile();
   }, [cookies.token]);
   return (
-    <div className="flex justify-between px-30 sm:px-60">
-      {/* Sidebar */}
-      <div className="text-black w-72">
-        <img src="profile_image_url" alt="Profile" className="w-16 h-16 rounded-full mr-4"/>
-        <div className="p-6 flex items-center justify-between">
-          <div className="flex items-center">
-            <div>
-              <h2 className="text-lg font-semibold">User Name</h2>
-              <p className="text-sm">User Role</p>
+    <>
+      <div className="flex justify-between px-30 sm:px-60">
+        {/* Sidebar */}
+        <div className="text-black w-72">
+          <img src="profile_image_url" alt="Profile" className="w-16 h-16 rounded-full mr-4"/>
+          <div className="p-6 flex items-center justify-between">
+            <div className="flex items-center">
+              <div>
+                <h2 className="text-lg font-semibold">User Name</h2>
+                <p className="text-sm">User Role</p>
+              </div>
             </div>
+            <button className="focus:outline-none">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                   stroke="currentColor"/>
+            </button>
           </div>
-          <button className="focus:outline-none">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                 stroke="currentColor"/>
-          </button>
+          <nav className="mt-8">
+            <ul>
+              <li className="px-4 py-2 hover:bg-gray-700">
+                <a href="#" className="block">
+                  Dashboard
+                </a>
+              </li>
+              <li className="px-4 py-2 hover:bg-gray-700">
+                <a href="#" className="block">
+                  Projects
+                </a>
+              </li>
+              <li className="px-4 py-2 hover:bg-gray-700">
+                <a href="#" className="block">
+                  Settings
+                </a>
+              </li>
+              {/* Add more menu items here */}
+            </ul>
+          </nav>
         </div>
-        <nav className="mt-8">
-          <ul>
-            <li className="px-4 py-2 hover:bg-gray-700">
-              <a href="#" className="block">
-                Dashboard
-              </a>
-            </li>
-            <li className="px-4 py-2 hover:bg-gray-700">
-              <a href="#" className="block">
-                Projects
-              </a>
-            </li>
-            <li className="px-4 py-2 hover:bg-gray-700">
-              <a href="#" className="block">
-                Settings
-              </a>
-            </li>
-            {/* Add more menu items here */}
-          </ul>
-        </nav>
-      </div>
 
-      {/* Main Content */}
-      <div className="flex-1 p-4 sm:p-8 border-2 rounded-lg">
-        <h1 className="text-2xl font-semibold mb-4">User Profile</h1>
-        {/* Add user profile content here */}
+        {/* Main Content */}
+        <div className="flex-1 p-4 sm:p-8 border-2 rounded-lg">
+          <h1 className="text-2xl font-semibold mb-4">User Profile</h1>
+          {/* Add user profile content here */}
+        </div>
       </div>
-    </div>
+      <div className="h-auto space-y-2 my-4">
+        <a className="flex justify-start btn w-full h-min" href={GOOGLE_AUTH_URL}>
+          <img className={"size-1/12"} src={googleLogo} alt="Google"/>
+          <p className={"ml-4"}>Log in with Google</p>
+        </a>
+      </div>
+    </>
   );
 };

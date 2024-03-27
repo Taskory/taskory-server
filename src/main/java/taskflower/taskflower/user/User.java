@@ -3,13 +3,20 @@ package taskflower.taskflower.user;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
-import taskflower.taskflower.security.model.SignupRequset;
+import lombok.NoArgsConstructor;
+import taskflower.taskflower.security.payload.SignupRequset;
 
 @Entity
-//@Table(
-//        uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 @Data
+@NoArgsConstructor
 public class User {
+
+    public User(SignupRequset signupRequset) {
+        this.name = signupRequset.getName();
+        this.email = signupRequset.getEmail();
+        this.password = signupRequset.getPassword();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -24,13 +31,4 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    public User(SignupRequset signupRequset) {
-        this.name = signupRequset.getName();
-        this.email = signupRequset.getEmail();
-        this.password = signupRequset.getPassword();
-    }
-
-    public User() {
-
-    }
 }

@@ -1,15 +1,10 @@
 package taskflower.taskflower.user;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import taskflower.taskflower.security.AuthService;
-import taskflower.taskflower.security.model.LoginRequset;
-import taskflower.taskflower.user.exception.UserExistsExeption;
+import taskflower.taskflower.user.exception.UserAlreadyExistedException;
 import taskflower.taskflower.user.exception.UserNotFoundException;
 
 import java.util.Random;
@@ -24,7 +19,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("사용자 생성 및 조회")
-    void signup() throws Exception, UserExistsExeption {
+    void signup() throws Exception {
         User user = createTestUser();
 
         User signupUser = userService.getUserById(user.getId());
@@ -35,7 +30,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("사용자 수정")
-    void updateUser() throws Exception, UserExistsExeption {
+    void updateUser() throws Exception {
         User user = createTestUser();
         long userId = user.getId();
 
@@ -51,7 +46,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("사용자 삭제")
-    void deleteById() throws Exception, UserExistsExeption {
+    void deleteById() throws Exception {
         User user = createTestUser();
         long userId = user.getId();
 
@@ -61,7 +56,7 @@ class UserServiceTest {
         });
     }
 
-    private User createTestUser() throws UserExistsExeption {
+    private User createTestUser() throws UserAlreadyExistedException {
         Random random = new Random();
         StringBuilder email = new StringBuilder();
 
