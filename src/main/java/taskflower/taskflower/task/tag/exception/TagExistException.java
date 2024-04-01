@@ -1,4 +1,4 @@
-package taskflower.taskflower.task.tag;
+package taskflower.taskflower.task.tag.exception;
 
 public class TagExistException extends Exception {
     public TagExistException(String msg) {

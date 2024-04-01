@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import taskflower.taskflower.security.payload.SignupRequset;
+import taskflower.taskflower.auth.payload.SignupRequset;
 
 @Entity
 @Data

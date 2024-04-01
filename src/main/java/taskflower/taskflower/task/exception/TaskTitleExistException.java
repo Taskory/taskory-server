@@ -1,4 +1,4 @@
-package taskflower.taskflower.task;
+package taskflower.taskflower.task.exception;
 
 public class TaskTitleExistException extends Exception {
     public TaskTitleExistException() {

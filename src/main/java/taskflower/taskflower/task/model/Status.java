@@ -1,4 +1,4 @@
-package taskflower.taskflower.task;
+package taskflower.taskflower.task.model;
 
 public enum Status {
     TODO,

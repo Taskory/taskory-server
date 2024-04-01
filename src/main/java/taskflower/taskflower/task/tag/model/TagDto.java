@@ -1,4 +1,4 @@
-package taskflower.taskflower.task.tag;
+package taskflower.taskflower.task.tag.model;
 
 import lombok.Data;
 

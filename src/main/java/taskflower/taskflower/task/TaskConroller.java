@@ -5,7 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import taskflower.taskflower.security.CurrentUser;
-import taskflower.taskflower.security.UserDetailsImpl;
+import taskflower.taskflower.auth.UserDetailsImpl;
+import taskflower.taskflower.task.exception.TaskNotFoundExeption;
+import taskflower.taskflower.task.exception.TaskTitleExistException;
+import taskflower.taskflower.task.model.TaskDto;
 import taskflower.taskflower.user.User;
 import taskflower.taskflower.user.UserService;
 

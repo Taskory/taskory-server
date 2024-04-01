@@ -1,4 +1,4 @@
-package taskflower.taskflower.task.tag;
+package taskflower.taskflower.task.tag.exception;
 
 public class TagNotFoundException extends Exception {
     public TagNotFoundException(String tagNotFound) {

@@ -2,6 +2,8 @@ package taskflower.taskflower.task;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import taskflower.taskflower.task.model.Task;
+import taskflower.taskflower.task.model.TaskDto;
 
 import java.time.LocalDateTime;
 

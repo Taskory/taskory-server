@@ -1,8 +1,8 @@
-package taskflower.taskflower.task;
+package taskflower.taskflower.task.model;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import taskflower.taskflower.task.tag.Tag;
+import taskflower.taskflower.task.tag.model.Tag;
 
 import java.util.Set;
 

@@ -18,7 +18,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import taskflower.taskflower.security.oauth2.CustomOAuth2UserService;
 
 import java.util.Arrays;
 
@@ -27,14 +26,10 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     private final TokenFilter tokenFilter;
-    private final HttpCookieAuthorizationRequestRepository httpCookieAuthorizationRequestRepository;
-    private final CustomOAuth2UserService customOauth2UserService;
 
     @Autowired
-    public SecurityConfig(TokenFilter tokenFilter, HttpCookieAuthorizationRequestRepository httpCookieAuthorizationRequestRepository, CustomOAuth2UserService customOauth2UserService) {
+    public SecurityConfig(TokenFilter tokenFilter) {
         this.tokenFilter = tokenFilter;
-        this.httpCookieAuthorizationRequestRepository = httpCookieAuthorizationRequestRepository;
-        this.customOauth2UserService = customOauth2UserService;
     }
 
     @Bean
@@ -50,9 +45,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-//                http 기본 인증 비활성화
+//                http 기본 인증 disable
                 .httpBasic(HttpBasicConfigurer::disable)
-//                시큐리티에서 제공하는 기본 로그인 페이지 비활성화
+//                security 제공 기본 로그인 페이지 disable
                 .formLogin(FormLoginConfigurer::disable)
 //                Post 요청 및 resource 허용 설정
                 .csrf(CsrfConfigurer::disable)
@@ -68,21 +63,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/user/**").permitAll()
                         .requestMatchers("/api/v1/task/**").permitAll()
 //                        .requestMatchers("/api/v1/user/**").hasAnyRole("ADMIN", "USER")
-//                        OAuth2 Match
                         .requestMatchers("/oauth2/**").permitAll()
                         .anyRequest().authenticated())
 //                jwt token filter 추가
-                .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class)
-
-//                OAuth2 설정
-                .oauth2Login(oauth -> oauth
-                        .authorizationEndpoint(endPoint -> endPoint
-                                .baseUri("/oauth2/authorize")
-                                .authorizationRequestRepository(httpCookieAuthorizationRequestRepository))
-                        .redirectionEndpoint(endPoint -> endPoint
-                                .baseUri("/oauth2/callback/**"))
-                        .userInfoEndpoint(endPoint -> endPoint
-                                .userService(customOauth2UserService)));
+                .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -90,7 +74,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        config.setAllowedOrigins(Arrays.asList("http://localhost:3000, http://localhost:8080"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         config.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
         config.setAllowCredentials(true);

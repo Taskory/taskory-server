@@ -3,11 +3,12 @@ package taskflower.taskflower.task.tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
-import taskflower.taskflower.BadRequestResponse;
 import taskflower.taskflower.security.CurrentUser;
-import taskflower.taskflower.security.UserDetailsImpl;
+import taskflower.taskflower.auth.UserDetailsImpl;
+import taskflower.taskflower.task.tag.exception.TagExistException;
+import taskflower.taskflower.task.tag.exception.TagNotFoundException;
+import taskflower.taskflower.task.tag.model.TagDto;
 import taskflower.taskflower.user.User;
 import taskflower.taskflower.user.UserService;
 
@@ -33,23 +34,23 @@ public class TagController {
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@CurrentUser UserDetailsImpl userDetails, @RequestBody TagDto tagDto) {
+    public ResponseEntity<Object> save(@CurrentUser UserDetailsImpl userDetails, @RequestBody TagDto tagDto) {
         User user = userService.getUserById(userDetails.getId());
         try {
             TagDto savedTag = tagService.save(tagDto, user);
             return ResponseEntity.ok().body(savedTag);
         } catch (TagExistException exception) {
-            return ResponseEntity.badRequest().body(new BadRequestResponse(exception.getMessage()));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
     }
 
     @PutMapping
-    public ResponseEntity<?> update(@RequestBody TagDto tagDto) {
+    public ResponseEntity<Object> update(@RequestBody TagDto tagDto) {
         try {
             TagDto result = tagService.update(tagDto);
             return ResponseEntity.ok().body(result);
-        } catch (TagNotFoundException e) {
-            return ResponseEntity.badRequest().body(new BadRequestResponse(e.getMessage()));
+        } catch (TagNotFoundException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
     }
 

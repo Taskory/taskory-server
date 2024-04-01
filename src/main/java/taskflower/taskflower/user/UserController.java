@@ -1,11 +1,10 @@
 package taskflower.taskflower.user;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import taskflower.taskflower.security.CurrentUser;
-import taskflower.taskflower.security.UserDetailsImpl;
+import taskflower.taskflower.auth.UserDetailsImpl;
 
 @RestController
 @RequestMapping("/api/v1/user")

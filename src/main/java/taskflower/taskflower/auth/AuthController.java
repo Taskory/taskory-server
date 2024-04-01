@@ -1,14 +1,15 @@
-package taskflower.taskflower.security;
+package taskflower.taskflower.auth;
 
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import taskflower.taskflower.security.payload.LoginRequset;
-import taskflower.taskflower.security.payload.LoginResponse;
-import taskflower.taskflower.security.payload.SignupRequset;
-import taskflower.taskflower.security.payload.SignupResponse;
+import taskflower.taskflower.security.TokenProvider;
+import taskflower.taskflower.auth.payload.LoginRequset;
+import taskflower.taskflower.auth.payload.LoginResponse;
+import taskflower.taskflower.auth.payload.SignupRequset;
+import taskflower.taskflower.auth.payload.SignupResponse;
 import taskflower.taskflower.user.User;
 import taskflower.taskflower.user.exception.UserAlreadyExistedException;
 import taskflower.taskflower.user.UserService;

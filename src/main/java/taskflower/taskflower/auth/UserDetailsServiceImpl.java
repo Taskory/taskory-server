@@ -1,4 +1,4 @@
-package taskflower.taskflower.security;
+package taskflower.taskflower.auth;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
