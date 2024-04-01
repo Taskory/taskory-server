@@ -24,7 +24,7 @@ class UserServiceTest {
 
         User signupUser = userService.getUserById(user.getId());
 
-        assertEquals(signupUser, user);
+        assertEquals(signupUser.toString(), user.toString());
     }
 
 
@@ -41,7 +41,7 @@ class UserServiceTest {
 
         User updatedUser = userService.updateUser(userId, updateUser);
 
-        assertEquals(updatedUser, userService.getUserById(userId));
+        assertEquals(updatedUser.toString(), userService.getUserById(userId).toString());
     }
 
     @Test

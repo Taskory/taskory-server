@@ -16,8 +16,8 @@ public interface TaskMapper {
 
     @Mapping(target = "startTime", expression = "java(convertArrayToLocalDateTime(saveTaskRequest.getStartTime()))")
     @Mapping(target = "endTime", expression = "java(convertArrayToLocalDateTime(saveTaskRequest.getEndTime()))")
-    @Mapping(target = "createdTime", expression = "java(java.time.LocalDateTime.now())")
-    @Mapping(target = "updatedTime", expression = "java(java.time.LocalDateTime.now())")
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
     Task convertTaskDtoToTask(TaskDto saveTaskRequest);
@@ -32,7 +32,6 @@ public interface TaskMapper {
         task.setTags(taskDto.getTags());
         task.setStartTime(startTime);
         task.setEndTime(endTime);
-        task.setUpdatedTime(LocalDateTime.now());
 
         return task;
     }

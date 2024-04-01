@@ -74,7 +74,7 @@ class TaskServiceTest {
 
         TaskDto savedTask = taskService.save(taskDto, testUser);
 
-        Assertions.assertEquals(savedTask, taskService.getTaskById(savedTask.getId()));
+        Assertions.assertEquals(savedTask.toString(), taskService.getTaskById(savedTask.getId()).toString());
     }
 
 
@@ -92,18 +92,18 @@ class TaskServiceTest {
 
         TaskDto savedTask = taskService.save(taskDto, testUser);
 
-        TaskDto updateTaskRequset = new TaskDto();
-        updateTaskRequset.setTitle("abcdefg");
-        updateTaskRequset.setDescription("............description");
-        updateTaskRequset.setStatus(Status.PROGRESS);
-        updateTaskRequset.setStartTime(new int[]{2024, 2, 19, 10, 15});
-        updateTaskRequset.setEndTime(new int[]{2024, 3, 11, 10, 15});
-        updateTaskRequset.setTags(getTestTags());
+        TaskDto updateTaskRequest = new TaskDto();
+        updateTaskRequest.setTitle("abcdefg");
+        updateTaskRequest.setDescription("............description");
+        updateTaskRequest.setStatus(Status.PROGRESS);
+        updateTaskRequest.setStartTime(new int[]{2024, 2, 19, 10, 15});
+        updateTaskRequest.setEndTime(new int[]{2024, 3, 11, 10, 15});
+        updateTaskRequest.setTags(getTestTags());
 
-        TaskDto updatedTask = taskService.updateTask(savedTask.getId(), updateTaskRequset);
+        TaskDto updatedTask = taskService.updateTask(savedTask.getId(), updateTaskRequest);
 
 
-        Assertions.assertEquals(updatedTask, taskService.getTaskById(savedTask.getId()));
+        Assertions.assertEquals(updatedTask.toString(), taskService.getTaskById(savedTask.getId()).toString());
 
     }
 
@@ -144,7 +144,7 @@ class TaskServiceTest {
 
         List<TaskDto> savedTasks = taskService.findAllByUserEmail(testUser.getEmail());
 
-        Assertions.assertEquals(task, savedTasks.get(savedTasks.size() - 1));
+        Assertions.assertEquals(task.toString(), savedTasks.get(savedTasks.size() - 1).toString());
     }
 
     private User createTestUser() throws UserAlreadyExistedException {

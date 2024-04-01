@@ -6,11 +6,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import taskflower.taskflower.auth.payload.SignupRequset;
 import taskflower.taskflower.task.tag.exception.TagExistException;
 import taskflower.taskflower.task.tag.exception.TagNotFoundException;
 import taskflower.taskflower.task.tag.model.TagDto;
 import taskflower.taskflower.user.User;
 import taskflower.taskflower.user.UserService;
+import taskflower.taskflower.user.exception.UserAlreadyExistedException;
 
 import java.util.List;
 import java.util.Random;
@@ -30,8 +32,18 @@ class TagServiceTest {
     private User user;
 
     @BeforeEach
-    void user() {
-        user = userService.findUserByEmail("test@test.test");
+    void user() throws UserAlreadyExistedException {
+        String email = "test@test.test";
+        if (userService.existsUser(email)) {
+            user = userService.findUserByEmail(email);
+        } else {
+            SignupRequset signupRequset = new SignupRequset();
+            signupRequset.setName("test");
+            signupRequset.setEmail(email);
+            signupRequset.setPassword("1234");
+            User saveUser = new User(signupRequset);
+            user = userService.signup(saveUser);
+        }
     }
 
     @Test
@@ -88,12 +100,6 @@ class TagServiceTest {
         Assertions.assertThrows(TagExistException.class, () -> tagService.save(duplicateTag, user));
     }
 
-
-
-
-
-
-
     private String getRandomTagName() {
         Random random = new Random();
         StringBuilder tagName = new StringBuilder();
@@ -112,13 +118,11 @@ class TagServiceTest {
         TagDto tagDto = new TagDto();
         tagDto.setName(getRandomTagName());
 
-        TagDto savedTag;
         try {
-            savedTag = tagService.save(tagDto, user);
+            return tagService.save(tagDto, user);
         } catch (TagExistException e) {
             tagDto.setName(getRandomTagName());
-            savedTag = tagService.save(tagDto, user);
+            return tagService.save(tagDto, user);
         }
-        return savedTag;
     }
 }

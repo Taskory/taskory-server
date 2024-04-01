@@ -2,12 +2,17 @@ package taskflower.taskflower.task.tag.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.*;
+import taskflower.taskflower.global.BaseTimeEntity;
 import taskflower.taskflower.user.User;
 
 @Entity
-@Data
-public class Tag {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+public class Tag extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -2,7 +2,8 @@ package taskflower.taskflower.task.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.*;
+import taskflower.taskflower.global.BaseTimeEntity;
 import taskflower.taskflower.task.tag.model.Tag;
 import taskflower.taskflower.user.User;
 
@@ -10,8 +11,12 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
-@Data
-public class Task {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+public class Task extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,9 +47,4 @@ public class Task {
     @Column(nullable = false)
     private LocalDateTime endTime;
 
-    @Column(nullable = false)
-    private LocalDateTime createdTime;
-
-    @Column(nullable = false)
-    private LocalDateTime updatedTime;
 }
