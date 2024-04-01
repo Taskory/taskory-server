@@ -46,7 +46,7 @@ public class TaskConroller {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findTaskById(@PathVariable String id) {
+    public ResponseEntity<Object> findTaskById(@PathVariable String id) {
         TaskDto taskResponse;
         try {
             taskResponse = taskService.getTaskById(Long.parseLong(id));
@@ -57,7 +57,7 @@ public class TaskConroller {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateTaskById(@PathVariable String id, @RequestBody TaskDto taskDto) {
+    public ResponseEntity<Object> updateTaskById(@PathVariable String id, @RequestBody TaskDto taskDto) {
         TaskDto taskResponse;
         try {
             taskResponse = taskService.updateTask(Long.parseLong(id), taskDto);
