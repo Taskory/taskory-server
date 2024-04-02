@@ -39,3 +39,7 @@ out/
 application-secrets.yml
 
 .jpb
+
+credentials.json
+
+tokens
