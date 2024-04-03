@@ -18,6 +18,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import taskflower.taskflower.security.oauth2.CustomOauth2UserService;
+import taskflower.taskflower.security.oauth2.HttpCookieOauth2AuthorizationRequsetRepository;
+import taskflower.taskflower.security.oauth2.Oauth2AuthenticationFailureHandler;
+import taskflower.taskflower.security.oauth2.Oauth2AuthenticationSuccessHandler;
 
 import java.util.Arrays;
 
@@ -26,10 +30,18 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     private final TokenFilter tokenFilter;
+    private final CustomOauth2UserService customOauth2UserService;
+    private final Oauth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
+    private final Oauth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler;
+    private final HttpCookieOauth2AuthorizationRequsetRepository httpCookieOauth2AuthorizationRequsetRepository;
 
     @Autowired
-    public SecurityConfig(TokenFilter tokenFilter) {
+    public SecurityConfig(TokenFilter tokenFilter, CustomOauth2UserService customOauth2UserService, Oauth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler, Oauth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler, HttpCookieOauth2AuthorizationRequsetRepository httpCookieOauth2AuthorizationRequsetRepository) {
         this.tokenFilter = tokenFilter;
+        this.customOauth2UserService = customOauth2UserService;
+        this.oauth2AuthenticationSuccessHandler = oauth2AuthenticationSuccessHandler;
+        this.oauth2AuthenticationFailureHandler = oauth2AuthenticationFailureHandler;
+        this.httpCookieOauth2AuthorizationRequsetRepository = httpCookieOauth2AuthorizationRequsetRepository;
     }
 
     @Bean
@@ -63,8 +75,21 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/user/**").permitAll()
                         .requestMatchers("/api/v1/task/**").permitAll()
 //                        .requestMatchers("/api/v1/user/**").hasAnyRole("ADMIN", "USER")
-                        .requestMatchers("/oauth2/**").permitAll()
+                        .requestMatchers("/api/v1/auth/**", "/api/v1/oauth2/**").permitAll()
                         .anyRequest().authenticated())
+//                oauth2 login
+                .oauth2Login(oauth2Login -> oauth2Login
+                        .authorizationEndpoint(endPoint -> endPoint
+                                .baseUri("/oauth2/authorize")
+                                .authorizationRequestRepository(httpCookieOauth2AuthorizationRequsetRepository))
+                        .redirectionEndpoint(endPoint -> endPoint
+                                .baseUri("/oauth2/code/*"))
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOauth2UserService))
+                        .successHandler(oauth2AuthenticationSuccessHandler)
+                        .failureHandler(oauth2AuthenticationFailureHandler)
+
+                )
 //                jwt token filter 추가
                 .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
 
