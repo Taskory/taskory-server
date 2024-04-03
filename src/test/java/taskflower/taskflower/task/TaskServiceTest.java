@@ -3,7 +3,7 @@ package taskflower.taskflower.task;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import taskflower.taskflower.auth.payload.SignupRequset;
+import taskflower.taskflower.security.payload.SignupRequset;
 import taskflower.taskflower.task.exception.TaskNotFoundExeption;
 import taskflower.taskflower.task.exception.TaskTitleExistException;
 import taskflower.taskflower.task.model.Status;
