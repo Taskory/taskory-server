@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.Map;
 
 @Data
-public class UserDetailsImpl implements UserDetails, OAuth2User {
+public class UserPrincipal implements UserDetails, OAuth2User {
 
     private long id;
     private String email;
@@ -19,14 +19,14 @@ public class UserDetailsImpl implements UserDetails, OAuth2User {
     private Collection<? extends GrantedAuthority> authorities;
     private Map<String, Object> attribute;
 
-    public UserDetailsImpl(User user) {
+    public UserPrincipal(User user) {
         this.id = user.getId();
         this.email = user.getEmail();
         this.password = user.getPassword();
 //        this.authorities = Collections.singletonList(new SimpleGrantedAuthority("USER"));
     }
 
-    public UserDetailsImpl(User user, Map<String, Object> attribute) {
+    public UserPrincipal(User user, Map<String, Object> attribute) {
         this.id = user.getId();
         this.email = user.getEmail();
         this.password = user.getPassword();

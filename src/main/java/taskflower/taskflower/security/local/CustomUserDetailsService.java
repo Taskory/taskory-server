@@ -9,12 +9,12 @@ import taskflower.taskflower.user.User;
 import taskflower.taskflower.user.UserRepository;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
     @Autowired
-    public UserDetailsServiceImpl(UserRepository userRepository) {
+    public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -22,12 +22,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String email) {
         User user = userRepository.findUserByEmail(email);
-        return new UserDetailsImpl(user);
+        return new UserPrincipal(user);
     }
 
     @Transactional
     public UserDetails loadUserById(long userId) {
         User user = userRepository.findById(userId).orElseThrow();
-        return new UserDetailsImpl(user);
+        return new UserPrincipal(user);
     }
 }
