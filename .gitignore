@@ -41,5 +41,6 @@ application-secrets.yml
 .jpb
 
 credentials.json
+credentials-web.json
 
 tokens

@@ -14,5 +14,5 @@ public interface CalendarService {
 
     List<Object> findAllEvents();
 
-    List<Object> findNextEvents() throws IOException;
+    List<Object> synchronize() throws IOException;
 }

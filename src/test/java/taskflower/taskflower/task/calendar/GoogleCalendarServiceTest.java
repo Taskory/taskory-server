@@ -22,7 +22,7 @@ class GoogleCalendarServiceTest {
     @Test
     @DisplayName("Google Calendar API 연결 테스트")
     void connectText() throws IOException {
-        List<Object> result = calendarService.findNextEvents();
+        List<Object> result = calendarService.synchronize();
         System.out.println(result);
     }
 }

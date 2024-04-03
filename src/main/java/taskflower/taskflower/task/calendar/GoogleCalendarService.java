@@ -51,21 +51,24 @@ public class GoogleCalendarService implements CalendarService {
     }
 
     @Override
-    public List<Object> findNextEvents() throws IOException {
-        // List the next 10 events from the primary calendar.
-        DateTime now = new DateTime(System.currentTimeMillis());
-        Events events = null;
+    public List<Object> synchronize() throws IOException {
+        List<Event> events;
         try {
             events = CalendarFactory.googleCalendar().events().list("primary")
-                    .setMaxResults(1)
+//                    .setMaxResults(1)
 //                    .setTimeMin(now)
-//                    .setOrderBy("startTime")
-//                    .setSingleEvents(true)
-                    .execute();
+                    .setOrderBy("startTime")
+                    .setSingleEvents(true)
+                    .execute()
+                    .getItems();
         } catch (GeneralSecurityException e) {
             throw new IllegalStateException(e.getMessage());
         }
-        return Collections.singletonList(events.getItems());
+        for (Event event : events) {
+
+        }
+
+        return null;
     }
 
 }
