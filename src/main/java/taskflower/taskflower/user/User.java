@@ -3,7 +3,7 @@ package taskflower.taskflower.user;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
-import taskflower.taskflower.auth.payload.SignupRequset;
+import taskflower.taskflower.security.payload.SignupRequset;
 import taskflower.taskflower.global.BaseTimeEntity;
 
 @Entity

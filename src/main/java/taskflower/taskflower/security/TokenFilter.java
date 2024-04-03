@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import taskflower.taskflower.auth.UserDetailsServiceImpl;
+import taskflower.taskflower.security.local.CustomUserDetailsService;
 
 import java.io.IOException;
 
@@ -21,9 +21,9 @@ import java.io.IOException;
 public class TokenFilter extends OncePerRequestFilter {
 
     private final TokenProvider tokenProvider;
-    private final UserDetailsServiceImpl userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
 
-    public TokenFilter(TokenProvider tokenProvider, UserDetailsServiceImpl userDetailsService) {
+    public TokenFilter(TokenProvider tokenProvider, CustomUserDetailsService userDetailsService) {
         this.tokenProvider = tokenProvider;
         this.userDetailsService = userDetailsService;
     }

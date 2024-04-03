@@ -1,10 +1,11 @@
-package taskflower.taskflower.auth;
+package taskflower.taskflower.security.local;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import taskflower.taskflower.security.UserPrincipal;
 import taskflower.taskflower.user.User;
 import taskflower.taskflower.user.UserRepository;
 

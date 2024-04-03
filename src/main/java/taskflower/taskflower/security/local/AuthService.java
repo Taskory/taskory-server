@@ -1,11 +1,11 @@
-package taskflower.taskflower.auth;
+package taskflower.taskflower.security.local;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import taskflower.taskflower.auth.payload.LoginRequset;
+import taskflower.taskflower.security.payload.LoginRequset;
 
 @Service
 public class AuthService {

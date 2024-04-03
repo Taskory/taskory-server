@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import taskflower.taskflower.security.CurrentUser;
-import taskflower.taskflower.auth.UserDetailsImpl;
+import taskflower.taskflower.security.UserPrincipal;
 import taskflower.taskflower.task.tag.exception.TagExistException;
 import taskflower.taskflower.task.tag.exception.TagNotFoundException;
 import taskflower.taskflower.task.tag.model.TagDto;
@@ -28,13 +28,13 @@ public class TagController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TagDto>> findAllTags(@CurrentUser UserDetailsImpl userDetails) {
+    public ResponseEntity<List<TagDto>> findAllTags(@CurrentUser UserPrincipal userDetails) {
         List<TagDto> tags = tagService.findAllByUserEmail(userDetails.getEmail());
         return ResponseEntity.ok().body(tags);
     }
 
     @PostMapping
-    public ResponseEntity<Object> save(@CurrentUser UserDetailsImpl userDetails, @RequestBody TagDto tagDto) {
+    public ResponseEntity<Object> save(@CurrentUser UserPrincipal userDetails, @RequestBody TagDto tagDto) {
         User user = userService.getUserById(userDetails.getId());
         try {
             TagDto savedTag = tagService.save(tagDto, user);

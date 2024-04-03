@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import taskflower.taskflower.auth.UserDetailsImpl;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -29,7 +28,7 @@ public class TokenProvider {
 
 
     public String createToken(Authentication authentication) {
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
 
         Date now = new Date();
         Date expireDate = new Date(now.getTime() + expireMSec);

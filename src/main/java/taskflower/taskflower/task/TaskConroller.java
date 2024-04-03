@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import taskflower.taskflower.security.CurrentUser;
-import taskflower.taskflower.auth.UserDetailsImpl;
+import taskflower.taskflower.security.UserPrincipal;
 import taskflower.taskflower.task.exception.TaskNotFoundExeption;
 import taskflower.taskflower.task.exception.TaskTitleExistException;
 import taskflower.taskflower.task.model.TaskDto;
@@ -28,7 +28,7 @@ public class TaskConroller {
     }
 
     @PostMapping
-    public ResponseEntity<Object> save(@CurrentUser UserDetailsImpl userDetails, @RequestBody TaskDto taskDto) {
+    public ResponseEntity<Object> save(@CurrentUser UserPrincipal userDetails, @RequestBody TaskDto taskDto) {
         try {
             User user = userService.getUserById(userDetails.getId());
             TaskDto task = taskService.save(taskDto, user);
@@ -39,7 +39,7 @@ public class TaskConroller {
     }
 
     @GetMapping
-    public ResponseEntity<List<TaskDto>> findAllByUser(@CurrentUser UserDetailsImpl userDetails) {
+    public ResponseEntity<List<TaskDto>> findAllByUser(@CurrentUser UserPrincipal userDetails) {
         User user = userService.getUserById(userDetails.getId());
         List<TaskDto> tasks = taskService.findAllByUserEmail(user.getEmail());
         return ResponseEntity.ok().body(tasks);
