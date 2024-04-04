@@ -1,6 +1,7 @@
 package taskflower.taskflower.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,10 +25,14 @@ import taskflower.taskflower.security.oauth2.OAuth2AuthenticationFailureHandler;
 import taskflower.taskflower.security.oauth2.OAuth2AuthenticationSuccessHandler;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Value("${app.cors.allowed-origins}")
+    private List<String> allowedOrigins;
 
     private final TokenFilter tokenFilter;
     private final CustomOAuth2UserService customOauth2UserService;
@@ -99,7 +104,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Arrays.asList("http://localhost:3000, http://localhost:8080"));
+        config.setAllowedOrigins(allowedOrigins);
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         config.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
         config.setAllowCredentials(true);
