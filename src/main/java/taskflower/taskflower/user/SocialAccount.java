@@ -16,6 +16,9 @@ public class SocialAccount extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
+    private String subId;
+
     @ManyToOne
     private User user;
 
