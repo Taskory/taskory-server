@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -16,13 +17,17 @@ import java.util.Date;
 @Slf4j
 public class TokenProvider {
 
-    @Value("${app.token.expireMSec}")
-    private long expireMSec;
+    @Value("${app.token.expire-ms}")
+    private long expireMS;
 
-    private final SecretKey secretKey;
+    @Value("${app.token.secret-key}")
+    private String key;
 
-    public TokenProvider(@Value("${app.token.secretKey}") String secretKey) {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+    private SecretKey secretKey;
+
+    @PostConstruct
+    public void init() {
+        byte[] keyBytes = Decoders.BASE64.decode(key);
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -31,7 +36,7 @@ public class TokenProvider {
         UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
 
         Date now = new Date();
-        Date expireDate = new Date(now.getTime() + expireMSec);
+        Date expireDate = new Date(now.getTime() + expireMS);
 
         return Jwts.builder()
                 .subject(Long.toString(userDetails.getId()))
