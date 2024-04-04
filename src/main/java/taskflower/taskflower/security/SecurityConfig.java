@@ -19,7 +19,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import taskflower.taskflower.security.oauth2.CustomOAuth2UserService;
-import taskflower.taskflower.security.oauth2.HttpCookieOAuth2AuthorizationRequsetRepository;
+import taskflower.taskflower.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import taskflower.taskflower.security.oauth2.OAuth2AuthenticationFailureHandler;
 import taskflower.taskflower.security.oauth2.OAuth2AuthenticationSuccessHandler;
 
@@ -33,15 +33,15 @@ public class SecurityConfig {
     private final CustomOAuth2UserService customOauth2UserService;
     private final OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler;
-    private final HttpCookieOAuth2AuthorizationRequsetRepository httpCookieOauth2AuthorizationRequsetRepository;
+    private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOauth2AuthorizationRequestRepository;
 
     @Autowired
-    public SecurityConfig(TokenFilter tokenFilter, CustomOAuth2UserService customOauth2UserService, OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler, OAuth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler, HttpCookieOAuth2AuthorizationRequsetRepository httpCookieOauth2AuthorizationRequsetRepository) {
+    public SecurityConfig(TokenFilter tokenFilter, CustomOAuth2UserService customOauth2UserService, OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler, OAuth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler, HttpCookieOAuth2AuthorizationRequestRepository httpCookieOauth2AuthorizationRequestRepository) {
         this.tokenFilter = tokenFilter;
         this.customOauth2UserService = customOauth2UserService;
         this.oauth2AuthenticationSuccessHandler = oauth2AuthenticationSuccessHandler;
         this.oauth2AuthenticationFailureHandler = oauth2AuthenticationFailureHandler;
-        this.httpCookieOauth2AuthorizationRequsetRepository = httpCookieOauth2AuthorizationRequsetRepository;
+        this.httpCookieOauth2AuthorizationRequestRepository = httpCookieOauth2AuthorizationRequestRepository;
     }
 
     @Bean
@@ -81,7 +81,7 @@ public class SecurityConfig {
                 .oauth2Login(oauth2Login -> oauth2Login
                         .authorizationEndpoint(endPoint -> endPoint
                                 .baseUri("/oauth2/authorize")
-                                .authorizationRequestRepository(httpCookieOauth2AuthorizationRequsetRepository))
+                                .authorizationRequestRepository(httpCookieOauth2AuthorizationRequestRepository))
                         .redirectionEndpoint(endPoint -> endPoint
                                 .baseUri("/oauth2/code/*"))
                         .userInfoEndpoint(userInfo -> userInfo
