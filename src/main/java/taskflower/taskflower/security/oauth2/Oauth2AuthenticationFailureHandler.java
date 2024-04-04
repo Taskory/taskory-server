@@ -4,5 +4,5 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 import org.springframework.stereotype.Component;
 
 @Component
-public class Oauth2AuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 }

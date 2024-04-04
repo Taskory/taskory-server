@@ -7,7 +7,7 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequ
 import org.springframework.stereotype.Component;
 
 @Component
-public class HttpCookieOauth2AuthorizationRequsetRepository implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
+public class HttpCookieOAuth2AuthorizationRequsetRepository implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
     @Override
     public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
         return null;

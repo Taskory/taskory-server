@@ -19,7 +19,7 @@ public class TokenProvider {
     @Value("${app.token.expireMSec}")
     private long expireMSec;
 
-    private SecretKey secretKey;
+    private final SecretKey secretKey;
 
     public TokenProvider(@Value("${app.token.secretKey}") String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
