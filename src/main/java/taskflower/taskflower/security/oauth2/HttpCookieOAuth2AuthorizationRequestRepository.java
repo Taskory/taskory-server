@@ -2,12 +2,14 @@ package taskflower.taskflower.security.oauth2;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 @Component
+@Slf4j
 public class HttpCookieOAuth2AuthorizationRequestRepository implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
     public static final String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "oauth2_auth_request";
     public static final String REDIRECT_URI_PARAM_COOKIE_NAME = "redirect_uri";
@@ -16,7 +18,7 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements Authoriza
     @Override
     public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
         return CookieUtils.getCookie(request, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME)
-                .map(cookie -> CookieUtils.deserialize(cookie, OAuth2AuthorizationRequest.class))
+                .map(cookie -> CookieUtils.deserialize(cookie.getValue(), OAuth2AuthorizationRequest.class))
                 .orElse(null);
     }
 

@@ -80,7 +80,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/user/**").permitAll()
                         .requestMatchers("/api/v1/task/**").permitAll()
 //                        .requestMatchers("/api/v1/user/**").hasAnyRole("ADMIN", "USER")
-                        .requestMatchers("/api/v1/auth/**", "/api/v1/oauth2/**").permitAll()
+                        .requestMatchers("/api/v1/auth/**", "/oauth2/**").permitAll()
                         .anyRequest().authenticated())
 //                oauth2 login
                 .oauth2Login(oauth2Login -> oauth2Login
@@ -88,7 +88,7 @@ public class SecurityConfig {
                                 .baseUri("/oauth2/authorize")
                                 .authorizationRequestRepository(httpCookieOauth2AuthorizationRequestRepository))
                         .redirectionEndpoint(endPoint -> endPoint
-                                .baseUri("/oauth2/code/*"))
+                                .baseUri("/oauth2/code/**"))
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOauth2UserService))
                         .successHandler(oauth2AuthenticationSuccessHandler)

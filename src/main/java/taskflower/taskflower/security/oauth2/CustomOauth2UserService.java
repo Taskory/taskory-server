@@ -1,6 +1,7 @@
 package taskflower.taskflower.security.oauth2;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -43,17 +44,19 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
 
         if (socialAccountRepository.existsByUsername(oAuth2UserInfo.getEmail())) {
-            User user = updateSocialAccount(oAuth2UserInfo);
+            updateSocialAccount(oAuth2UserInfo);
+            SocialAccount socialAccount = socialAccountRepository.findBySubId(oAuth2UserInfo.getSubId());
+            User user = socialAccount.getUser();
             return new UserPrincipal(user);
         } else {
             if (SecurityContextHolder.getContext().getAuthentication() != null) {
-                User user = saveSocialAccount(oAuth2UserInfo, socialProvider);
-                return new UserPrincipal(user);
+                saveSocialAccount(oAuth2UserInfo, socialProvider);
+                return (OAuth2User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             } else throw new UsernameNotFoundException("You can use this service if sign up for");
         }
     }
 
-    private User saveSocialAccount(OAuth2UserInfo oAuth2UserInfo, String socialProvider) {
+    private void saveSocialAccount(OAuth2UserInfo oAuth2UserInfo, String socialProvider) {
         SocialAccount socialAccount = new SocialAccount();
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findUserByEmail(userDetails.getUsername());
@@ -61,13 +64,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         socialAccount.setProvider(SocialProvider.valueOf(socialProvider));
         socialAccount.setSubId(oAuth2UserInfo.getSubId());
         socialAccount.setUsername(oAuth2UserInfo.getEmail());
-
-        return socialAccountRepository.save(socialAccount).getUser();
+        socialAccountRepository.save(socialAccount);
     }
 
-    private User updateSocialAccount(OAuth2UserInfo oAuth2UserInfo) {
+    private void updateSocialAccount(OAuth2UserInfo oAuth2UserInfo) {
         SocialAccount socialAccount = socialAccountRepository.findBySubId(oAuth2UserInfo.getSubId());
         socialAccount.setUsername(oAuth2UserInfo.getEmail());
-        return socialAccountRepository.save(socialAccount).getUser();
+        socialAccountRepository.save(socialAccount);
     }
 }

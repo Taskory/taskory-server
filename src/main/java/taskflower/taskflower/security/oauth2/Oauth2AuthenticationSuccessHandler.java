@@ -4,6 +4,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -20,6 +21,7 @@ import java.util.Optional;
 import static taskflower.taskflower.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 @Component
+@Slf4j
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Value(value = "${app.oauth2.authorized-redirect-uris}")
     private List<String> authorizedRedirectUris;
@@ -69,6 +71,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .stream()
                 .anyMatch(authorizedRedirectUri -> {
                     URI authorizedUri = URI.create(authorizedRedirectUri);
+                    log.info("[LOG - OAuth2AuthenticationSuccessHandler.isAuthorizedRedirectUri]: " + authorizedRedirectUri);
                     return authorizedUri.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
                             && authorizedUri.getPort() == clientRedirectUri.getPort();
                 });
