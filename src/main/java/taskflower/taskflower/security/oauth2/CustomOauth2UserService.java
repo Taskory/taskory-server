@@ -1,7 +1,6 @@
 package taskflower.taskflower.security.oauth2;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,6 +11,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import taskflower.taskflower.security.UserPrincipal;
+import taskflower.taskflower.security.oauth2.model.GoogleOAuth2UserInfo;
+import taskflower.taskflower.security.oauth2.model.OAuth2UserInfo;
 import taskflower.taskflower.user.*;
 
 @Service

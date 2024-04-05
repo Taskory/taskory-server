@@ -1,4 +1,4 @@
-package taskflower.taskflower.security.oauth2;
+package taskflower.taskflower.security.oauth2.handler;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -12,6 +12,8 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 import taskflower.taskflower.security.TokenProvider;
+import taskflower.taskflower.security.CookieUtils;
+import taskflower.taskflower.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 
 import java.io.IOException;
 import java.net.URI;

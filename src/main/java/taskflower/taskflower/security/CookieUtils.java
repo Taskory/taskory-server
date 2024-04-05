@@ -1,4 +1,4 @@
-package taskflower.taskflower.security.oauth2;
+package taskflower.taskflower.security;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

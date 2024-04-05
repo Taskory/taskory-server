@@ -1,4 +1,4 @@
-package taskflower.taskflower.security.oauth2;
+package taskflower.taskflower.security.oauth2.model;
 
 import java.util.Map;
 

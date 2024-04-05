@@ -21,8 +21,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import taskflower.taskflower.security.oauth2.CustomOAuth2UserService;
 import taskflower.taskflower.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
-import taskflower.taskflower.security.oauth2.OAuth2AuthenticationFailureHandler;
-import taskflower.taskflower.security.oauth2.OAuth2AuthenticationSuccessHandler;
+import taskflower.taskflower.security.oauth2.handler.OAuth2AuthenticationFailureHandler;
+import taskflower.taskflower.security.oauth2.handler.OAuth2AuthenticationSuccessHandler;
 
 import java.util.Arrays;
 import java.util.List;
