@@ -49,10 +49,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             User user = socialAccount.getUser();
             return new UserPrincipal(user);
         } else {
-            if (SecurityContextHolder.getContext().getAuthentication() != null) {
-                saveSocialAccount(oAuth2UserInfo, socialProvider);
-                return (OAuth2User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            } else throw new UsernameNotFoundException("You can use this service if sign up for");
+            throw new UsernameNotFoundException("You can use this service if sign up for");
         }
     }
 

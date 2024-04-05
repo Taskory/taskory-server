@@ -1,9 +1,13 @@
 package taskflower.taskflower.security.local;
 
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import taskflower.taskflower.security.TokenProvider;
 import taskflower.taskflower.security.payload.LoginRequset;
@@ -20,19 +24,27 @@ public class AuthController {
 
     private final TokenProvider tokenProvider;
     private final UserService userService;
-    private final AuthService authService;
+    private final AuthenticationManager authenticationManager;
 
-    public AuthController(TokenProvider tokenProvider, UserService userService, AuthService authService) {
+    @Autowired
+    public AuthController(TokenProvider tokenProvider, UserService userService, AuthenticationManager authenticationManager) {
         this.tokenProvider = tokenProvider;
         this.userService = userService;
-        this.authService = authService;
+        this.authenticationManager = authenticationManager;
     }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequset loginRequset) {
-        Authentication auth = authService.authenticateUser(loginRequset);
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequset.getEmail(),
+                        loginRequset.getPassword()
+                )
+        );
 
-        String token = tokenProvider.createToken(auth);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String token = tokenProvider.createToken(authentication);
 
         return ResponseEntity.ok().body(new LoginResponse(token));
     }
