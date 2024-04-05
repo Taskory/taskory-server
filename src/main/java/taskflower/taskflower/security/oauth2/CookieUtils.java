@@ -49,6 +49,7 @@ public class CookieUtils {
     }
 
     public static <T> T deserialize(String base64String, Class<T> cls) {
+//        Serialization.deserialize deprecated 대응 필요
         return cls.cast(SerializationUtils.deserialize(Base64.getUrlDecoder().decode(base64String)));
     }
 }
