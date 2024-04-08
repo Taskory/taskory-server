@@ -1,4 +1,4 @@
-package taskflower.taskflower.user;
+package taskflower.taskflower.user.SocialAccount;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

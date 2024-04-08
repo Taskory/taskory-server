@@ -1,8 +1,9 @@
-package taskflower.taskflower.user;
+package taskflower.taskflower.user.SocialAccount;
 
 import jakarta.persistence.*;
 import lombok.*;
 import taskflower.taskflower.global.BaseTimeEntity;
+import taskflower.taskflower.user.User;
 
 @Entity
 @Getter
@@ -16,6 +17,7 @@ public class SocialAccount extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+//    Primary id of OAuth2 provider
     @Column
     private String subId;
 
@@ -26,7 +28,11 @@ public class SocialAccount extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private SocialProvider provider;
 
+//    user ID or Email of OAuth2 provider
     @Column
     private String username;
+
+    @Column
+    private String name;
 
 }

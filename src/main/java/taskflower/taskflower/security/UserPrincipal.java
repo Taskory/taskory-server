@@ -17,7 +17,7 @@ public class UserPrincipal implements UserDetails, OAuth2User {
     private String email;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
-    private Map<String, Object> attribute;
+    private Map<String, Object> attributes;
 
     public UserPrincipal(User user) {
         this.id = user.getId();
@@ -26,17 +26,17 @@ public class UserPrincipal implements UserDetails, OAuth2User {
 //        this.authorities = Collections.singletonList(new SimpleGrantedAuthority("USER"));
     }
 
-    public UserPrincipal(User user, Map<String, Object> attribute) {
+    public UserPrincipal(User user, Map<String, Object> attributes) {
         this.id = user.getId();
         this.email = user.getEmail();
         this.password = user.getPassword();
-        this.attribute = attribute;
+        this.attributes = attributes;
     }
 
 
     @Override
     public Map<String, Object> getAttributes() {
-        return this.attribute;
+        return this.attributes;
     }
 
     @Override

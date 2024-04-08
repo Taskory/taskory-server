@@ -1,19 +1,31 @@
 package taskflower.taskflower.user;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import taskflower.taskflower.security.oauth2.model.OAuth2UserInfo;
+import taskflower.taskflower.user.SocialAccount.SocialAccount;
+import taskflower.taskflower.user.SocialAccount.SocialAccountRepository;
+import taskflower.taskflower.user.SocialAccount.SocialProvider;
 import taskflower.taskflower.user.exception.UserAlreadyExistedException;
 import taskflower.taskflower.user.exception.UserNotFoundException;
+
+import java.util.Set;
+import java.util.UUID;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final SocialAccountRepository socialAccountRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    @Autowired
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SocialAccountRepository socialAccountRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.socialAccountRepository = socialAccountRepository;
     }
 
     public boolean existsUser(String email) {
@@ -58,5 +70,26 @@ public class UserService {
 
     public User findUserByEmail(String email) {
         return userRepository.findUserByEmail(email);
+    }
+
+    public User signupTempUserWithOAuth2(OAuth2UserInfo oAuth2UserInfo, String socialProvider) {
+        SocialAccount socialAccount = new SocialAccount();
+        socialAccount.setSubId(oAuth2UserInfo.getSubId());
+        socialAccount.setUsername(oAuth2UserInfo.getEmail());
+        socialAccount.setName(oAuth2UserInfo.getName());
+        socialAccount.setProvider(SocialProvider.valueOf(socialProvider));
+        socialAccountRepository.save(socialAccount);
+
+        User tempUser = new User();
+        tempUser.setSocialAccount(Set.of(socialAccount));
+        tempUser.setName(oAuth2UserInfo.getName());
+        tempUser.setEmail(oAuth2UserInfo.getEmail());
+        tempUser.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
+        userRepository.save(tempUser);
+
+        socialAccount.setUser(tempUser);
+        socialAccountRepository.save(socialAccount);
+
+        return tempUser;
     }
 }

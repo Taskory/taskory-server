@@ -1,9 +1,6 @@
 package taskflower.taskflower.security.oauth2;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -14,18 +11,23 @@ import taskflower.taskflower.security.UserPrincipal;
 import taskflower.taskflower.security.oauth2.model.GoogleOAuth2UserInfo;
 import taskflower.taskflower.security.oauth2.model.OAuth2UserInfo;
 import taskflower.taskflower.user.*;
+import taskflower.taskflower.user.SocialAccount.SocialAccount;
+import taskflower.taskflower.user.SocialAccount.SocialAccountRepository;
+import taskflower.taskflower.user.SocialAccount.SocialAccountService;
+import taskflower.taskflower.user.SocialAccount.SocialProvider;
 
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final SocialAccountRepository socialAccountRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
+    private final SocialAccountService socialAccountService;
 
     @Autowired
-    public CustomOAuth2UserService(SocialAccountRepository socialAccountRepository,
-                                   UserRepository userRepository) {
+    public CustomOAuth2UserService(SocialAccountRepository socialAccountRepository, UserService userService, SocialAccountService socialAccountService) {
         this.socialAccountRepository = socialAccountRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
+        this.socialAccountService = socialAccountService;
     }
 
     @Override
@@ -36,7 +38,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2UserInfo oAuth2UserInfo;
 
 //        google 말고도 apple 등 다른 social 연동 정보 등록 예정
-        if (socialProvider.equalsIgnoreCase(SocialProvider.google.toString())) {
+        if (socialProvider.equalsIgnoreCase(SocialProvider.GOOGLE.toString())) {
             oAuth2UserInfo = new GoogleOAuth2UserInfo(oAuth2User.getAttributes());
         } else throw new OAuth2AuthenticationException("Does not exist connected social provider info");
 
@@ -44,30 +46,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             throw new OAuth2AuthenticationException("Your account is not signed up");
         }
 
+
         if (socialAccountRepository.existsByUsername(oAuth2UserInfo.getEmail())) {
-            updateSocialAccount(oAuth2UserInfo);
-            SocialAccount socialAccount = socialAccountRepository.findBySubId(oAuth2UserInfo.getSubId());
+            SocialAccount socialAccount = socialAccountService.updateSocialAccount(oAuth2UserInfo);
             User user = socialAccount.getUser();
-            return new UserPrincipal(user);
+            return new UserPrincipal(user, oAuth2User.getAttributes());
         } else {
-            throw new UsernameNotFoundException("You can use this service if sign up for");
+            User tempUser = userService.signupTempUserWithOAuth2(oAuth2UserInfo, socialProvider);
+            return new UserPrincipal(tempUser, oAuth2User.getAttributes());
         }
     }
 
-    private void saveSocialAccount(OAuth2UserInfo oAuth2UserInfo, String socialProvider) {
-        SocialAccount socialAccount = new SocialAccount();
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findUserByEmail(userDetails.getUsername());
-        socialAccount.setUser(user);
-        socialAccount.setProvider(SocialProvider.valueOf(socialProvider));
-        socialAccount.setSubId(oAuth2UserInfo.getSubId());
-        socialAccount.setUsername(oAuth2UserInfo.getEmail());
-        socialAccountRepository.save(socialAccount);
-    }
-
-    private void updateSocialAccount(OAuth2UserInfo oAuth2UserInfo) {
-        SocialAccount socialAccount = socialAccountRepository.findBySubId(oAuth2UserInfo.getSubId());
-        socialAccount.setUsername(oAuth2UserInfo.getEmail());
-        socialAccountRepository.save(socialAccount);
-    }
 }

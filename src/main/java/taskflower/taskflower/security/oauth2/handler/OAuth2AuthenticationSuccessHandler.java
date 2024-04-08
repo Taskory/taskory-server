@@ -53,6 +53,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .map(Cookie::getValue);
 
         if (redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get())) {
+            log.info("[LOG - OAuth2AuthenticationSuccessHandler]");
             throw new IllegalStateException("Bad Request");
         }
 

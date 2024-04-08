@@ -5,6 +5,9 @@ import jakarta.validation.constraints.Email;
 import lombok.*;
 import taskflower.taskflower.security.payload.SignupRequset;
 import taskflower.taskflower.global.BaseTimeEntity;
+import taskflower.taskflower.user.SocialAccount.SocialAccount;
+
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -34,5 +37,7 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private String password;
 
+    @OneToMany
+    private Set<SocialAccount> socialAccount;
 }
 
