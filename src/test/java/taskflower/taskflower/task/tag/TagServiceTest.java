@@ -10,9 +10,10 @@ import taskflower.taskflower.security.payload.SignupRequset;
 import taskflower.taskflower.task.tag.exception.TagExistException;
 import taskflower.taskflower.task.tag.exception.TagNotFoundException;
 import taskflower.taskflower.task.tag.model.TagDto;
-import taskflower.taskflower.user.User;
+import taskflower.taskflower.user.model.User;
 import taskflower.taskflower.user.UserService;
 import taskflower.taskflower.user.exception.UserAlreadyExistedException;
+import taskflower.taskflower.user.model.UserDto;
 
 import java.util.List;
 import java.util.Random;
@@ -35,14 +36,15 @@ class TagServiceTest {
     void user() throws UserAlreadyExistedException {
         String email = "test@test.test";
         if (userService.existsUser(email)) {
-            user = userService.findUserByEmail(email);
+            UserDto existedUser = userService.findUserByEmail(email);
+            user = userService.getUserById(existedUser.getId());
         } else {
             SignupRequset signupRequset = new SignupRequset();
             signupRequset.setName("test");
             signupRequset.setEmail(email);
             signupRequset.setPassword("1234");
-            User saveUser = new User(signupRequset);
-            user = userService.signup(saveUser);
+            UserDto saveUser = userService.signup(new User(signupRequset));
+            user = userService.getUserById(saveUser.getId());
         }
     }
 

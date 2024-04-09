@@ -6,9 +6,11 @@ import taskflower.taskflower.task.tag.exception.TagExistException;
 import taskflower.taskflower.task.tag.exception.TagNotFoundException;
 import taskflower.taskflower.task.tag.model.Tag;
 import taskflower.taskflower.task.tag.model.TagDto;
-import taskflower.taskflower.user.User;
+import taskflower.taskflower.user.UserRepository;
+import taskflower.taskflower.user.model.User;
 import taskflower.taskflower.user.UserService;
 import taskflower.taskflower.user.exception.UserNotFoundException;
+import taskflower.taskflower.user.model.UserDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +21,14 @@ public class TagService {
     private final TagRepository tagRepository;
     private final UserService userService;
     private final TagMapper tagMapper;
+    private final UserRepository userRepository;
 
     @Autowired
-    public TagService(TagRepository tagRepository, UserService userService, TagMapper tagMapper) {
+    public TagService(TagRepository tagRepository, UserService userService, TagMapper tagMapper, UserRepository userRepository) {
         this.tagRepository = tagRepository;
         this.userService = userService;
         this.tagMapper = tagMapper;
+        this.userRepository = userRepository;
     }
 
     public TagDto save(TagDto tagDto, User user) throws TagExistException {
@@ -48,7 +52,9 @@ public class TagService {
 
     public List<TagDto> findAllByUserEmail(String email) {
         try {
-            User user = userService.findUserByEmail(email);
+            UserDto userDto = userService.findUserByEmail(email);
+            User user = userRepository.findById(userDto.getId())
+                    .orElseThrow(UserNotFoundException::new);
             List<Tag> tags = tagRepository.findAllByUser(user);
 
             List<TagDto> result = new ArrayList<>();

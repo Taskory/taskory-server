@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import taskflower.taskflower.global.BaseTimeEntity;
 import taskflower.taskflower.task.tag.model.Tag;
-import taskflower.taskflower.user.User;
+import taskflower.taskflower.user.model.User;
 
 import java.time.LocalDateTime;
 import java.util.Set;

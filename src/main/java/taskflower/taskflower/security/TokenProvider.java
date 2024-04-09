@@ -31,9 +31,10 @@ public class TokenProvider {
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);
     }
 
-
     public String createToken(Authentication authentication) {
+        log.info("[LOG - TokenProvider.createToken]");
         UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
+        log.info("[LOG - TokenProvider.createToken] userDetails : {}", userDetails.toString());
 
         Date now = new Date();
         Date expireDate = new Date(now.getTime() + expireMS);
@@ -47,6 +48,7 @@ public class TokenProvider {
     }
 
     public boolean validationToken(String jwt) {
+        log.info("[LOG - TokenProvider.validationToken]");
         try {
             Jwts.parser()
                     .verifyWith(secretKey)
@@ -68,6 +70,7 @@ public class TokenProvider {
     }
 
     public long getUserIdFromToken(String jwt) {
+        log.info("[LOG - TokenProvider.getUserIdFromToken]");
         Claims claims = Jwts.parser()
                 .verifyWith(secretKey)
                 .build()

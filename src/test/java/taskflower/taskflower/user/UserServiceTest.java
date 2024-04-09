@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import taskflower.taskflower.user.exception.UserAlreadyExistedException;
 import taskflower.taskflower.user.exception.UserNotFoundException;
+import taskflower.taskflower.user.model.User;
+import taskflower.taskflower.user.model.UserDto;
 
 import java.util.Random;
 
@@ -16,22 +18,24 @@ class UserServiceTest {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserMapper userMapper;
 
     @Test
     @DisplayName("사용자 생성 및 조회")
     void signup() throws Exception {
-        User user = createTestUser();
+        UserDto user = createTestUser();
 
-        User signupUser = userService.getUserById(user.getId());
+        UserDto signupUser = userMapper.convertUserToUserDto(userService.getUserById(user.getId()));
 
-        assertEquals(signupUser.toString(), user.toString());
+        assertEquals(user.toString(), signupUser.toString());
     }
 
 
     @Test
     @DisplayName("사용자 수정")
     void updateUser() throws Exception {
-        User user = createTestUser();
+        UserDto user = createTestUser();
         long userId = user.getId();
 
         User updateUser = userService.getUserById(userId);
@@ -39,15 +43,16 @@ class UserServiceTest {
         updateUser.setEmail("test1234@naver.com");
         updateUser.setPassword("4321");
 
-        User updatedUser = userService.updateUser(userId, updateUser);
+        UserDto updatedUser = userService.updateUser(userId, updateUser);
 
-        assertEquals(updatedUser.toString(), userService.getUserById(userId).toString());
+        UserDto actualUser = userMapper.convertUserToUserDto(userService.getUserById(userId));
+        assertEquals(updatedUser.toString(), actualUser.toString());
     }
 
     @Test
     @DisplayName("사용자 삭제")
     void deleteById() throws Exception {
-        User user = createTestUser();
+        UserDto user = createTestUser();
         long userId = user.getId();
 
         userService.deleteById(userId);
@@ -56,7 +61,7 @@ class UserServiceTest {
         });
     }
 
-    private User createTestUser() throws UserAlreadyExistedException {
+    private UserDto createTestUser() throws UserAlreadyExistedException {
         Random random = new Random();
         StringBuilder email = new StringBuilder();
 

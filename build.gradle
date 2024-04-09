@@ -30,14 +30,18 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-authorization-server'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
 
 //	lombok
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+	compileOnly 'org.projectlombok:lombok:1.18.32'
+	annotationProcessor 'org.projectlombok:lombok:1.18.32'
+	testCompileOnly 'org.projectlombok:lombok:1.18.32'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.32'
 
 //	maria db
-	implementation 'org.mariadb.jdbc:mariadb-java-client'
-	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+	implementation 'org.mariadb.jdbc:mariadb-java-client:3.3.3'
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:3.3.3'
 
 //	jwt
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
@@ -54,9 +58,7 @@ dependencies {
 //	develop
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-//	test
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
+
 
 //	google-calendar-api
 	implementation 'com.google.api-client:google-api-client:2.0.0'

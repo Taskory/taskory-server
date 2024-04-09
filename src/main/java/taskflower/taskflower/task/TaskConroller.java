@@ -9,7 +9,7 @@ import taskflower.taskflower.security.UserPrincipal;
 import taskflower.taskflower.task.exception.TaskNotFoundExeption;
 import taskflower.taskflower.task.exception.TaskTitleExistException;
 import taskflower.taskflower.task.model.TaskDto;
-import taskflower.taskflower.user.User;
+import taskflower.taskflower.user.model.User;
 import taskflower.taskflower.user.UserService;
 
 import java.util.List;

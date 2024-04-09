@@ -1,4 +1,4 @@
-package taskflower.taskflower.user;
+package taskflower.taskflower.user.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -37,7 +37,7 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private String password;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<SocialAccount> socialAccount;
 }
 

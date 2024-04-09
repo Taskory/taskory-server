@@ -5,9 +5,11 @@ import taskflower.taskflower.task.exception.TaskNotFoundExeption;
 import taskflower.taskflower.task.exception.TaskTitleExistException;
 import taskflower.taskflower.task.model.Task;
 import taskflower.taskflower.task.model.TaskDto;
-import taskflower.taskflower.user.User;
+import taskflower.taskflower.user.exception.UserNotFoundException;
+import taskflower.taskflower.user.model.User;
 import taskflower.taskflower.user.UserRepository;
 import taskflower.taskflower.user.UserService;
+import taskflower.taskflower.user.model.UserDto;
 
 import java.util.ArrayList;
 import java.util.List;

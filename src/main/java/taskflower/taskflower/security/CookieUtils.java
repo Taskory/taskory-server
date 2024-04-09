@@ -13,6 +13,7 @@ import java.util.Optional;
 public class CookieUtils {
 
     public static void addCookie(HttpServletResponse response, String name, String value, int expireSeconds) {
+        log.info("[LOG - CookieUtils.addCookie]");
         Cookie cookie = new Cookie(name, value);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
@@ -21,6 +22,7 @@ public class CookieUtils {
     }
 
     public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
+        log.info("[LOG - CookieUtils.getCookie]");
         Cookie[] cookies = request.getCookies();
 
         for (Cookie cookie : cookies) {
@@ -32,6 +34,7 @@ public class CookieUtils {
     }
 
     public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
+        log.info("[LOG - CookieUtils.deleteCookie]");
         Cookie[] cookies = request.getCookies();
 
         for (Cookie cookie : cookies) {
@@ -45,10 +48,12 @@ public class CookieUtils {
     }
 
     public static String serialize(Object obj) {
+        log.info("[LOG - CookieUtils.serialize]");
         return Base64.getUrlEncoder().encodeToString(SerializationUtils.serialize(obj));
     }
 
     public static <T> T deserialize(String base64String, Class<T> cls) {
+        log.info("[LOG - CookieUtils.deserialize]");
 //        Serialization.deserialize deprecated 대응 필요
         return cls.cast(SerializationUtils.deserialize(Base64.getUrlDecoder().decode(base64String)));
     }

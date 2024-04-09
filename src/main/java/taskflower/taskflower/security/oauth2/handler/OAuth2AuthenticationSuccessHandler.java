@@ -39,6 +39,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        log.info("[LOG - OAuth2AuthenticationSuccessHandler.onAuthenticationSuccess]");
         String targetUrl = determineTargetUrl(request, response, authentication);
 
         super.clearAuthenticationAttributes(request);
@@ -49,17 +50,18 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     @Override
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+        log.info("[LOG - OAuth2AuthenticationSuccessHandler.determineTargetUrl]");
         Optional<String> redirectUri = CookieUtils.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue);
 
         if (redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get())) {
-            log.info("[LOG - OAuth2AuthenticationSuccessHandler]");
             throw new IllegalStateException("Bad Request");
         }
 
         String targetUri = redirectUri.orElse(getDefaultTargetUrl());
 
         String token = tokenProvider.createToken(authentication);
+        log.info("[LOG - OAuth2AuthenticationSuccessHandler] token: {}", token);
 
         return UriComponentsBuilder.fromUriString(targetUri)
                 .queryParam("token", token)
@@ -68,13 +70,14 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     }
 
     private boolean isAuthorizedRedirectUri(String redirectUri) {
+        log.info("[LOG - OAuth2AuthenticationSuccessHandler.isAuthorizedRedirectUri]");
         URI clientRedirectUri = URI.create(redirectUri);
 
         return authorizedRedirectUris
                 .stream()
                 .anyMatch(authorizedRedirectUri -> {
                     URI authorizedUri = URI.create(authorizedRedirectUri);
-                    log.info("[LOG - OAuth2AuthenticationSuccessHandler.isAuthorizedRedirectUri]: " + authorizedRedirectUri);
+                    log.info("[LOG - OAuth2AuthenticationSuccessHandler.isAuthorizedRedirectUri]: {}", authorizedRedirectUri);
                     return authorizedUri.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
                             && authorizedUri.getPort() == clientRedirectUri.getPort();
                 });

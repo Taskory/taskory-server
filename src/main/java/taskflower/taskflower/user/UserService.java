@@ -1,6 +1,5 @@
 package taskflower.taskflower.user;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -10,6 +9,8 @@ import taskflower.taskflower.user.SocialAccount.SocialAccountRepository;
 import taskflower.taskflower.user.SocialAccount.SocialProvider;
 import taskflower.taskflower.user.exception.UserAlreadyExistedException;
 import taskflower.taskflower.user.exception.UserNotFoundException;
+import taskflower.taskflower.user.model.User;
+import taskflower.taskflower.user.model.UserDto;
 
 import java.util.Set;
 import java.util.UUID;
@@ -20,24 +21,27 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final SocialAccountRepository socialAccountRepository;
+    private final UserMapper userMapper;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SocialAccountRepository socialAccountRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SocialAccountRepository socialAccountRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.socialAccountRepository = socialAccountRepository;
+        this.userMapper = userMapper;
     }
 
     public boolean existsUser(String email) {
         return userRepository.existsUserByEmail(email);
     }
 
-    public User signup(User signupUser) throws UserAlreadyExistedException {
+    public UserDto signup(User signupUser) throws UserAlreadyExistedException {
         if (userRepository.existsUserByEmail(signupUser.getEmail())) {
             throw new UserAlreadyExistedException("Sorry, this email is Already existed..");
         }
         signupUser.setPassword(passwordEncoder.encode(signupUser.getPassword()));
-        return userRepository.save(signupUser);
+        User user = userRepository.save(signupUser);
+        return userMapper.convertUserToUserDto(user);
     }
 
     public User getUserById(long id) {
@@ -45,19 +49,21 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
     }
 
-    public User updateUser(long id, User updatedUser) {
-        User user = getUserById(id);
-        user.setName(updatedUser.getName());
-        user.setEmail(updatedUser.getEmail());
-        user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-        userRepository.save(user);
-        return user;
+    public UserDto updateUser(long id, User updateUser) {
+        User user = userRepository.findById(id)
+                .orElseThrow(UserNotFoundException::new);
+        user.setName(updateUser.getName());
+        user.setEmail(updateUser.getEmail());
+        user.setPassword(passwordEncoder.encode(updateUser.getPassword()));
+        User updatedUser = userRepository.save(user);
+        return userMapper.convertUserToUserDto(updatedUser);
     }
 
     public void deleteById(long id) {
         // 삭제 성공 시, 결과 반환x, 실패할 경우 예외 처리
         // Task 테이블과 연관되기 때문에 로직 수정 필요!!!!
-        User user = getUserById(id);
+        User user = userRepository.findById(id)
+                .orElseThrow(UserNotFoundException::new);
         userRepository.delete(user);
     }
 
@@ -68,8 +74,9 @@ public class UserService {
 //        return userRepository.findUserByEmail(principal.getEmail());
 //    }
 
-    public User findUserByEmail(String email) {
-        return userRepository.findUserByEmail(email);
+    public UserDto findUserByEmail(String email) {
+        User user = userRepository.findUserByEmail(email);
+        return userMapper.convertUserToUserDto(user);
     }
 
     public User signupTempUserWithOAuth2(OAuth2UserInfo oAuth2UserInfo, String socialProvider) {

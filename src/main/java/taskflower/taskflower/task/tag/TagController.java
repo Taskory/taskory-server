@@ -9,7 +9,7 @@ import taskflower.taskflower.security.UserPrincipal;
 import taskflower.taskflower.task.tag.exception.TagExistException;
 import taskflower.taskflower.task.tag.exception.TagNotFoundException;
 import taskflower.taskflower.task.tag.model.TagDto;
-import taskflower.taskflower.user.User;
+import taskflower.taskflower.user.model.User;
 import taskflower.taskflower.user.UserService;
 
 import java.util.List;

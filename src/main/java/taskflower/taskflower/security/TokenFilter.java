@@ -32,8 +32,9 @@ public class TokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
+        log.info("[LOG - TokenFilter.doFilterInternal]");
         try {
-            String jwt = getFrommRequest(request);
+            String jwt = getFromRequest(request);
 
             if (StringUtils.hasText(jwt) && tokenProvider.validationToken(jwt)) {
                 long userId = tokenProvider.getUserIdFromToken(jwt);
@@ -51,7 +52,8 @@ public class TokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String getFrommRequest(HttpServletRequest request) {
+    private String getFromRequest(HttpServletRequest request) {
+        log.info("[LOG - TokenFilter.getFromRequest");
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);

@@ -14,7 +14,7 @@ import taskflower.taskflower.security.payload.LoginRequset;
 import taskflower.taskflower.security.payload.LoginResponse;
 import taskflower.taskflower.security.payload.SignupRequset;
 import taskflower.taskflower.security.payload.SignupResponse;
-import taskflower.taskflower.user.User;
+import taskflower.taskflower.user.model.User;
 import taskflower.taskflower.user.exception.UserAlreadyExistedException;
 import taskflower.taskflower.user.UserService;
 

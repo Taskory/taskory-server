@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import taskflower.taskflower.security.UserPrincipal;
-import taskflower.taskflower.user.User;
+import taskflower.taskflower.user.model.User;
 import taskflower.taskflower.user.UserRepository;
 
 @Service

@@ -12,9 +12,11 @@ import taskflower.taskflower.task.tag.*;
 import taskflower.taskflower.task.tag.model.Tag;
 import taskflower.taskflower.task.tag.exception.TagExistException;
 import taskflower.taskflower.task.tag.model.TagDto;
-import taskflower.taskflower.user.User;
+import taskflower.taskflower.user.UserMapper;
+import taskflower.taskflower.user.model.User;
 import taskflower.taskflower.user.UserService;
 import taskflower.taskflower.user.exception.UserAlreadyExistedException;
+import taskflower.taskflower.user.model.UserDto;
 
 import java.util.HashSet;
 import java.util.List;
@@ -38,7 +40,7 @@ class TaskServiceTest {
         this.tagMapper = tagMapper;
     }
 
-    private User testUser;
+    private UserDto testUser;
 
     @BeforeEach
     void setUser() throws UserAlreadyExistedException {
@@ -72,7 +74,8 @@ class TaskServiceTest {
         taskDto.setEndTime(new int[]{2024, 3, 16, 10, 15});
         taskDto.setTags(getTestTags());
 
-        TaskDto savedTask = taskService.save(taskDto, testUser);
+        User user = userService.getUserById(testUser.getId());
+        TaskDto savedTask = taskService.save(taskDto, user);
 
         Assertions.assertEquals(savedTask.toString(), taskService.getTaskById(savedTask.getId()).toString());
     }
@@ -90,7 +93,8 @@ class TaskServiceTest {
         taskDto.setEndTime(new int[]{2024, 3, 16, 10, 15});
         taskDto.setTags(getTestTags());
 
-        TaskDto savedTask = taskService.save(taskDto, testUser);
+        User user = userService.getUserById(testUser.getId());
+        TaskDto savedTask = taskService.save(taskDto, user);
 
         TaskDto updateTaskRequest = new TaskDto();
         updateTaskRequest.setTitle("abcdefg");
@@ -119,7 +123,8 @@ class TaskServiceTest {
         taskDto.setEndTime(new int[]{2024, 3, 16, 10, 15});
         taskDto.setTags(getTestTags());
 
-        TaskDto task = taskService.save(taskDto, testUser);
+        User user = userService.getUserById(testUser.getId());
+        TaskDto task = taskService.save(taskDto, user);
 
         taskService.deleteById(task.getId());
 
@@ -140,14 +145,15 @@ class TaskServiceTest {
         taskDto.setEndTime(new int[]{2024, 3, 16, 10, 15});
         taskDto.setTags(getTestTags());
 
-        TaskDto task = taskService.save(taskDto, testUser);
+        User user = userService.getUserById(testUser.getId());
+        TaskDto task = taskService.save(taskDto, user);
 
         List<TaskDto> savedTasks = taskService.findAllByUserEmail(testUser.getEmail());
 
         Assertions.assertEquals(task.toString(), savedTasks.get(savedTasks.size() - 1).toString());
     }
 
-    private User createTestUser() throws UserAlreadyExistedException {
+    private UserDto createTestUser() throws UserAlreadyExistedException {
 
         Random random;
         StringBuilder email;
@@ -169,9 +175,7 @@ class TaskServiceTest {
         signupRequest.setEmail(email.toString());
         signupRequest.setPassword("1234");
 
-        User user = new User(signupRequest);
-
-        return userService.signup(user);
+        return userService.signup(new User(signupRequest));
     }
 
     private Set<Tag> getTestTags() {
@@ -179,15 +183,16 @@ class TaskServiceTest {
         tagDto.setName("test Tag");
 
         TagDto savedTagDto;
+        User user = userService.getUserById(testUser.getId());
         try {
-            savedTagDto = tagService.save(tagDto, testUser);
+            savedTagDto = tagService.save(tagDto, user);
         } catch (TagExistException exception) {
             List<TagDto> tags = tagService.findAllByUserEmail(testUser.getEmail());
             savedTagDto = tags.get(tags.size() - 1);
         }
 
         Tag savedTag = tagMapper.convertTagDtoToTag(savedTagDto);
-        savedTag.setUser(testUser);
+        savedTag.setUser(user);
         Set<Tag> tags = new HashSet<>();
         tags.add(savedTag);
 

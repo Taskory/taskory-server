@@ -3,7 +3,7 @@ package taskflower.taskflower.task.tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import taskflower.taskflower.task.tag.model.Tag;
-import taskflower.taskflower.user.User;
+import taskflower.taskflower.user.model.User;
 
 import java.util.List;
 

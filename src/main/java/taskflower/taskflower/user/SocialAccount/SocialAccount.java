@@ -3,7 +3,7 @@ package taskflower.taskflower.user.SocialAccount;
 import jakarta.persistence.*;
 import lombok.*;
 import taskflower.taskflower.global.BaseTimeEntity;
-import taskflower.taskflower.user.User;
+import taskflower.taskflower.user.model.User;
 
 @Entity
 @Getter

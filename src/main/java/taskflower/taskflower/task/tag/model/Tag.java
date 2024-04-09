@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import taskflower.taskflower.global.BaseTimeEntity;
-import taskflower.taskflower.user.User;
+import taskflower.taskflower.user.model.User;
 
 @Entity
 @Getter
