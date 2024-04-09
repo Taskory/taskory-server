@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {API_URL} from "../constants";
 
 export const Signup: React.FC = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ export const Signup: React.FC = () => {
     }
 
     try {
-      await fetch("http://localhost:8080/api/v1/auth/signup", requestOptions).then(res => {
+      await fetch(API_URL + "/auth/signup", requestOptions).then(res => {
         if (res.ok) {
           navigate('/');
         }

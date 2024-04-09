@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import googleLogo from "../assets/images/google-logo.png";
-import { GOOGLE_AUTH_URL } from '../constants';
+import {API_URL, GOOGLE_AUTH_URL} from '../constants';
 import {existAuthCookie, getAuthCookie} from "../util/CookieUtil";
 
 interface UserState {
@@ -28,15 +28,16 @@ export const Profile: React.FC = () => {
 
     const requestProfile = () => {
       try {
-        fetch("http://localhost:8080/api/v1/user/profile", requestOptions)
+        fetch(API_URL + "/user/profile", requestOptions)
           .then(res => {
             if (res.ok) {
-              res.json()
-                .then(result => {
-                  console.log(result);
-                  setUserState(result);
-                  console.log(userState);
-                });
+              console.log(res.body)
+              // res.json()
+              //   .then(result => {
+              //     console.log(result);
+              //     setUserState(result);
+              //     console.log(userState);
+              //   });
             }
 
           });

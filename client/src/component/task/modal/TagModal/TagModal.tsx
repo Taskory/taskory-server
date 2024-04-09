@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import '../../calendar.css';
 import {TagInterface} from "../../../../interface/TagInterface";
 import {getAuthCookie} from "../../../../util/CookieUtil";
+import {API_URL} from "../../../../constants";
 
 
 interface TagModalProps {
@@ -17,7 +18,7 @@ export const TagModal: React.FC<TagModalProps> = ({closeModal}) => {
     name: ""
   });
   const fetchGetTags = () => {
-    fetch('http://localhost:8080/api/v1/task/tag', {
+    fetch(API_URL + '/task/tag', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -58,7 +59,7 @@ export const TagModal: React.FC<TagModalProps> = ({closeModal}) => {
       return;
     }
 
-    fetch('http://localhost:8080/api/v1/task/tag', {
+    fetch(API_URL + '/task/tag', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -83,7 +84,7 @@ export const TagModal: React.FC<TagModalProps> = ({closeModal}) => {
   };
 
   const handleUpdate = (tag: TagInterface) => {
-    fetch('http://localhost:8080/api/v1/task/tag', {
+    fetch(API_URL + '/task/tag', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -110,7 +111,7 @@ export const TagModal: React.FC<TagModalProps> = ({closeModal}) => {
 
   const handleDelete = (id: number | null) => {
     if (id) {
-      fetch('http://localhost:8080/api/v1/task/tag/' + id , {
+      fetch(API_URL + '/task/tag/' + id , {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

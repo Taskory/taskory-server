@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 import 'react-big-calendar/lib/css/react-big-calendar.css'; // Import default styles
 import './custom-calendar-styles.css';
 import {TaskModal} from "../task/modal/TaskModal/TaskModal";
-import {getAuthCookie} from "../../util/CookieUtil"; // Import custom styles
+import {getAuthCookie} from "../../util/CookieUtil";
+import {API_URL} from "../../constants"; // Import custom styles
 
 interface EventInterface {
   id: number;
@@ -33,7 +34,7 @@ export const TaskCalendar: React.FC = () => {
     }
 
     // Fetch tasks data
-    fetch('http://localhost:8080/api/v1/task', {
+    fetch(API_URL + "/task", {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -62,7 +63,7 @@ export const TaskCalendar: React.FC = () => {
       .catch(error => {
         console.error('Error:', error);
       });
-  }, [navigate, isTaskModalOpen]);
+  }, [isTaskModalOpen, navigate]);
 
 
   const handleOpenTaskModal = (id: number) => {

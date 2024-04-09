@@ -5,6 +5,7 @@ import {TaskModal} from "./modal/TaskModal/TaskModal";
 import {TaskInterface} from "../../interface/TaskInterface";
 import {TagModal} from "./modal/TagModal/TagModal";
 import {existAuthCookie, getAuthCookie} from "../../util/CookieUtil";
+import {API_URL} from "../../constants";
 
 export const TaskBoard: React.FC = () => {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ export const TaskBoard: React.FC = () => {
       navigate("/");
     }
 
-    fetch('http://localhost:8080/api/v1/task', {
+    fetch(API_URL + '/task', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

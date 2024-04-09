@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {GOOGLE_AUTH_URL} from "../constants";
+import {API_URL, GOOGLE_AUTH_URL} from "../constants";
 import googleLogo from "../assets/images/google-logo.png";
 import {existAuthCookie, removeAuthCookie, setAuthCookie} from "../util/CookieUtil";
 
@@ -25,7 +25,7 @@ export const Login: React.FC = () => {
       }),
     }
     try {
-      await fetch("http://localhost:8080/api/v1/auth/login", requestOptions).then(res => {
+      await fetch(API_URL + "/auth/login", requestOptions).then(res => {
         if (res.ok) {
           res.json().then(result => {
             setAuthCookie(result.token);

@@ -19,13 +19,13 @@ export const OAuth2RedirectHandler: React.FC = () => {
       setAuthCookie(token);
       console.log(getAuthCookie());
       navigate("/");
-    } else if(error) {
+    } else if (error) {
       navigate("/");
       console.log(error);
     } else {
       throw new Error("OAuth error")
     }
-  }, [navigate]);
+  });
 
   return (
     <></>

@@ -5,6 +5,7 @@ import { TimeField } from "./component/TimeField";
 import {TagField} from "./component/TagField";
 import {TagInterface} from "../../../../interface/TagInterface";
 import {getAuthCookie} from "../../../../util/CookieUtil";
+import {API_URL} from "../../../../constants";
 
 interface TaskModalProps {
   closeModal: () => void,
@@ -36,7 +37,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({closeModal, taskId}) => {
 
   useEffect(() => {
     if (taskId !== null) {
-      fetch('http://localhost:8080/api/v1/task/' + taskId.toString(), {
+      fetch(API_URL + '/task/' + taskId.toString(), {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -86,7 +87,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({closeModal, taskId}) => {
 
   const handleSaveTask = () => {
     try {
-      fetch('http://localhost:8080/api/v1/task', {
+      fetch(API_URL + '/task', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -114,7 +115,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({closeModal, taskId}) => {
     try {
       if (taskId) {
 
-        fetch(`http://localhost:8080/api/v1/task/` + taskId.toString(), {
+        fetch(API_URL + `/task/` + taskId.toString(), {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

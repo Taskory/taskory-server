@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TagInterface } from "../../../../../interface/TagInterface";
 import {getAuthCookie} from "../../../../../util/CookieUtil";
+import {API_URL} from "../../../../../constants";
 
 interface TagFieldProps {
   selectedTags: TagInterface[];
@@ -11,7 +12,7 @@ export const TagField: React.FC<TagFieldProps> = ({ selectedTags, setSelectedTag
   const [allTags, setAllTags] = useState<TagInterface[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/v1/task/tag", {
+    fetch(API_URL + "/task/tag", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
