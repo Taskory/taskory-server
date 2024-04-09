@@ -7,10 +7,11 @@ import {existAuthCookie, getAuthCookie} from "../util/CookieUtil";
 interface UserState {
   email: string;
   name: string;
+  socialAccount: string;
 }
 
 export const Profile: React.FC = () => {
-  const [userState, setUserState] = useState<UserState | null>(null);
+  const [userState, setUserState] = useState<UserState>({email: "", name: "", socialAccount: ""});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,13 +32,10 @@ export const Profile: React.FC = () => {
         fetch(API_URL + "/user/profile", requestOptions)
           .then(res => {
             if (res.ok) {
-              console.log(res.body)
-              // res.json()
-              //   .then(result => {
-              //     console.log(result);
-              //     setUserState(result);
-              //     console.log(userState);
-              //   });
+              res.json()
+                .then(result => {
+                  setUserState({email: result.email, name: result.name, socialAccount: result.socialAccount});
+                });
             }
 
           });
@@ -46,12 +44,12 @@ export const Profile: React.FC = () => {
       }
     };
     requestProfile();
-  }, [navigate, userState]);
+  }, [navigate]);
   return (
     <>
-      {userState ? (
-        <p>{userState.name}</p>
-      ) : <></>}
+      <p>{userState.name}</p>
+      <p>{userState.email}</p>
+      <p>{userState.socialAccount}</p>
       {/*<div className="h-auto space-y-2 my-4">*/}
       {/*  <a className="flex justify-start btn w-full h-min" href={GOOGLE_AUTH_URL}>*/}
       {/*    <img className={"size-1/12"} src={googleLogo} alt="Google"/>*/}

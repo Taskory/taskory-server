@@ -1,5 +1,6 @@
 package taskflower.taskflower.user.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import taskflower.taskflower.user.SocialAccount.SocialAccount;
 
@@ -14,5 +15,6 @@ public class UserDto {
     private Long id;
     private String name;
     private String email;
+    @JsonIgnore
     private Set<SocialAccount> socialAccount;
 }
