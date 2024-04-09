@@ -1,14 +1,17 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {useCookies} from "react-cookie";
 import {GOOGLE_AUTH_URL} from "../constants";
 import googleLogo from "../assets/images/google-logo.png";
+import {existAuthCookie, removeAuthCookie, setAuthCookie} from "../util/CookieUtil";
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [cookies, setCookie] = useCookies(['token']);
+
+  useEffect(() => {
+    if (existAuthCookie()) removeAuthCookie()
+  }, []);
 
   const fetchLogin = async () => {
     const requestOptions = {
@@ -25,7 +28,7 @@ export const Login: React.FC = () => {
       await fetch("http://localhost:8080/api/v1/auth/login", requestOptions).then(res => {
         if (res.ok) {
           res.json().then(result => {
-            setCookie('token', result.token);
+            setAuthCookie(result.token);
             navigate("/");
           });
         } else {

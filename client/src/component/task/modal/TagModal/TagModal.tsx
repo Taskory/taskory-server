@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import '../../calendar.css';
-import {useCookies} from "react-cookie";
 import {TagInterface} from "../../../../interface/TagInterface";
+import {getAuthCookie} from "../../../../util/CookieUtil";
 
 
 interface TagModalProps {
@@ -16,13 +16,12 @@ export const TagModal: React.FC<TagModalProps> = ({closeModal}) => {
     id: null,
     name: ""
   });
-  const [cookies] = useCookies()
   const fetchGetTags = () => {
     fetch('http://localhost:8080/api/v1/task/tag', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': "Bearer " + cookies.token,
+        'Authorization': "Bearer " + getAuthCookie(),
       },
     })
       .then(response => {
@@ -45,7 +44,7 @@ export const TagModal: React.FC<TagModalProps> = ({closeModal}) => {
   }
   useEffect(() => {
     fetchGetTags();
-  }, [cookies.token]);
+  }, []);
 
 
   const handleCloseModal = () => {
@@ -63,7 +62,7 @@ export const TagModal: React.FC<TagModalProps> = ({closeModal}) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': "Bearer " + cookies.token,
+        'Authorization': "Bearer " + getAuthCookie(),
       },
       body: JSON.stringify(inputTag),
     })
@@ -88,7 +87,7 @@ export const TagModal: React.FC<TagModalProps> = ({closeModal}) => {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': "Bearer " + cookies.token,
+        'Authorization': "Bearer " + getAuthCookie(),
       },
       body: JSON.stringify(tag),
     })
@@ -115,7 +114,7 @@ export const TagModal: React.FC<TagModalProps> = ({closeModal}) => {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': "Bearer " + cookies.token,
+          'Authorization': "Bearer " + getAuthCookie(),
         },
       })
         .then(response => {

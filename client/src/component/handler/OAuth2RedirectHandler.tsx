@@ -1,9 +1,8 @@
 import React, {useEffect} from "react";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
-import {useCookies} from "react-cookie";
+import {useLocation, useNavigate} from "react-router-dom";
+import {getAuthCookie, setAuthCookie} from "../../util/CookieUtil";
 
 export const OAuth2RedirectHandler: React.FC = () => {
-  const [cookies, setCookie] = useCookies();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -17,7 +16,8 @@ export const OAuth2RedirectHandler: React.FC = () => {
     const token = getUrlParameter("token");
     const error = getUrlParameter("error");
     if (token) {
-      setCookie("token", token);
+      setAuthCookie(token);
+      console.log(getAuthCookie());
       navigate("/");
     } else if(error) {
       navigate("/");
@@ -25,7 +25,7 @@ export const OAuth2RedirectHandler: React.FC = () => {
     } else {
       throw new Error("OAuth error")
     }
-  });
+  }, [navigate]);
 
   return (
     <></>

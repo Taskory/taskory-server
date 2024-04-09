@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {TaskInterface} from "../../../../interface/TaskInterface";
 import '../../calendar.css';
-import {useCookies} from "react-cookie";
 import { TimeField } from "./component/TimeField";
 import {TagField} from "./component/TagField";
 import {TagInterface} from "../../../../interface/TagInterface";
+import {getAuthCookie} from "../../../../util/CookieUtil";
 
 interface TaskModalProps {
   closeModal: () => void,
@@ -12,7 +12,6 @@ interface TaskModalProps {
 }
 
 export const TaskModal: React.FC<TaskModalProps> = ({closeModal, taskId}) => {
-  const [cookies] = useCookies(['token']);
   const date = new Date();
   const currentDate = [
     date.getFullYear(),
@@ -41,7 +40,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({closeModal, taskId}) => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': "Bearer " + cookies.token,
+          'Authorization': "Bearer " + getAuthCookie(),
         },
       })
         .then(response => {
@@ -57,7 +56,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({closeModal, taskId}) => {
           console.error('Error:', error);
         });
     }
-  }, [cookies.token, taskId]);
+  }, [taskId]);
 
   useEffect(() => {
     setTask(prevTask => ({
@@ -91,7 +90,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({closeModal, taskId}) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': "Bearer " + cookies.token,
+          'Authorization': "Bearer " + getAuthCookie(),
         },
         body: JSON.stringify(task),
       })
@@ -119,7 +118,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({closeModal, taskId}) => {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': "Bearer " + cookies.token,
+            'Authorization': "Bearer " + getAuthCookie(),
           },
           body: JSON.stringify(task),
         }).then(response => {

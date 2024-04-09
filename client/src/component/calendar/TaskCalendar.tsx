@@ -3,10 +3,10 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import { TaskInterface } from "../../interface/TaskInterface";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import 'react-big-calendar/lib/css/react-big-calendar.css'; // Import default styles
 import './custom-calendar-styles.css';
-import {TaskModal} from "../task/modal/TaskModal/TaskModal"; // Import custom styles
+import {TaskModal} from "../task/modal/TaskModal/TaskModal";
+import {getAuthCookie} from "../../util/CookieUtil"; // Import custom styles
 
 interface EventInterface {
   id: number;
@@ -23,11 +23,10 @@ export const TaskCalendar: React.FC = () => {
   const [isTaskModalOpen, setIsTaskModalOpen] = useState<boolean>();
   const [currentTaskId, setCurrentTaskId] = useState<number | null>(null);
   const navigate = useNavigate();
-  const [cookies] = useCookies();
 
   useEffect(() => {
     // Check if token exists in cookies
-    if (!cookies.token) {
+    if (!getAuthCookie()) {
       alert("로그인 정보가 잘못되었습니다");
       navigate("/");
       return; // Return early if token is not present
@@ -38,7 +37,7 @@ export const TaskCalendar: React.FC = () => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': "Bearer " + cookies.token,
+        'Authorization': "Bearer " + getAuthCookie(),
       },
     })
       .then(response => {
@@ -63,7 +62,7 @@ export const TaskCalendar: React.FC = () => {
       .catch(error => {
         console.error('Error:', error);
       });
-  }, [cookies.token, navigate, isTaskModalOpen]);
+  }, [navigate, isTaskModalOpen]);
 
 
   const handleOpenTaskModal = (id: number) => {

@@ -1,17 +1,16 @@
 import React, {useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {SideBar} from "./SideBar";
-import {useCookies} from "react-cookie";
-
-export const NavBar: React.FC = () => {
+import {getAuthCookie, removeAuthCookie} from "../../util/CookieUtil";
+export const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [cookies, setCookie] = useCookies(['token']);
   const [pathArray, setPathArray] = useState(["home"]);
 
   useEffect(() => {
     const currentPath = location.pathname.split("/");
     const pathArray = ["home"];
+    // eslint-disable-next-line array-callback-return
     currentPath.map(path => {
       if (path.length > 0) setPathArray([...pathArray, path]);
     })
@@ -26,7 +25,7 @@ export const NavBar: React.FC = () => {
   }
 
   const handleLogout = () => {
-    setCookie('token', null);
+    removeAuthCookie();
     navigate("/");
   };
 
@@ -44,7 +43,7 @@ export const NavBar: React.FC = () => {
           <a href="/" className="btn btn-ghost text-xl">Task Flower</a>
         </div>
         <div className="flex-none">
-            {cookies.token ? (
+            {getAuthCookie() ? (
               <>
                 <div className="dropdown dropdown-end">
                   <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">

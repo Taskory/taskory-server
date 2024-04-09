@@ -6,7 +6,7 @@ import {Signup} from "../component/Signup";
 import {Footer} from "./component/Footer";
 import {Profile} from "../component/Profile";
 import {TaskBoard} from "../component/task/TaskBoard";
-import {NavBar} from "./component/NavBar";
+import {Header} from "./component/Header";
 import {TaskCalendar} from "../component/calendar/TaskCalendar";
 import {OAuth2RedirectHandler} from "../component/handler/OAuth2RedirectHandler";
 
@@ -18,7 +18,7 @@ export const MainLayout: React.FC = () => {
     return (
       <>
         <div className="w-full">
-          <NavBar />
+          <Header />
         </div>
         <div className="flex">
           <div className="flex flex-col flex-1 min-h-screen">

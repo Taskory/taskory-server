@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {useCookies} from "react-cookie";
 import {useNavigate} from "react-router-dom";
 import {TaskCard} from "./TaskCard";
 import {TaskModal} from "./modal/TaskModal/TaskModal";
 import {TaskInterface} from "../../interface/TaskInterface";
 import {TagModal} from "./modal/TagModal/TagModal";
+import {existAuthCookie, getAuthCookie} from "../../util/CookieUtil";
 
 export const TaskBoard: React.FC = () => {
   const navigate = useNavigate();
@@ -14,10 +14,8 @@ export const TaskBoard: React.FC = () => {
   const [isTaskModalOpen, setIsTaskModalOpen] = useState<boolean>(false);
   const [isTagModalOpen, setIsTagModalOpen] = useState<boolean>(false);
 
-  const [cookies] = useCookies();
-
   useEffect(() => {
-    if (!cookies.token) {
+    if (!existAuthCookie()) {
       alert("로그인 정보가 잘못되었습니다");
       navigate("/");
     }
@@ -26,7 +24,7 @@ export const TaskBoard: React.FC = () => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': "Bearer " + cookies.token,
+        'Authorization': "Bearer " + getAuthCookie(),
       },
     })
       .then(response => {
@@ -42,7 +40,7 @@ export const TaskBoard: React.FC = () => {
         console.error('Error:', error);
       });
 
-  }, [cookies.token, isTaskModalOpen]);
+  }, [isTaskModalOpen]);
 
 
 

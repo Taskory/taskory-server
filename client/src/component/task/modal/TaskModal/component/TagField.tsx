@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
 import { TagInterface } from "../../../../../interface/TagInterface";
+import {getAuthCookie} from "../../../../../util/CookieUtil";
 
 interface TagFieldProps {
   selectedTags: TagInterface[];
@@ -8,7 +8,6 @@ interface TagFieldProps {
 }
 
 export const TagField: React.FC<TagFieldProps> = ({ selectedTags, setSelectedTags }) => {
-  const [cookies] = useCookies();
   const [allTags, setAllTags] = useState<TagInterface[]>([]);
 
   useEffect(() => {
@@ -16,7 +15,7 @@ export const TagField: React.FC<TagFieldProps> = ({ selectedTags, setSelectedTag
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + cookies.token,
+        Authorization: "Bearer " + getAuthCookie(),
       },
     })
       .then((response) => {
@@ -31,7 +30,7 @@ export const TagField: React.FC<TagFieldProps> = ({ selectedTags, setSelectedTag
       .catch((error) => {
         console.error("Error:", error);
       });
-  }, [cookies.token]);
+  }, []);
 
   // 체크박스 클릭 시 이벤트 핸들러
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, tag: TagInterface) => {
