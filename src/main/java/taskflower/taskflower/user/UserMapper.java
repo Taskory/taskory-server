@@ -8,12 +8,7 @@ import taskflower.taskflower.user.model.UserDto;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    User convertUserDtoToUser(UserDto userDto);
-
     @Mapping(target = "socialAccount", defaultExpression = "java( java.util.Collections.emptySet() )")
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "password", ignore = true)
     UserDto convertUserToUserDto(User user);
 
 }
