@@ -13,10 +13,10 @@ import taskflower.taskflower.security.UserPrincipal;
 import taskflower.taskflower.security.oauth2.model.GoogleOAuth2UserInfo;
 import taskflower.taskflower.security.oauth2.model.OAuth2UserInfo;
 import taskflower.taskflower.user.*;
-import taskflower.taskflower.user.SocialAccount.SocialAccount;
-import taskflower.taskflower.user.SocialAccount.SocialAccountRepository;
-import taskflower.taskflower.user.SocialAccount.SocialAccountService;
-import taskflower.taskflower.user.SocialAccount.SocialProvider;
+import taskflower.taskflower.user.social.SocialAccount;
+import taskflower.taskflower.user.social.SocialAccountRepository;
+import taskflower.taskflower.user.social.SocialAccountService;
+import taskflower.taskflower.user.social.SocialProvider;
 import taskflower.taskflower.user.model.User;
 
 @Service

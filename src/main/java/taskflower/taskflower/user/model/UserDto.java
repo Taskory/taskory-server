@@ -2,7 +2,7 @@ package taskflower.taskflower.user.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import taskflower.taskflower.user.SocialAccount.SocialAccount;
+import taskflower.taskflower.user.social.SocialAccount;
 
 import java.util.Set;
 

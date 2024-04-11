@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Email;
 import lombok.*;
 import taskflower.taskflower.security.payload.SignupRequset;
 import taskflower.taskflower.global.BaseTimeEntity;
-import taskflower.taskflower.user.SocialAccount.SocialAccount;
+import taskflower.taskflower.user.social.SocialAccount;
 
 import java.util.Set;
 

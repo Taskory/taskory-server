@@ -10,7 +10,7 @@ import taskflower.taskflower.task.tag.model.Tag;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-04-09T18:02:26+0900",
+    date = "2024-04-11T18:35:27+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.9 (Amazon.com Inc.)"
 )
 @Component

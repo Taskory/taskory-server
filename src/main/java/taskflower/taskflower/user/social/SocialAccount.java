@@ -1,4 +1,4 @@
-package taskflower.taskflower.user.SocialAccount;
+package taskflower.taskflower.user.social;
 
 import jakarta.persistence.*;
 import lombok.*;

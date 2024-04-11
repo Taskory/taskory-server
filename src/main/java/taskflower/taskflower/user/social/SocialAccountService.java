@@ -1,4 +1,4 @@
-package taskflower.taskflower.user.SocialAccount;
+package taskflower.taskflower.user.social;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
