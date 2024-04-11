@@ -39,5 +39,9 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(fetch = FetchType.EAGER)
     private Set<SocialAccount> socialAccount;
+
+//    oAuth2로 로그인하여 임시 로컬 계정으로 등록이 되어 있을 때 false로 수정
+    @Column(nullable = false)
+    private boolean isLocalSignup = true;
 }
 

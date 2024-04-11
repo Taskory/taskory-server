@@ -47,9 +47,9 @@ export const Profile: React.FC = () => {
   }, [navigate]);
   return (
     <>
-      <p>{userState.name}</p>
-      <p>{userState.email}</p>
-      <p>{userState.socialAccount}</p>
+      <p>Name : {userState.name}</p>
+      <p>Email : {userState.email}</p>
+      <p>connected social accounts : {userState.socialAccount}</p>
       {/*<div className="h-auto space-y-2 my-4">*/}
       {/*  <a className="flex justify-start btn w-full h-min" href={GOOGLE_AUTH_URL}>*/}
       {/*    <img className={"size-1/12"} src={googleLogo} alt="Google"/>*/}

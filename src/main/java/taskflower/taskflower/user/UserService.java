@@ -92,6 +92,7 @@ public class UserService {
         tempUser.setName(oAuth2UserInfo.getName());
         tempUser.setEmail(oAuth2UserInfo.getEmail());
         tempUser.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
+        tempUser.setLocalSignup(false);
         userRepository.save(tempUser);
 
         socialAccount.setUser(tempUser);

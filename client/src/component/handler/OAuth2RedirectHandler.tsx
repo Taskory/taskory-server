@@ -17,7 +17,7 @@ export const OAuth2RedirectHandler: React.FC = () => {
     const error = getUrlParameter("error");
     if (token) {
       setAuthCookie(token);
-      console.log(getAuthCookie());
+      // console.log(getAuthCookie());
       navigate("/");
     } else if (error) {
       navigate("/");
