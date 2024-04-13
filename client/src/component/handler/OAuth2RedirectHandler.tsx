@@ -6,24 +6,25 @@ export const OAuth2RedirectHandler: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const getUrlParameters = (names: string[]): { [key: string]: string | undefined } => {
-    const params: { [key: string]: string | undefined } = {};
-    names.forEach((name) => {
-      const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-      const results = regex.exec(location.search);
-      params[name] = results === null ? undefined : decodeURIComponent(results[1].replace(/\+/g, ' '));
-    });
-    return params;
+  const getUrlParameter = (name: string): string | undefined => {
+    const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    const results = regex.exec(location.search);
+    return results === null ? undefined : decodeURIComponent(results[1].replace(/\+/g, ' '));
   };
 
   useEffect(() => {
-    const {token, forbidden} = getUrlParameters(["token", "forbidden"]);
-    const {error} = getUrlParameters(["error"]);
-    if (token && forbidden) {
+    const token = getUrlParameter("token");
+    const forbidden = getUrlParameter("forbidden");
+    const error = getUrlParameter("error");
+
+    if (token) {
       setAuthCookie(token);
       // console.log(forbidden);
-      navigate("/socialconnect", {state : {data: forbidden}});
-      // console.log(forbidden);
+      if (forbidden) {
+        navigate("/socialconnect", {state: {data: forbidden}});
+      } else {
+        navigate("/");
+      }
     } else if (error) {
       navigate("/");
       console.log(error);

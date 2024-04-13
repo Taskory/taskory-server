@@ -20,6 +20,7 @@ import taskflower.taskflower.security.UserPrincipal;
 import taskflower.taskflower.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import taskflower.taskflower.security.payload.SignupRequest;
 import taskflower.taskflower.user.UserService;
+import taskflower.taskflower.user.model.User;
 
 import java.io.IOException;
 import java.net.URI;
@@ -71,26 +72,28 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String token = tokenService.createToken(authentication);
         log.info("[LOG - OAuth2AuthenticationSuccessHandler] token: {}", token);
 
-        try {
-            UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            Map<String, Object> data = new HashMap<>();
-            data.put("id", userPrincipal.getId());
-            data.put("name", userPrincipal.getName());
-            data.put("email", userPrincipal.getEmail());
-            String json = objectMapper.writeValueAsString(data);
-
-            return UriComponentsBuilder.fromUriString(targetUri)
-                    .queryParam("token", token)
-                    .queryParam("forbidden", json)
-                    .build()
-                    .toUriString();
-        } catch (JsonProcessingException e) {
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        if (userPrincipal.isLocalSignup()) {
             return UriComponentsBuilder.fromUriString(targetUri)
                     .queryParam("token", token)
                     .build()
                     .toUriString();
+        } else {
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                Map<String, Object> data = new HashMap<>();
+                data.put("id", userPrincipal.getId());
+                data.put("name", userPrincipal.getName());
+                data.put("email", userPrincipal.getEmail());
+                String json = objectMapper.writeValueAsString(data);
+                return UriComponentsBuilder.fromUriString(targetUri)
+                        .queryParam("token", token)
+                        .queryParam("forbidden", json)
+                        .build()
+                        .toUriString();
+            } catch (JsonProcessingException e) {
+                return null;
+            }
         }
     }
 

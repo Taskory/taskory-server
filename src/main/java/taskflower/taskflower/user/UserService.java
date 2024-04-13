@@ -67,13 +67,13 @@ public class UserService {
         userRepository.delete(user);
     }
 
+
 //    <<권한을 통해 사용자 정보을 읽어오는 것은 JWT 토큰으로 대체>>
 //    public User findUserByAuth() {
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
 //        return userRepository.findUserByEmail(principal.getEmail());
 //    }
-
     public UserDto findUserByEmail(String email) {
         User user = userRepository.findUserByEmail(email);
         return userMapper.convertUserToUserDto(user);
@@ -84,7 +84,7 @@ public class UserService {
         socialAccount.setSubId(oAuth2UserInfo.getSubId());
         socialAccount.setUsername(oAuth2UserInfo.getEmail());
         socialAccount.setName(oAuth2UserInfo.getName());
-        socialAccount.setProvider(SocialProvider.valueOf(socialProvider));
+        socialAccount.setProvider(SocialProvider.valueOf(socialProvider.toUpperCase()));
         socialAccountRepository.save(socialAccount);
 
         User tempUser = new User();
@@ -99,5 +99,11 @@ public class UserService {
         socialAccountRepository.save(socialAccount);
 
         return tempUser;
+    }
+
+    public void signupWithOAuth2(User signupUser) {
+        signupUser.setPassword(passwordEncoder.encode(signupUser.getPassword()));
+        signupUser.setLocalSignup(true);
+        userRepository.save(signupUser);
     }
 }

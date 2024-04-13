@@ -17,6 +17,7 @@ import taskflower.taskflower.security.payload.SignupResponse;
 import taskflower.taskflower.user.model.User;
 import taskflower.taskflower.user.exception.UserAlreadyExistedException;
 import taskflower.taskflower.user.UserService;
+import taskflower.taskflower.user.model.UserDto;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -58,5 +59,12 @@ public class AuthController {
         } catch (UserAlreadyExistedException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new SignupResponse("이미 존재하는 사용자입니다."));
         }
+    }
+
+    @PutMapping("/signup")
+    public ResponseEntity<SignupResponse> signupWithOAuth2(@Valid @RequestBody SignupRequest signupRequest) {
+        User user = new User(signupRequest);
+        userService.signupWithOAuth2(user);
+        return ResponseEntity.ok().body(new SignupResponse("회원가입 성공"));
     }
 }

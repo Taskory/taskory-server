@@ -8,13 +8,14 @@ export const SocialSignup: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [userId, setUserId] = useState<number | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
 
   useEffect(() => {
     const userInfo = JSON.parse(location.state.data);
-    console.log(userInfo.id);
+    setUserId(userInfo.id);
     setEmail(userInfo.email ? userInfo.email : '');
     setName(userInfo.name ? userInfo.name : '');
 
@@ -22,13 +23,13 @@ export const SocialSignup: React.FC = () => {
 
   const fetchSignup = async () => {
     const requestOptions = {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${getAuthCookie()}`
       },
       body: JSON.stringify({
-        id: location.state.data,
+        id: userId,
         name: name,
         email: email,
         password: password
