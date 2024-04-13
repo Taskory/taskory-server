@@ -1,4 +1,4 @@
-package taskflower.taskflower.security;
+package taskflower.taskflower.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
