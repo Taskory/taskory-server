@@ -7,13 +7,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 import taskflower.taskflower.security.TokenService;
 import taskflower.taskflower.security.CookieUtils;
+import taskflower.taskflower.security.UserPrincipal;
 import taskflower.taskflower.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import taskflower.taskflower.user.UserService;
 
 import java.io.IOException;
 import java.net.URI;
@@ -25,6 +28,7 @@ import static taskflower.taskflower.security.oauth2.HttpCookieOAuth2Authorizatio
 @Component
 @Slf4j
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+    private final UserService userService;
     @Value(value = "${app.oauth2.authorized-redirect-uris}")
     private List<String> authorizedRedirectUris;
 
@@ -32,9 +36,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final TokenService tokenService;
 
     @Autowired
-    public OAuth2AuthenticationSuccessHandler(HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRepository, TokenService tokenService) {
+    public OAuth2AuthenticationSuccessHandler(HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRepository, TokenService tokenService, UserService userService) {
         this.httpCookieOAuth2AuthorizationRepository = httpCookieOAuth2AuthorizationRepository;
         this.tokenService = tokenService;
+        this.userService = userService;
     }
 
     @Override
@@ -61,10 +66,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String targetUri = redirectUri.orElse(getDefaultTargetUrl());
 
         String token = tokenService.createToken(authentication);
+
         log.info("[LOG - OAuth2AuthenticationSuccessHandler] token: {}", token);
 
         return UriComponentsBuilder.fromUriString(targetUri)
                 .queryParam("token", token)
+                .queryParam("forbidden", "signup")
                 .build()
                 .toUriString();
     }

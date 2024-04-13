@@ -6,18 +6,22 @@ export const OAuth2RedirectHandler: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const getUrlParameter = (name: string) => {
-    const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-    const results = regex.exec(location.search);
-    return results === null ? undefined : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  const getUrlParameters = (names: string[]): { [key: string]: string | undefined } => {
+    const params: { [key: string]: string | undefined } = {};
+    names.forEach((name) => {
+      const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+      const results = regex.exec(location.search);
+      params[name] = results === null ? undefined : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    });
+    return params;
   };
 
   useEffect(() => {
-    const token = getUrlParameter("token");
-    const error = getUrlParameter("error");
-    if (token) {
+    const {token, forbidden} = getUrlParameters(["token", "forbidden"]);
+    const {error} = getUrlParameters(["error"]);
+    if (token && forbidden) {
       setAuthCookie(token);
-      // console.log(getAuthCookie());
+      // console.log(forbidden);
       navigate("/");
     } else if (error) {
       navigate("/");
