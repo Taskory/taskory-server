@@ -22,7 +22,8 @@ export const OAuth2RedirectHandler: React.FC = () => {
     if (token && forbidden) {
       setAuthCookie(token);
       // console.log(forbidden);
-      navigate("/");
+      navigate("/socialconnect", {state : {data: forbidden}});
+      // console.log(forbidden);
     } else if (error) {
       navigate("/");
       console.log(error);

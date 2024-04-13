@@ -3,7 +3,7 @@ package taskflower.taskflower.task;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import taskflower.taskflower.security.payload.SignupRequset;
+import taskflower.taskflower.security.payload.SignupRequest;
 import taskflower.taskflower.task.exception.TaskNotFoundExeption;
 import taskflower.taskflower.task.exception.TaskTitleExistException;
 import taskflower.taskflower.task.model.Status;
@@ -12,7 +12,6 @@ import taskflower.taskflower.task.tag.*;
 import taskflower.taskflower.task.tag.model.Tag;
 import taskflower.taskflower.task.tag.exception.TagExistException;
 import taskflower.taskflower.task.tag.model.TagDto;
-import taskflower.taskflower.user.UserMapper;
 import taskflower.taskflower.user.model.User;
 import taskflower.taskflower.user.UserService;
 import taskflower.taskflower.user.exception.UserAlreadyExistedException;
@@ -170,7 +169,7 @@ class TaskServiceTest {
         } while (userService.existsUser(email.toString()));
 
 
-        SignupRequset signupRequest = new SignupRequset();
+        SignupRequest signupRequest = new SignupRequest();
         signupRequest.setName("test");
         signupRequest.setEmail(email.toString());
         signupRequest.setPassword("1234");

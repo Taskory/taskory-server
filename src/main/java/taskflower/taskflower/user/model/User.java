@@ -3,7 +3,7 @@ package taskflower.taskflower.user.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
-import taskflower.taskflower.security.payload.SignupRequset;
+import taskflower.taskflower.security.payload.SignupRequest;
 import taskflower.taskflower.global.BaseTimeEntity;
 import taskflower.taskflower.user.social.SocialAccount;
 
@@ -17,10 +17,11 @@ import java.util.Set;
 @ToString
 public class User extends BaseTimeEntity {
 
-    public User(SignupRequset signupRequset) {
-        this.name = signupRequset.getName();
-        this.email = signupRequset.getEmail();
-        this.password = signupRequset.getPassword();
+    public User(SignupRequest signupRequest) {
+        this.id = signupRequest.getId();
+        this.name = signupRequest.getName();
+        this.email = signupRequest.getEmail();
+        this.password = signupRequest.getPassword();
     }
 
     @Id

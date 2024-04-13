@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import taskflower.taskflower.security.TokenService;
 import taskflower.taskflower.security.payload.LoginRequset;
 import taskflower.taskflower.security.payload.LoginResponse;
-import taskflower.taskflower.security.payload.SignupRequset;
+import taskflower.taskflower.security.payload.SignupRequest;
 import taskflower.taskflower.security.payload.SignupResponse;
 import taskflower.taskflower.user.model.User;
 import taskflower.taskflower.user.exception.UserAlreadyExistedException;
@@ -50,9 +50,9 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<SignupResponse> signup(@Valid @RequestBody SignupRequset signupRequset) throws UserAlreadyExistedException {
+    public ResponseEntity<SignupResponse> signup(@Valid @RequestBody SignupRequest signupRequest) {
         try {
-            User user = new User(signupRequset);
+            User user = new User(signupRequest);
             userService.signup(user);
             return ResponseEntity.ok().body(new SignupResponse("회원가입 성공"));
         } catch (UserAlreadyExistedException e) {

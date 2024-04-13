@@ -20,8 +20,8 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<UserDto> getUserProfile(@CurrentUser UserPrincipal userDetails) {
-        UserDto user = userService.findUserByEmail(userDetails.getEmail());
+    public ResponseEntity<UserDto> getUserProfile(@CurrentUser UserPrincipal userPrincipal) {
+        UserDto user = userService.findUserByEmail(userPrincipal.getEmail());
         return ResponseEntity.ok().body(user);
     }
 

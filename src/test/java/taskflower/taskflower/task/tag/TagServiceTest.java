@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import taskflower.taskflower.security.payload.SignupRequset;
+import taskflower.taskflower.security.payload.SignupRequest;
 import taskflower.taskflower.task.tag.exception.TagExistException;
 import taskflower.taskflower.task.tag.exception.TagNotFoundException;
 import taskflower.taskflower.task.tag.model.TagDto;
@@ -39,11 +39,11 @@ class TagServiceTest {
             UserDto existedUser = userService.findUserByEmail(email);
             user = userService.getUserById(existedUser.getId());
         } else {
-            SignupRequset signupRequset = new SignupRequset();
-            signupRequset.setName("test");
-            signupRequset.setEmail(email);
-            signupRequset.setPassword("1234");
-            UserDto saveUser = userService.signup(new User(signupRequset));
+            SignupRequest signupRequest = new SignupRequest();
+            signupRequest.setName("test");
+            signupRequest.setEmail(email);
+            signupRequest.setPassword("1234");
+            UserDto saveUser = userService.signup(new User(signupRequest));
             user = userService.getUserById(saveUser.getId());
         }
     }

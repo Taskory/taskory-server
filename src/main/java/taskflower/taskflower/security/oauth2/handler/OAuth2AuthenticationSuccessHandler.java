@@ -1,5 +1,7 @@
 package taskflower.taskflower.security.oauth2.handler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,11 +18,14 @@ import taskflower.taskflower.security.TokenService;
 import taskflower.taskflower.security.CookieUtils;
 import taskflower.taskflower.security.UserPrincipal;
 import taskflower.taskflower.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import taskflower.taskflower.security.payload.SignupRequest;
 import taskflower.taskflower.user.UserService;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static taskflower.taskflower.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
@@ -28,7 +33,6 @@ import static taskflower.taskflower.security.oauth2.HttpCookieOAuth2Authorizatio
 @Component
 @Slf4j
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-    private final UserService userService;
     @Value(value = "${app.oauth2.authorized-redirect-uris}")
     private List<String> authorizedRedirectUris;
 
@@ -36,10 +40,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final TokenService tokenService;
 
     @Autowired
-    public OAuth2AuthenticationSuccessHandler(HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRepository, TokenService tokenService, UserService userService) {
+    public OAuth2AuthenticationSuccessHandler(HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRepository, TokenService tokenService) {
         this.httpCookieOAuth2AuthorizationRepository = httpCookieOAuth2AuthorizationRepository;
         this.tokenService = tokenService;
-        this.userService = userService;
     }
 
     @Override
@@ -66,14 +69,29 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String targetUri = redirectUri.orElse(getDefaultTargetUrl());
 
         String token = tokenService.createToken(authentication);
-
         log.info("[LOG - OAuth2AuthenticationSuccessHandler] token: {}", token);
 
-        return UriComponentsBuilder.fromUriString(targetUri)
-                .queryParam("token", token)
-                .queryParam("forbidden", "signup")
-                .build()
-                .toUriString();
+        try {
+            UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<String, Object> data = new HashMap<>();
+            data.put("id", userPrincipal.getId());
+            data.put("name", userPrincipal.getName());
+            data.put("email", userPrincipal.getEmail());
+            String json = objectMapper.writeValueAsString(data);
+
+            return UriComponentsBuilder.fromUriString(targetUri)
+                    .queryParam("token", token)
+                    .queryParam("forbidden", json)
+                    .build()
+                    .toUriString();
+        } catch (JsonProcessingException e) {
+            return UriComponentsBuilder.fromUriString(targetUri)
+                    .queryParam("token", token)
+                    .build()
+                    .toUriString();
+        }
     }
 
     private boolean isAuthorizedRedirectUri(String redirectUri) {
