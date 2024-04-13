@@ -30,6 +30,7 @@ import static taskflower.taskflower.security.oauth2.HttpCookieOAuth2Authorizatio
 @Component
 @Slf4j
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+    private final ObjectMapper objectMapper;
     @Value(value = "${app.oauth2.authorized-redirect-uris}")
     private List<String> authorizedRedirectUris;
 
@@ -37,9 +38,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final TokenService tokenService;
 
     @Autowired
-    public OAuth2AuthenticationSuccessHandler(HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRepository, TokenService tokenService) {
+    public OAuth2AuthenticationSuccessHandler(HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRepository, TokenService tokenService, ObjectMapper objectMapper) {
         this.httpCookieOAuth2AuthorizationRepository = httpCookieOAuth2AuthorizationRepository;
         this.tokenService = tokenService;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -76,7 +78,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                     .toUriString();
         } else {
             try {
-                ObjectMapper objectMapper = new ObjectMapper();
                 Map<String, Object> data = new HashMap<>();
                 data.put("id", userPrincipal.getId());
                 data.put("name", userPrincipal.getName());
