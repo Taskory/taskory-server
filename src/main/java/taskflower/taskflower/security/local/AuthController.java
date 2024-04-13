@@ -17,7 +17,6 @@ import taskflower.taskflower.security.payload.SignupResponse;
 import taskflower.taskflower.user.model.User;
 import taskflower.taskflower.user.exception.UserAlreadyExistedException;
 import taskflower.taskflower.user.UserService;
-import taskflower.taskflower.user.model.UserDto;
 
 @RestController
 @RequestMapping("/api/v1/auth")
