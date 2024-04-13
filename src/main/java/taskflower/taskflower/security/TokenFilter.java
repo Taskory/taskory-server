@@ -23,12 +23,12 @@ import java.io.IOException;
 @Component
 public class TokenFilter extends OncePerRequestFilter {
 
-    private final TokenProvider tokenProvider;
+    private final TokenService tokenService;
     private final CustomUserDetailsService userDetailsService;
     private final UserService userService;
 
-    public TokenFilter(TokenProvider tokenProvider, CustomUserDetailsService userDetailsService, UserService userService) {
-        this.tokenProvider = tokenProvider;
+    public TokenFilter(TokenService tokenService, CustomUserDetailsService userDetailsService, UserService userService) {
+        this.tokenService = tokenService;
         this.userDetailsService = userDetailsService;
         this.userService = userService;
     }
@@ -40,8 +40,8 @@ public class TokenFilter extends OncePerRequestFilter {
         try {
             String jwt = getFromRequest(request);
 
-            if (StringUtils.hasText(jwt) && tokenProvider.validationToken(jwt)) {
-                long userId = tokenProvider.getUserIdFromToken(jwt);
+            if (StringUtils.hasText(jwt) && tokenService.validationToken(jwt)) {
+                long userId = tokenService.getUserIdFromToken(jwt);
 
                 if (!isLocalSignup(userId)) {
                     response.setStatus(HttpStatus.FORBIDDEN.value());

@@ -15,7 +15,7 @@ import java.util.Date;
 
 @Service
 @Slf4j
-public class TokenProvider {
+public class TokenService {
 
     @Value("${app.token.expire-ms}")
     private long expireMS;

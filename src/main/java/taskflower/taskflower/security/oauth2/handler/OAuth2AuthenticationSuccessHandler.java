@@ -11,7 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
-import taskflower.taskflower.security.TokenProvider;
+import taskflower.taskflower.security.TokenService;
 import taskflower.taskflower.security.CookieUtils;
 import taskflower.taskflower.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 
@@ -29,12 +29,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private List<String> authorizedRedirectUris;
 
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRepository;
-    private final TokenProvider tokenProvider;
+    private final TokenService tokenService;
 
     @Autowired
-    public OAuth2AuthenticationSuccessHandler(HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRepository, TokenProvider tokenProvider) {
+    public OAuth2AuthenticationSuccessHandler(HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRepository, TokenService tokenService) {
         this.httpCookieOAuth2AuthorizationRepository = httpCookieOAuth2AuthorizationRepository;
-        this.tokenProvider = tokenProvider;
+        this.tokenService = tokenService;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         String targetUri = redirectUri.orElse(getDefaultTargetUrl());
 
-        String token = tokenProvider.createToken(authentication);
+        String token = tokenService.createToken(authentication);
         log.info("[LOG - OAuth2AuthenticationSuccessHandler] token: {}", token);
 
         return UriComponentsBuilder.fromUriString(targetUri)

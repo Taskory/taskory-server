@@ -9,7 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import taskflower.taskflower.security.TokenProvider;
+import taskflower.taskflower.security.TokenService;
 import taskflower.taskflower.security.payload.LoginRequset;
 import taskflower.taskflower.security.payload.LoginResponse;
 import taskflower.taskflower.security.payload.SignupRequset;
@@ -22,13 +22,13 @@ import taskflower.taskflower.user.UserService;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
-    private final TokenProvider tokenProvider;
+    private final TokenService tokenService;
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
 
     @Autowired
-    public AuthController(TokenProvider tokenProvider, UserService userService, AuthenticationManager authenticationManager) {
-        this.tokenProvider = tokenProvider;
+    public AuthController(TokenService tokenService, UserService userService, AuthenticationManager authenticationManager) {
+        this.tokenService = tokenService;
         this.userService = userService;
         this.authenticationManager = authenticationManager;
     }
@@ -44,7 +44,7 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String token = tokenProvider.createToken(authentication);
+        String token = tokenService.createToken(authentication);
 
         return ResponseEntity.ok().body(new LoginResponse(token));
     }
