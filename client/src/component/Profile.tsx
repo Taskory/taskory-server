@@ -7,11 +7,11 @@ import {existAuthCookie, getAuthCookie} from "../util/CookieUtil";
 interface UserState {
   email: string;
   name: string;
-  socialAccount: string;
+  socialProviders: string[];
 }
 
 export const Profile: React.FC = () => {
-  const [userState, setUserState] = useState<UserState>({email: "", name: "", socialAccount: ""});
+  const [userInfo, setUserInfo] = useState<UserState>({email: "", name: "", socialProviders: []});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export const Profile: React.FC = () => {
               res.json()
                 .then(result => {
                   console.log(result);
-                  setUserState({email: result.email, name: result.name, socialAccount: result.socialAccount});
+                  setUserInfo({email: result.email, name: result.name, socialProviders: result.socialProviders});
                 });
             }
 
@@ -48,15 +48,20 @@ export const Profile: React.FC = () => {
   }, [navigate]);
   return (
     <>
-      <p>Name : {userState.name}</p>
-      <p>Email : {userState.email}</p>
-      <p>connected social accounts : {userState.socialAccount}</p>
-      {/*<div className="h-auto space-y-2 my-4">*/}
-      {/*  <a className="flex justify-start btn w-full h-min" href={GOOGLE_AUTH_URL}>*/}
-      {/*    <img className={"size-1/12"} src={googleLogo} alt="Google"/>*/}
-      {/*    <p className={"ml-4"}>Log in with Google</p>*/}
-      {/*  </a>*/}
-      {/*</div>*/}
+      <p>Name : {userInfo.name}</p>
+      <p>Email : {userInfo.email}</p>
+      <p>connected social accounts :</p>
+      <ul>
+        {userInfo.socialProviders.map((provider, index) => (
+          <li key={index}>{provider}</li>
+        ))}
+      </ul>
+      <div className="h-auto space-y-2 my-4">
+        {/*<a className="flex justify-start btn w-full h-min" href={GOOGLE_AUTH_URL}>*/}
+        {/*  <img className={"size-1/12"} src={googleLogo} alt="Google"/>*/}
+        {/*  <p className={"ml-4"}>Log in with Google</p>*/}
+        {/*</a>*/}
+      </div>
     </>
   );
 };
