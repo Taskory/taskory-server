@@ -60,7 +60,7 @@ public class AuthController {
         }
     }
 
-    @PutMapping("/signup")
+    @PostMapping("/oauth2/signup")
     public ResponseEntity<SignupResponse> signupWithOAuth2(@Valid @RequestBody SignupRequest signupRequest) {
         User user = new User(signupRequest);
         userService.signupWithOAuth2(user);

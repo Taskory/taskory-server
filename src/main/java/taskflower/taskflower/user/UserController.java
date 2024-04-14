@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import taskflower.taskflower.security.CurrentUser;
 import taskflower.taskflower.security.UserPrincipal;
+import taskflower.taskflower.user.model.ProfileResponse;
 import taskflower.taskflower.user.model.User;
 import taskflower.taskflower.user.model.UserDto;
 
@@ -20,9 +21,8 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<UserDto> getUserProfile(@CurrentUser UserPrincipal userPrincipal) {
-        UserDto user = userService.findUserByEmail(userPrincipal.getEmail());
-        return ResponseEntity.ok().body(user);
+    public ResponseEntity<ProfileResponse> getUserProfile(@CurrentUser UserPrincipal userPrincipal) {
+        ProfileResponse profile = userService.getProfile(userPrincipal.getId());
+        return ResponseEntity.ok().body(profile);
     }
-
 }

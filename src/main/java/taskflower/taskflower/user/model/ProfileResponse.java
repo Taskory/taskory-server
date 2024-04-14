@@ -1,20 +1,17 @@
 package taskflower.taskflower.user.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import taskflower.taskflower.user.social.SocialAccount;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
-@AllArgsConstructor
-public class UserDto {
-    private Long id;
+@ToString
+public class ProfileResponse {
     private String name;
     private String email;
-    @JsonIgnore
-    private Set<SocialAccount> socialAccounts;
+    private Set<String> socialProviders = new HashSet<>();
 }

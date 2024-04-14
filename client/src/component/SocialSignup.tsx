@@ -23,7 +23,7 @@ export const SocialSignup: React.FC = () => {
 
   const fetchSignup = async () => {
     const requestOptions = {
-      method: "PUT",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${getAuthCookie()}`
@@ -37,7 +37,7 @@ export const SocialSignup: React.FC = () => {
     }
 
     try {
-      await fetch(API_URL + "/auth/signup", requestOptions).then(res => {
+      await fetch(API_URL + "/auth/oauth2/signup", requestOptions).then(res => {
         if (res.ok) {
           navigate('/');
         }

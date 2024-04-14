@@ -1,6 +1,7 @@
 package taskflower.taskflower.user.social;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import taskflower.taskflower.global.BaseTimeEntity;
 import taskflower.taskflower.user.model.User;
@@ -21,15 +22,15 @@ public class SocialAccount extends BaseTimeEntity {
     @Column
     private String subId;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private User user;
 
-    @Column
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private SocialProvider provider;
 
 //    user ID or Email of OAuth2 provider
-    @Column
+    @Column(nullable = false)
     private String username;
 
     @Column

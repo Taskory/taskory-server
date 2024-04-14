@@ -44,8 +44,7 @@ public class TokenFilter extends OncePerRequestFilter {
                 long userId = tokenService.getUserIdFromToken(jwt);
 
 //                로컬 서비스 계정 가입 x, 로컬 계정 가입 요청 x 일 때,
-                if (!isLocalSignup(userId) &&
-                        !request.getRequestURI().equalsIgnoreCase("/api/v1/auth/signup")) {
+                if (!isLocalSignup(userId) && !request.getRequestURI().equalsIgnoreCase("/api/v1/auth/oauth2/signup")) {
                     response.setStatus(HttpStatus.FORBIDDEN.value());
                     return;
                 }

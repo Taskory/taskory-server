@@ -1,9 +1,14 @@
 package taskflower.taskflower.user;
 
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import taskflower.taskflower.security.oauth2.model.OAuth2UserInfo;
+import taskflower.taskflower.user.model.ProfileResponse;
 import taskflower.taskflower.user.social.SocialAccount;
 import taskflower.taskflower.user.social.SocialAccountRepository;
 import taskflower.taskflower.user.social.SocialProvider;
@@ -15,6 +20,7 @@ import taskflower.taskflower.user.model.UserDto;
 import java.util.Set;
 import java.util.UUID;
 
+@Slf4j
 @Service
 public class UserService {
 
@@ -79,24 +85,28 @@ public class UserService {
         return userMapper.convertUserToUserDto(user);
     }
 
+    public ProfileResponse getProfile(Long id) {
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        log.info("[LOG - UserService.getProfile()] user : {}", user);
+        return userMapper.convertUserToProfileResponse(user);
+    }
+
+    @Transactional
     public User signupTempUserWithOAuth2(OAuth2UserInfo oAuth2UserInfo, String socialProvider) {
         SocialAccount socialAccount = new SocialAccount();
         socialAccount.setSubId(oAuth2UserInfo.getSubId());
         socialAccount.setUsername(oAuth2UserInfo.getEmail());
         socialAccount.setName(oAuth2UserInfo.getName());
         socialAccount.setProvider(SocialProvider.valueOf(socialProvider.toUpperCase()));
-        socialAccountRepository.save(socialAccount);
 
         User tempUser = new User();
-        tempUser.setSocialAccount(Set.of(socialAccount));
         tempUser.setName(oAuth2UserInfo.getName());
         tempUser.setEmail(oAuth2UserInfo.getEmail());
         tempUser.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
         tempUser.setLocalSignup(false);
-        userRepository.save(tempUser);
+        tempUser.addSocialAccount(socialAccount);
 
-        socialAccount.setUser(tempUser);
-        socialAccountRepository.save(socialAccount);
+        userRepository.save(tempUser);
 
         return tempUser;
     }

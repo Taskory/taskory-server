@@ -34,6 +34,7 @@ export const Profile: React.FC = () => {
             if (res.ok) {
               res.json()
                 .then(result => {
+                  console.log(result);
                   setUserState({email: result.email, name: result.name, socialAccount: result.socialAccount});
                 });
             }
