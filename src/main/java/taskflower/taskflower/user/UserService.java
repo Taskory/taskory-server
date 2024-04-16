@@ -1,8 +1,6 @@
 package taskflower.taskflower.user;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -10,14 +8,12 @@ import org.springframework.transaction.annotation.Transactional;
 import taskflower.taskflower.security.oauth2.model.OAuth2UserInfo;
 import taskflower.taskflower.user.model.ProfileResponse;
 import taskflower.taskflower.user.social.SocialAccount;
-import taskflower.taskflower.user.social.SocialAccountRepository;
 import taskflower.taskflower.user.social.SocialProvider;
 import taskflower.taskflower.user.exception.UserAlreadyExistedException;
 import taskflower.taskflower.user.exception.UserNotFoundException;
 import taskflower.taskflower.user.model.User;
 import taskflower.taskflower.user.model.UserDto;
 
-import java.util.Set;
 import java.util.UUID;
 
 @Slf4j
@@ -26,14 +22,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final SocialAccountRepository socialAccountRepository;
     private final UserMapper userMapper;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SocialAccountRepository socialAccountRepository, UserMapper userMapper) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.socialAccountRepository = socialAccountRepository;
         this.userMapper = userMapper;
     }
 
@@ -73,13 +67,6 @@ public class UserService {
         userRepository.delete(user);
     }
 
-
-//    <<권한을 통해 사용자 정보을 읽어오는 것은 JWT 토큰으로 대체>>
-//    public User findUserByAuth() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
-//        return userRepository.findUserByEmail(principal.getEmail());
-//    }
     public UserDto findUserByEmail(String email) {
         User user = userRepository.findUserByEmail(email);
         return userMapper.convertUserToUserDto(user);

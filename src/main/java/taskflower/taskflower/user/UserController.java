@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import taskflower.taskflower.security.CurrentUser;
 import taskflower.taskflower.security.UserPrincipal;
 import taskflower.taskflower.user.model.ProfileResponse;
-import taskflower.taskflower.user.model.User;
-import taskflower.taskflower.user.model.UserDto;
 
 @RestController
 @RequestMapping("${app.api-base-url}/user")

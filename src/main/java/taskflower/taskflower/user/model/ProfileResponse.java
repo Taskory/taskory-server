@@ -1,7 +1,6 @@
 package taskflower.taskflower.user.model;
 
 import lombok.*;
-import taskflower.taskflower.user.social.SocialAccount;
 
 import java.util.HashSet;
 import java.util.Set;
