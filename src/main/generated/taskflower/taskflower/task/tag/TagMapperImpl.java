@@ -2,8 +2,9 @@ package taskflower.taskflower.task.tag;
 
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
-import taskflower.taskflower.task.tag.model.Tag;
-import taskflower.taskflower.task.tag.model.TagDto;
+import taskflower.taskflower.mapper.TagMapper;
+import taskflower.taskflower.model.entity.Tag;
+import taskflower.taskflower.model.dto.TagDto;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",

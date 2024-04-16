@@ -19,11 +19,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import taskflower.taskflower.security.TokenFilter;
-import taskflower.taskflower.security.oauth2.CustomOAuth2UserService;
-import taskflower.taskflower.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
-import taskflower.taskflower.security.oauth2.handler.OAuth2AuthenticationFailureHandler;
-import taskflower.taskflower.security.oauth2.handler.OAuth2AuthenticationSuccessHandler;
+import taskflower.taskflower.security.filter.TokenFilter;
+import taskflower.taskflower.security.service.CustomOAuth2UserService;
+import taskflower.taskflower.security.data.HttpCookieOAuth2AuthorizationRequestRepository;
+import taskflower.taskflower.security.handler.OAuth2AuthenticationFailureHandler;
+import taskflower.taskflower.security.handler.OAuth2AuthenticationSuccessHandler;
 
 import java.util.Arrays;
 import java.util.List;

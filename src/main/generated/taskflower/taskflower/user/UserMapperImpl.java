@@ -4,10 +4,11 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
-import taskflower.taskflower.user.model.ProfileResponse;
-import taskflower.taskflower.user.model.User;
-import taskflower.taskflower.user.model.UserDto;
-import taskflower.taskflower.user.social.SocialAccount;
+import taskflower.taskflower.mapper.UserMapper;
+import taskflower.taskflower.model.dto.ProfileResponse;
+import taskflower.taskflower.model.entity.User;
+import taskflower.taskflower.model.dto.UserDto;
+import taskflower.taskflower.model.entity.SocialAccount;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",

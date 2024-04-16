@@ -4,10 +4,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import taskflower.taskflower.user.exception.UserAlreadyExistedException;
-import taskflower.taskflower.user.exception.UserNotFoundException;
-import taskflower.taskflower.user.model.User;
-import taskflower.taskflower.user.model.UserDto;
+import taskflower.taskflower.exception.UserAlreadyExistedException;
+import taskflower.taskflower.exception.UserNotFoundException;
+import taskflower.taskflower.mapper.UserMapper;
+import taskflower.taskflower.model.entity.User;
+import taskflower.taskflower.model.dto.UserDto;
+import taskflower.taskflower.service.UserService;
 
 import java.util.Random;
 

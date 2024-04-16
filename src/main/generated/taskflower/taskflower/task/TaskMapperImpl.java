@@ -4,9 +4,10 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
-import taskflower.taskflower.task.model.Task;
-import taskflower.taskflower.task.model.TaskDto;
-import taskflower.taskflower.task.tag.model.Tag;
+import taskflower.taskflower.mapper.TaskMapper;
+import taskflower.taskflower.model.entity.Task;
+import taskflower.taskflower.model.dto.TaskDto;
+import taskflower.taskflower.model.entity.Tag;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
@@ -27,7 +28,7 @@ public class TaskMapperImpl implements TaskMapper {
         taskDto.setId( task.getId() );
         taskDto.setTitle( task.getTitle() );
         taskDto.setDescription( task.getDescription() );
-        taskDto.setStatus( task.getStatus() );
+        taskDto.setTaskStatus( task.getTaskStatus() );
         Set<Tag> set = task.getTags();
         if ( set != null ) {
             taskDto.setTags( new LinkedHashSet<Tag>( set ) );
@@ -49,7 +50,7 @@ public class TaskMapperImpl implements TaskMapper {
 
         task.setTitle( saveTaskRequest.getTitle() );
         task.setDescription( saveTaskRequest.getDescription() );
-        task.setStatus( saveTaskRequest.getStatus() );
+        task.setTaskStatus( saveTaskRequest.getTaskStatus() );
         Set<Tag> set = saveTaskRequest.getTags();
         if ( set != null ) {
             task.setTags( new LinkedHashSet<Tag>( set ) );
