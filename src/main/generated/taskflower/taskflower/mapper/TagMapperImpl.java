@@ -1,14 +1,13 @@
-package taskflower.taskflower.task.tag;
+package taskflower.taskflower.mapper;
 
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
-import taskflower.taskflower.mapper.TagMapper;
-import taskflower.taskflower.model.entity.Tag;
 import taskflower.taskflower.model.dto.TagDto;
+import taskflower.taskflower.model.entity.Tag;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-04-14T17:24:20+0900",
+    date = "2024-04-16T17:29:02+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.9 (Amazon.com Inc.)"
 )
 @Component

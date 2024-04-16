@@ -1,18 +1,17 @@
-package taskflower.taskflower.user;
+package taskflower.taskflower.mapper;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
-import taskflower.taskflower.mapper.UserMapper;
 import taskflower.taskflower.model.dto.ProfileResponse;
-import taskflower.taskflower.model.entity.User;
 import taskflower.taskflower.model.dto.UserDto;
 import taskflower.taskflower.model.entity.SocialAccount;
+import taskflower.taskflower.model.entity.User;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-04-14T17:30:36+0900",
+    date = "2024-04-16T17:29:02+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.9 (Amazon.com Inc.)"
 )
 @Component
