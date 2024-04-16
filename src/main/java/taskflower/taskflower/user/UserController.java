@@ -10,7 +10,7 @@ import taskflower.taskflower.user.model.User;
 import taskflower.taskflower.user.model.UserDto;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("${app.api-base-url}/user")
 public class UserController {
 
     private final UserService userService;

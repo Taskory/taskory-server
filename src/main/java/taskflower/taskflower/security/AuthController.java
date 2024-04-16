@@ -1,7 +1,8 @@
-package taskflower.taskflower.security.local;
+package taskflower.taskflower.security;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,7 +10,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import taskflower.taskflower.security.TokenService;
 import taskflower.taskflower.security.payload.LoginRequset;
 import taskflower.taskflower.security.payload.LoginResponse;
 import taskflower.taskflower.security.payload.SignupRequest;
@@ -19,7 +19,7 @@ import taskflower.taskflower.user.exception.UserAlreadyExistedException;
 import taskflower.taskflower.user.UserService;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("${app.api-base-url}/auth")
 public class AuthController {
 
     private final TokenService tokenService;

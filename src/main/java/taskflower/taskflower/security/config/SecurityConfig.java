@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -18,16 +20,23 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import taskflower.taskflower.security.TokenFilter;
 import taskflower.taskflower.security.oauth2.CustomOAuth2UserService;
 import taskflower.taskflower.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import taskflower.taskflower.security.oauth2.handler.OAuth2AuthenticationFailureHandler;
 import taskflower.taskflower.security.oauth2.handler.OAuth2AuthenticationSuccessHandler;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    @Value("${app.cors.allowed-origins}")
+    private List<String> allowedOrigins;
     @Value("${app.api-base-url}")
     private String apiBaseUrl;
 
@@ -36,16 +45,14 @@ public class SecurityConfig {
     private final OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler;
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOauth2AuthorizationRequestRepository;
-    private final CorsConfigurationSource corsConfigurationSource;
 
     @Autowired
-    public SecurityConfig(TokenFilter tokenFilter, CustomOAuth2UserService customOauth2UserService, OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler, OAuth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler, HttpCookieOAuth2AuthorizationRequestRepository httpCookieOauth2AuthorizationRequestRepository, @Qualifier("corsConfigurationSource") CorsConfigurationSource corsConfigurationSource) {
+    public SecurityConfig(TokenFilter tokenFilter, CustomOAuth2UserService customOauth2UserService, OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler, OAuth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler, HttpCookieOAuth2AuthorizationRequestRepository httpCookieOauth2AuthorizationRequestRepository) {
         this.tokenFilter = tokenFilter;
         this.customOauth2UserService = customOauth2UserService;
         this.oauth2AuthenticationSuccessHandler = oauth2AuthenticationSuccessHandler;
         this.oauth2AuthenticationFailureHandler = oauth2AuthenticationFailureHandler;
         this.httpCookieOauth2AuthorizationRequestRepository = httpCookieOauth2AuthorizationRequestRepository;
-        this.corsConfigurationSource = corsConfigurationSource;
     }
 
     @Bean
@@ -67,7 +74,7 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 //                Cors 문제 해결
                 .cors(cors -> cors
-                        .configurationSource(corsConfigurationSource))
+                        .configurationSource(corsConfigurationSource()))
 //                url 권한 매칭 설정
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(apiBaseUrl + "/auth/**").permitAll()                   // 권한 허용
@@ -94,6 +101,23 @@ public class SecurityConfig {
         return http.build();
     }
 
-
-
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(allowedOrigins);
+        config.setAllowedMethods(Arrays.asList(
+                HttpMethod.GET.name(),
+                HttpMethod.POST.name(),
+                HttpMethod.PUT.name(),
+                HttpMethod.DELETE.name()
+        ));
+        config.setAllowedHeaders(Arrays.asList(
+                HttpHeaders.CONTENT_TYPE,
+                HttpHeaders.AUTHORIZATION
+        ));
+        config.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
 }

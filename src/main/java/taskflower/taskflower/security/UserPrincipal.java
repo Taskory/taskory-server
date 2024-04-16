@@ -3,11 +3,13 @@ package taskflower.taskflower.security;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import taskflower.taskflower.user.model.User;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 @Getter
@@ -32,7 +34,7 @@ public class UserPrincipal implements UserDetails, OAuth2User {
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.isLocalSignup = user.isLocalSignup();
-//        this.authorities = Collections.singletonList(new SimpleGrantedAuthority("USER"));
+//        this.authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
     }
 
     public UserPrincipal(User user, Map<String, Object> attributes) {
@@ -41,6 +43,7 @@ public class UserPrincipal implements UserDetails, OAuth2User {
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.isLocalSignup = user.isLocalSignup();
+//        this.authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
         this.attributes = attributes;
     }
 

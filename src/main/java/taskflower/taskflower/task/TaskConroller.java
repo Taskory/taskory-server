@@ -15,7 +15,7 @@ import taskflower.taskflower.user.UserService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/task")
+@RequestMapping("${app.api-base-url}/task")
 public class TaskConroller {
 
     private final UserService userService;

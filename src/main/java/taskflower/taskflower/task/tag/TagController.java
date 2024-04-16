@@ -15,7 +15,7 @@ import taskflower.taskflower.user.UserService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/task/tag")
+@RequestMapping("${app.api-base-url}/task/tag")
 public class TagController {
 
     private final TagService tagService;
