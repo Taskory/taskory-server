@@ -8,11 +8,15 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.bind.annotation.*;
+import taskflower.taskflower.security.data.UserPrincipal;
 import taskflower.taskflower.security.data.dto.LoginRequset;
 import taskflower.taskflower.security.data.dto.LoginResponse;
 import taskflower.taskflower.security.data.dto.SignupRequest;
 import taskflower.taskflower.security.data.dto.SignupResponse;
+import taskflower.taskflower.security.service.CustomUserDetailsService;
 import taskflower.taskflower.security.service.TokenService;
 import taskflower.taskflower.model.entity.User;
 import taskflower.taskflower.exception.UserAlreadyExistedException;
@@ -25,12 +29,14 @@ public class AuthenticationController {
     private final TokenService tokenService;
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
+    private final CustomUserDetailsService userDetailsService;
 
     @Autowired
-    public AuthenticationController(TokenService tokenService, UserService userService, AuthenticationManager authenticationManager) {
+    public AuthenticationController(TokenService tokenService, UserService userService, AuthenticationManager authenticationManager, CustomUserDetailsService userDetailsService) {
         this.tokenService = tokenService;
         this.userService = userService;
         this.authenticationManager = authenticationManager;
+        this.userDetailsService = userDetailsService;
     }
 
     @PostMapping("/login")
@@ -65,9 +71,10 @@ public class AuthenticationController {
         User user = new User(signupRequest);
         userService.signupWithOAuth2(user);
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserPrincipal userPrincipal = (UserPrincipal) userDetailsService.loadUserById(user.getId());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                userPrincipal, null);
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
         return ResponseEntity.ok().body(new SignupResponse("회원가입 성공"));
     }

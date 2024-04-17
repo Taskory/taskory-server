@@ -13,6 +13,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import taskflower.taskflower.security.data.UserPrincipal;
 import taskflower.taskflower.security.service.CustomUserDetailsService;
 import taskflower.taskflower.security.service.TokenService;
 
@@ -40,10 +41,10 @@ public class TokenFilter extends OncePerRequestFilter {
             if (StringUtils.hasText(jwt) && tokenService.validationToken(jwt)) {
                 long userId = tokenService.getUserIdFromToken(jwt);
 
-                UserDetails userDetails = userDetailsService.loadUserById(userId);
+                UserPrincipal userPrincipal = (UserPrincipal) userDetailsService.loadUserById(userId);
 
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null);
+                        userPrincipal, null);
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);

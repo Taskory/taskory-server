@@ -63,7 +63,7 @@ public class User extends BaseTimeEntity {
     }
 
     public void initRole() {
-        this.roles.clear();
+        this.roles = new HashSet<>();
     }
 }
 
