@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import taskflower.taskflower.model.enums.Role;
 import taskflower.taskflower.security.data.OAuth2UserInfo;
 import taskflower.taskflower.mapper.UserMapper;
 import taskflower.taskflower.repository.UserRepository;
@@ -42,6 +43,7 @@ public class UserService {
             throw new UserAlreadyExistedException("Sorry, this email is Already existed..");
         }
         signupUser.setPassword(passwordEncoder.encode(signupUser.getPassword()));
+        signupUser.addRole(Role.USER);
         User user = userRepository.save(signupUser);
         return userMapper.convertUserToUserDto(user);
     }
@@ -92,17 +94,22 @@ public class UserService {
         tempUser.setName(oAuth2UserInfo.getName());
         tempUser.setEmail(oAuth2UserInfo.getEmail());
         tempUser.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
-        tempUser.setLocalSignup(false);
         tempUser.addSocialAccount(socialAccount);
+        tempUser.addRole(Role.TEMP_USER);
 
         userRepository.save(tempUser);
 
         return tempUser;
     }
 
+    /*
+    * Temporary user -> Official user
+    * 임시 계정을 정식 계정으로 가입
+    * */
     public void signupWithOAuth2(User signupUser) {
         signupUser.setPassword(passwordEncoder.encode(signupUser.getPassword()));
-        signupUser.setLocalSignup(true);
+        signupUser.initRole();
+        signupUser.addRole(Role.USER);
         userRepository.save(signupUser);
     }
 }

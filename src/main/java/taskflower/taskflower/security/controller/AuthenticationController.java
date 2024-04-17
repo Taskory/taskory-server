@@ -1,4 +1,4 @@
-package taskflower.taskflower.controller;
+package taskflower.taskflower.security.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +20,14 @@ import taskflower.taskflower.service.UserService;
 
 @RestController
 @RequestMapping("${app.api-base-url}/auth")
-public class AuthController {
+public class AuthenticationController {
 
     private final TokenService tokenService;
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
 
     @Autowired
-    public AuthController(TokenService tokenService, UserService userService, AuthenticationManager authenticationManager) {
+    public AuthenticationController(TokenService tokenService, UserService userService, AuthenticationManager authenticationManager) {
         this.tokenService = tokenService;
         this.userService = userService;
         this.authenticationManager = authenticationManager;
@@ -36,11 +36,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequset loginRequset) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequset.getEmail(),
-                        loginRequset.getPassword()
-                )
-        );
+                new UsernamePasswordAuthenticationToken(loginRequset.getEmail(), loginRequset.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -60,10 +56,19 @@ public class AuthController {
         }
     }
 
+    /*
+    * OAuth2로 로그인 후 임시 계정을 로컬 계정으로 가입
+    * User의 Role이 수정되기 때문에 Authentication Update 필요
+    * */
     @PostMapping("/oauth2/signup")
     public ResponseEntity<SignupResponse> signupWithOAuth2(@Valid @RequestBody SignupRequest signupRequest) {
         User user = new User(signupRequest);
         userService.signupWithOAuth2(user);
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
         return ResponseEntity.ok().body(new SignupResponse("회원가입 성공"));
     }
 }

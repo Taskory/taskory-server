@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +15,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import taskflower.taskflower.security.service.CustomUserDetailsService;
 import taskflower.taskflower.security.service.TokenService;
-import taskflower.taskflower.service.UserService;
 
 import java.io.IOException;
 
@@ -26,12 +24,10 @@ public class TokenFilter extends OncePerRequestFilter {
 
     private final TokenService tokenService;
     private final CustomUserDetailsService userDetailsService;
-    private final UserService userService;
 
-    public TokenFilter(TokenService tokenService, CustomUserDetailsService userDetailsService, UserService userService) {
+    public TokenFilter(TokenService tokenService, CustomUserDetailsService userDetailsService) {
         this.tokenService = tokenService;
         this.userDetailsService = userDetailsService;
-        this.userService = userService;
     }
 
 
@@ -43,12 +39,6 @@ public class TokenFilter extends OncePerRequestFilter {
 
             if (StringUtils.hasText(jwt) && tokenService.validationToken(jwt)) {
                 long userId = tokenService.getUserIdFromToken(jwt);
-
-//                로컬 서비스 계정 가입 x, 로컬 계정 가입 요청 x 일 때,
-                if (!isLocalSignup(userId) && !request.getRequestURI().equalsIgnoreCase("/api/v1/auth/oauth2/signup")) {
-                    response.setStatus(HttpStatus.FORBIDDEN.value());
-                    return;
-                }
 
                 UserDetails userDetails = userDetailsService.loadUserById(userId);
 
@@ -62,10 +52,6 @@ public class TokenFilter extends OncePerRequestFilter {
             log.error("Could not set user authentication in security context", exception);
         }
         filterChain.doFilter(request, response);
-    }
-
-    private boolean isLocalSignup(long userId) {
-        return userService.getUserById(userId).isLocalSignup();
     }
 
     private String getFromRequest(HttpServletRequest request) {

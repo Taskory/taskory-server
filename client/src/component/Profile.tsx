@@ -38,7 +38,6 @@ export const Profile: React.FC = () => {
                   setUserInfo({email: result.email, name: result.name, socialProviders: result.socialProviders});
                 });
             }
-
           });
       } catch (error) {
         console.error(error);

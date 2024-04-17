@@ -1,6 +1,7 @@
 package taskflower.taskflower.security.service;
 
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,6 +10,7 @@ import taskflower.taskflower.security.data.UserPrincipal;
 import taskflower.taskflower.model.entity.User;
 import taskflower.taskflower.repository.UserRepository;
 
+@Slf4j
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -28,7 +30,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Transactional
     public UserDetails loadUserById(long userId) {
+        log.info("[LOG - CustomUserDetailsService.loadUserById]");
         User user = userRepository.findById(userId).orElseThrow();
+        log.info("[LOG - CustomUserDetailsService.loadUserById] user : {}", user);
+
         return new UserPrincipal(user);
     }
 }

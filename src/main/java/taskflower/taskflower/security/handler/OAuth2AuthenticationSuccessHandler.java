@@ -71,7 +71,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         log.info("[LOG - OAuth2AuthenticationSuccessHandler] token: {}", token);
 
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-        if (userPrincipal.isLocalSignup()) {
+        if (userPrincipal.isOfficialUser()) {
             return UriComponentsBuilder.fromUriString(targetUri)
                     .queryParam("token", token)
                     .build()
