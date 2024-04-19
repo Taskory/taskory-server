@@ -75,7 +75,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(apiBaseUrl + "/auth/**").permitAll()                   // 권한 허용
                         .requestMatchers("/oauth2/**").permitAll()
-                        .requestMatchers(apiBaseUrl + "/user/**").hasRole("USER")
+                        .requestMatchers(apiBaseUrl + "/user/**").permitAll()
                         .requestMatchers(apiBaseUrl + "/task/**").hasRole("USER")
                         .anyRequest().authenticated())
 //                oauth2 login

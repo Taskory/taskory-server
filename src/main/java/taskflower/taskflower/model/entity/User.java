@@ -3,6 +3,7 @@ package taskflower.taskflower.model.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
+import org.springframework.data.repository.cdi.Eager;
 import taskflower.taskflower.model.enums.Role;
 import taskflower.taskflower.security.data.dto.SignupRequest;
 
@@ -42,6 +43,7 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     @ElementCollection
     @Enumerated(EnumType.STRING)
+    @ToString.Exclude
     private Set<Role> roles = new HashSet<>();
 
     /* 로컬 회원 가입할 때 사용*/

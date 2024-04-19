@@ -1,7 +1,9 @@
 package taskflower.taskflower.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import taskflower.taskflower.annotation.CurrentUser;
 import taskflower.taskflower.security.data.UserPrincipal;
@@ -20,8 +22,12 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<ProfileResponse> getUserProfile(@CurrentUser UserPrincipal userPrincipal) {
-        ProfileResponse profile = userService.getProfile(userPrincipal.getId());
-        return ResponseEntity.ok().body(profile);
+    public ResponseEntity<?> getUserProfile(@CurrentUser UserPrincipal userPrincipal) {
+        try {
+            ProfileResponse profile = userService.getProfile(userPrincipal.getId());
+            return ResponseEntity.ok().body(profile);
+        } catch (UsernameNotFoundException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.toString());
+        }
     }
 }

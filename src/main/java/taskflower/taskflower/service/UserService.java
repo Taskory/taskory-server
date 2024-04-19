@@ -2,6 +2,7 @@ package taskflower.taskflower.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,9 +78,11 @@ public class UserService {
     }
 
     public ProfileResponse getProfile(Long id) {
-        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
-        log.info("[LOG - UserService.getProfile()] user : {}", user);
-        return userMapper.convertUserToProfileResponse(user);
+        if (userRepository.existsById(id)) {
+            User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+            log.info("[LOG - UserService.getProfile()] user : {}", user);
+            return userMapper.convertUserToProfileResponse(user);
+        } else throw new UsernameNotFoundException("Not found user");
     }
 
     @Transactional
