@@ -12,18 +12,12 @@ import taskflower.taskflower.model.enums.Role;
 import java.util.*;
 
 @Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
-@Builder
 public class UserPrincipal implements UserDetails, OAuth2User {
-
-    private long id;
-    private String name;
-    private String email;
-    private String password;
-    private Set<GrantedAuthority> authorities = new HashSet<>();
+    private final long id;
+    private final String name;
+    private final String email;
+    private final String password;
+    private final Set<Role> roles;
     private Map<String, Object> attributes;
 
     public UserPrincipal(User user) {
@@ -31,9 +25,7 @@ public class UserPrincipal implements UserDetails, OAuth2User {
         this.name = user.getName();
         this.email = user.getEmail();
         this.password = user.getPassword();
-        for (Role role : user.getRoles()) {
-            authorities.add(new SimpleGrantedAuthority(role.getDescription()));
-        }
+        this.roles = user.getRoles();
     }
 
     public UserPrincipal(User user, Map<String, Object> attributes) {
@@ -41,12 +33,10 @@ public class UserPrincipal implements UserDetails, OAuth2User {
         this.name = user.getName();
         this.email = user.getEmail();
         this.password = user.getPassword();
-        for (Role role : user.getRoles()) {
-            authorities.add(new SimpleGrantedAuthority(role.getDescription()));
-        }
+        this.roles = user.getRoles();
+
         this.attributes = attributes;
     }
-
 
     @Override
     public Map<String, Object> getAttributes() {
@@ -55,7 +45,11 @@ public class UserPrincipal implements UserDetails, OAuth2User {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        for (Role role : this.roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getDescription()));
+        }
+        return authorities;
     }
 
     @Override
@@ -94,8 +88,8 @@ public class UserPrincipal implements UserDetails, OAuth2User {
     }
 
     public boolean isOfficialUser() {
-        for (GrantedAuthority authority : this.authorities) {
-            if (Objects.equals(Role.TEMP_USER.getDescription(), authority.getAuthority())) {
+        for (Role role: this.roles) {
+            if (role == Role.TEMP_USER) {
                 return false;
             }
         }

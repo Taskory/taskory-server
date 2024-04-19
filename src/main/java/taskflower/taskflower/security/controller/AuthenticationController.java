@@ -73,7 +73,7 @@ public class AuthenticationController {
 
         UserPrincipal userPrincipal = (UserPrincipal) userDetailsService.loadUserById(user.getId());
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                userPrincipal, null);
+                userPrincipal, userPrincipal.getPassword(), userPrincipal.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
         return ResponseEntity.ok().body(new SignupResponse("회원가입 성공"));

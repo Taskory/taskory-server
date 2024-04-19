@@ -41,7 +41,7 @@ public class User extends BaseTimeEntity {
 //    private boolean isLocalSignup = true;
 
     @Column(nullable = false)
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     @ToString.Exclude
     private Set<Role> roles = new HashSet<>();

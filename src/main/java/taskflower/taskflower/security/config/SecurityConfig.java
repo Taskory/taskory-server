@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
@@ -28,8 +29,12 @@ import taskflower.taskflower.security.handler.OAuth2AuthenticationSuccessHandler
 import java.util.Arrays;
 import java.util.List;
 
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
+
+
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(securedEnabled = true, proxyTargetClass = true, jsr250Enabled = true)
 public class SecurityConfig {
     @Value("${app.cors.allowed-origins}")
     private List<String> allowedOrigins;
@@ -67,17 +72,23 @@ public class SecurityConfig {
                 .csrf(CsrfConfigurer::disable)
 //                JWT 사용 -> Session 필요 없음
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        http
 //                Cors 문제 해결
                 .cors(cors -> cors
-                        .configurationSource(corsConfigurationSource()))
+                        .configurationSource(corsConfigurationSource()));
+
+        http
 //                url 권한 매칭 설정
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(apiBaseUrl + "/auth/**").permitAll()                   // 권한 허용
-                        .requestMatchers("/oauth2/**").permitAll()
-                        .requestMatchers(apiBaseUrl + "/user/**").permitAll()
-                        .requestMatchers(apiBaseUrl + "/task/**").hasRole("USER")
-                        .anyRequest().authenticated())
+                        .requestMatchers(antMatcher(apiBaseUrl + "/auth/**")).permitAll()
+                        .requestMatchers(antMatcher("/oauth2/**")).permitAll()
+                        .requestMatchers(antMatcher(apiBaseUrl + "/user/**")).hasRole("USER")
+                        .requestMatchers(antMatcher(apiBaseUrl + "/task/**")).permitAll()
+                        .anyRequest().authenticated());
+
+        http
 //                oauth2 login
                 .oauth2Login(oauth2Login -> oauth2Login
                         .authorizationEndpoint(endPoint -> endPoint
