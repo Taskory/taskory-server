@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import taskflower.taskflower.security.data.dto.SignupRequest;
+import taskflower.taskflower.model.dto.SignupRequest;
 import taskflower.taskflower.service.TagService;
 import taskflower.taskflower.exception.TagExistException;
 import taskflower.taskflower.exception.TagNotFoundException;

@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import taskflower.taskflower.model.enums.Role;
-import taskflower.taskflower.security.data.OAuth2UserInfo;
+import taskflower.taskflower.security.model.OAuth2UserInfo;
 import taskflower.taskflower.mapper.UserMapper;
 import taskflower.taskflower.repository.UserRepository;
 import taskflower.taskflower.model.dto.ProfileResponse;

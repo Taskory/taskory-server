@@ -1,4 +1,4 @@
-package taskflower.taskflower.security.config;
+package taskflower.taskflower.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;

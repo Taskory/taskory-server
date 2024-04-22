@@ -1,4 +1,4 @@
-package taskflower.taskflower.security.data;
+package taskflower.taskflower.security.repository;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -7,6 +7,7 @@ import org.springframework.security.oauth2.client.web.AuthorizationRequestReposi
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import taskflower.taskflower.security.util.CookieUtil;
 
 @Component
 @Slf4j

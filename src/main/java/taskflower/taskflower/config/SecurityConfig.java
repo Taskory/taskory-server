@@ -1,4 +1,4 @@
-package taskflower.taskflower.security.config;
+package taskflower.taskflower.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +22,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import taskflower.taskflower.security.filter.TokenFilter;
 import taskflower.taskflower.security.service.CustomOAuth2UserService;
-import taskflower.taskflower.security.data.HttpCookieOAuth2AuthorizationRequestRepository;
+import taskflower.taskflower.security.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 import taskflower.taskflower.security.handler.OAuth2AuthenticationFailureHandler;
 import taskflower.taskflower.security.handler.OAuth2AuthenticationSuccessHandler;
 

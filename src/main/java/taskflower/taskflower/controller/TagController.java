@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import taskflower.taskflower.annotation.CurrentUser;
-import taskflower.taskflower.security.data.UserPrincipal;
+import taskflower.taskflower.security.model.UserPrincipal;
 import taskflower.taskflower.service.TagService;
 import taskflower.taskflower.exception.TagExistException;
 import taskflower.taskflower.exception.TagNotFoundException;

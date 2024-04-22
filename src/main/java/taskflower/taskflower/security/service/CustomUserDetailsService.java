@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
-import taskflower.taskflower.security.data.UserPrincipal;
+import taskflower.taskflower.security.model.UserPrincipal;
 import taskflower.taskflower.model.entity.User;
 import taskflower.taskflower.repository.UserRepository;
 

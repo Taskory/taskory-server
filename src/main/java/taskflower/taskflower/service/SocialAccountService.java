@@ -3,7 +3,7 @@ package taskflower.taskflower.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import taskflower.taskflower.security.data.OAuth2UserInfo;
+import taskflower.taskflower.security.model.OAuth2UserInfo;
 import taskflower.taskflower.model.entity.SocialAccount;
 import taskflower.taskflower.repository.SocialAccountRepository;
 

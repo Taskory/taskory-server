@@ -1,4 +1,4 @@
-package taskflower.taskflower.security.data;
+package taskflower.taskflower.security.util;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

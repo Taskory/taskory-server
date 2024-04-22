@@ -10,12 +10,12 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
-import taskflower.taskflower.security.data.CookieUtil;
-import taskflower.taskflower.security.data.HttpCookieOAuth2AuthorizationRequestRepository;
+import taskflower.taskflower.security.util.CookieUtil;
+import taskflower.taskflower.security.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 
 import java.io.IOException;
 
-import static taskflower.taskflower.security.data.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
+import static taskflower.taskflower.security.repository.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 @Component
 @Slf4j

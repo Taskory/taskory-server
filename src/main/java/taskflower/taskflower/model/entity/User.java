@@ -3,11 +3,9 @@ package taskflower.taskflower.model.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
-import org.springframework.data.repository.cdi.Eager;
 import taskflower.taskflower.model.enums.Role;
-import taskflower.taskflower.security.data.dto.SignupRequest;
+import taskflower.taskflower.model.dto.SignupRequest;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,11 +46,19 @@ public class User extends BaseTimeEntity {
 
     /* 로컬 회원 가입할 때 사용*/
     public User(SignupRequest signupRequest) {
-        this.id = signupRequest.getId();
         this.name = signupRequest.getName();
         this.email = signupRequest.getEmail();
         this.password = signupRequest.getPassword();
         roles.add(Role.USER);
+    }
+
+    public User(SignupRequest signupRequest, Long id) {
+        this.id = id;
+        this.name = signupRequest.getName();
+        this.email = signupRequest.getEmail();
+        this.password = signupRequest.getPassword();
+        roles.add(Role.USER);
+
     }
 
     public void addSocialAccount(SocialAccount socialAccount) {

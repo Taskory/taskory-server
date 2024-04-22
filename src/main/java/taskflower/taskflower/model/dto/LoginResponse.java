@@ -1,4 +1,4 @@
-package taskflower.taskflower.security.data.dto;
+package taskflower.taskflower.model.dto;
 
 import lombok.Data;
 

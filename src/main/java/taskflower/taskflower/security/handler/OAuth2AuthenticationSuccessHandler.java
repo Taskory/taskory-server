@@ -14,9 +14,9 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 import taskflower.taskflower.security.service.TokenService;
-import taskflower.taskflower.security.data.CookieUtil;
-import taskflower.taskflower.security.data.UserPrincipal;
-import taskflower.taskflower.security.data.HttpCookieOAuth2AuthorizationRequestRepository;
+import taskflower.taskflower.security.util.CookieUtil;
+import taskflower.taskflower.security.model.UserPrincipal;
+import taskflower.taskflower.security.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 
 import java.io.IOException;
 import java.net.URI;
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static taskflower.taskflower.security.data.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
+import static taskflower.taskflower.security.repository.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 @Component
 @Slf4j
