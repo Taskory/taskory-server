@@ -15,6 +15,8 @@ import org.springframework.security.config.annotation.web.configurers.CsrfConfig
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -36,24 +38,26 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true, proxyTargetClass = true, jsr250Enabled = true)
 public class SecurityConfig {
-    @Value("${app.cors.allowed-origins}")
-    private List<String> allowedOrigins;
-    @Value("${app.api-base-url}")
-    private String apiBaseUrl;
-
     private final TokenFilter tokenFilter;
     private final CustomOAuth2UserService customOauth2UserService;
     private final OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler;
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOauth2AuthorizationRequestRepository;
+    private final OAuth2AuthorizationRequestResolver customAuthorizationRequestResolver;
+
+    @Value("${app.cors.allowed-origins}")
+    private List<String> allowedOrigins;
+    @Value("${app.api-base-url}")
+    private String apiBaseUrl;
 
     @Autowired
-    public SecurityConfig(TokenFilter tokenFilter, CustomOAuth2UserService customOauth2UserService, OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler, OAuth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler, HttpCookieOAuth2AuthorizationRequestRepository httpCookieOauth2AuthorizationRequestRepository) {
+    public SecurityConfig(TokenFilter tokenFilter, CustomOAuth2UserService customOauth2UserService, OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler, OAuth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler, HttpCookieOAuth2AuthorizationRequestRepository httpCookieOauth2AuthorizationRequestRepository, OAuth2AuthorizationRequestResolver customAuthorizationRequestResolver) {
         this.tokenFilter = tokenFilter;
         this.customOauth2UserService = customOauth2UserService;
         this.oauth2AuthenticationSuccessHandler = oauth2AuthenticationSuccessHandler;
         this.oauth2AuthenticationFailureHandler = oauth2AuthenticationFailureHandler;
         this.httpCookieOauth2AuthorizationRequestRepository = httpCookieOauth2AuthorizationRequestRepository;
+        this.customAuthorizationRequestResolver = customAuthorizationRequestResolver;
     }
 
     @Bean
@@ -85,6 +89,7 @@ public class SecurityConfig {
                         .requestMatchers(antMatcher(apiBaseUrl + "/auth/**")).permitAll()
                         .requestMatchers(antMatcher("/oauth2/**")).permitAll()
                         .requestMatchers(antMatcher(apiBaseUrl + "/user/**")).hasRole("USER")
+                        .requestMatchers(antMatcher(apiBaseUrl + "/google/calendar")).hasRole("USER")
                         .requestMatchers(antMatcher(apiBaseUrl + "/task/**")).permitAll()
                         .anyRequest().authenticated());
 
@@ -93,14 +98,14 @@ public class SecurityConfig {
                 .oauth2Login(oauth2Login -> oauth2Login
                         .authorizationEndpoint(endPoint -> endPoint
                                 .baseUri("/oauth2/authorize")
-                                .authorizationRequestRepository(httpCookieOauth2AuthorizationRequestRepository))
+                                .authorizationRequestRepository(httpCookieOauth2AuthorizationRequestRepository)
+                                .authorizationRequestResolver(customAuthorizationRequestResolver))
                         .redirectionEndpoint(endPoint -> endPoint
                                 .baseUri("/oauth2/code/**"))
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOauth2UserService))
                         .successHandler(oauth2AuthenticationSuccessHandler)
                         .failureHandler(oauth2AuthenticationFailureHandler)
-
                 )
 //                jwt token filter 추가
                 .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);

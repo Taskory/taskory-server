@@ -5,10 +5,12 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import taskflower.taskflower.security.model.UserPrincipal;
 
 import javax.crypto.SecretKey;
@@ -78,5 +80,14 @@ public class TokenService {
                 .parseSignedClaims(jwt)
                 .getPayload();
         return Long.parseLong(claims.getSubject());
+    }
+
+    public String getTokenFromRequest(HttpServletRequest request) {
+        log.info("[LOG - TokenFilter.getFromRequest");
+        String bearerToken = request.getHeader("Authorization");
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
     }
 }

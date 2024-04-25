@@ -1,6 +1,31 @@
 import React from "react";
+import {getAuthCookie} from "../util/CookieUtil";
+import {API_URL} from "../constants";
 
 export const Home: React.FC = () => {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + getAuthCookie(),
+    },
+  }
+
+  const requestGoogleCalendar = () => {
+    try {
+      fetch(API_URL + "/google/calendar", requestOptions)
+        .then(res => {
+          if (res.ok) {
+            res.json()
+              .then(result => {
+                console.log(result);
+              });
+          }
+        });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <>
       <div>
@@ -9,6 +34,7 @@ export const Home: React.FC = () => {
         <p className="text-center text-gray-700">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel commodo lorem.
         </p>
+        <button className="btn" onClick={requestGoogleCalendar}>google calendar</button>
       </div>
     </>
   );
