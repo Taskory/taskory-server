@@ -10,7 +10,7 @@ import taskflower.taskflower.model.enums.Role;
 import taskflower.taskflower.security.model.OAuth2UserInfo;
 import taskflower.taskflower.mapper.UserMapper;
 import taskflower.taskflower.repository.UserRepository;
-import taskflower.taskflower.model.dto.ProfileResponse;
+import taskflower.taskflower.payload.ProfileResponse;
 import taskflower.taskflower.model.entity.SocialAccount;
 import taskflower.taskflower.model.enums.SocialProvider;
 import taskflower.taskflower.exception.UserAlreadyExistedException;

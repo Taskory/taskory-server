@@ -1,4 +1,4 @@
-package taskflower.taskflower.model.dto;
+package taskflower.taskflower.payload;
 
 import lombok.*;
 

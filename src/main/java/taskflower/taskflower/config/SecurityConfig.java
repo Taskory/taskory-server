@@ -43,7 +43,6 @@ public class SecurityConfig {
     private final OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler;
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOauth2AuthorizationRequestRepository;
-    private final OAuth2AuthorizationRequestResolver customAuthorizationRequestResolver;
 
     @Value("${app.cors.allowed-origins}")
     private List<String> allowedOrigins;
@@ -51,13 +50,12 @@ public class SecurityConfig {
     private String apiBaseUrl;
 
     @Autowired
-    public SecurityConfig(TokenFilter tokenFilter, CustomOAuth2UserService customOauth2UserService, OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler, OAuth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler, HttpCookieOAuth2AuthorizationRequestRepository httpCookieOauth2AuthorizationRequestRepository, OAuth2AuthorizationRequestResolver customAuthorizationRequestResolver) {
+    public SecurityConfig(TokenFilter tokenFilter, CustomOAuth2UserService customOauth2UserService, OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler, OAuth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler, HttpCookieOAuth2AuthorizationRequestRepository httpCookieOauth2AuthorizationRequestRepository) {
         this.tokenFilter = tokenFilter;
         this.customOauth2UserService = customOauth2UserService;
         this.oauth2AuthenticationSuccessHandler = oauth2AuthenticationSuccessHandler;
         this.oauth2AuthenticationFailureHandler = oauth2AuthenticationFailureHandler;
         this.httpCookieOauth2AuthorizationRequestRepository = httpCookieOauth2AuthorizationRequestRepository;
-        this.customAuthorizationRequestResolver = customAuthorizationRequestResolver;
     }
 
     @Bean
@@ -89,7 +87,7 @@ public class SecurityConfig {
                         .requestMatchers(antMatcher(apiBaseUrl + "/auth/**")).permitAll()
                         .requestMatchers(antMatcher("/oauth2/**")).permitAll()
                         .requestMatchers(antMatcher(apiBaseUrl + "/user/**")).hasRole("USER")
-                        .requestMatchers(antMatcher(apiBaseUrl + "/google/calendar")).hasRole("USER")
+                        .requestMatchers(antMatcher(apiBaseUrl + "/google/**")).hasRole("USER")
                         .requestMatchers(antMatcher(apiBaseUrl + "/task/**")).permitAll()
                         .anyRequest().authenticated());
 
@@ -98,8 +96,7 @@ public class SecurityConfig {
                 .oauth2Login(oauth2Login -> oauth2Login
                         .authorizationEndpoint(endPoint -> endPoint
                                 .baseUri("/oauth2/authorize")
-                                .authorizationRequestRepository(httpCookieOauth2AuthorizationRequestRepository)
-                                .authorizationRequestResolver(customAuthorizationRequestResolver))
+                                .authorizationRequestRepository(httpCookieOauth2AuthorizationRequestRepository))
                         .redirectionEndpoint(endPoint -> endPoint
                                 .baseUri("/oauth2/code/**"))
                         .userInfoEndpoint(userInfo -> userInfo

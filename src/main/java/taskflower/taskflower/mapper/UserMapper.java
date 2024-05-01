@@ -3,7 +3,7 @@ package taskflower.taskflower.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import taskflower.taskflower.model.dto.ProfileResponse;
+import taskflower.taskflower.payload.ProfileResponse;
 import taskflower.taskflower.model.entity.User;
 import taskflower.taskflower.model.dto.UserDto;
 import taskflower.taskflower.model.entity.SocialAccount;

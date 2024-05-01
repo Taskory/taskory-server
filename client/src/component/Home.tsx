@@ -3,7 +3,7 @@ import {getAuthCookie} from "../util/CookieUtil";
 import {API_URL} from "../constants";
 
 export const Home: React.FC = () => {
-  const requestOptions = {
+  const googleCalendarRequestOptions = {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -13,19 +13,20 @@ export const Home: React.FC = () => {
 
   const requestGoogleCalendar = () => {
     try {
-      fetch(API_URL + "/google/calendar", requestOptions)
-        .then(res => {
-          if (res.ok) {
-            res.json()
-              .then(result => {
-                console.log(result);
-              });
-          }
-        });
+      fetch(API_URL + "/google/calendar", googleCalendarRequestOptions)
+        // .then(res => {
+        //   if (res.ok) {
+        //     res.json()
+        //       .then(result => {
+        //         console.log(result);
+        //       });
+        //   }
+        // });
     } catch (error) {
       console.error(error);
     }
   };
+
   return (
     <>
       <div>

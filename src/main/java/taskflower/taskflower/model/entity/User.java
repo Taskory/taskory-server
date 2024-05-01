@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 import taskflower.taskflower.model.enums.Role;
-import taskflower.taskflower.model.dto.SignupRequest;
+import taskflower.taskflower.payload.SignupRequest;
 
 import java.util.HashSet;
 import java.util.Set;

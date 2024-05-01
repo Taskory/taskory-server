@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import taskflower.taskflower.mapper.TagMapper;
 import taskflower.taskflower.mapper.TaskMapper;
 import taskflower.taskflower.model.enums.TaskStatus;
-import taskflower.taskflower.model.dto.SignupRequest;
+import taskflower.taskflower.payload.SignupRequest;
 import taskflower.taskflower.service.TagService;
 import taskflower.taskflower.service.TaskService;
 import taskflower.taskflower.exception.TaskNotFoundExeption;

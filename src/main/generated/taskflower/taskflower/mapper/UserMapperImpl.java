@@ -4,14 +4,14 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
-import taskflower.taskflower.model.dto.ProfileResponse;
+import taskflower.taskflower.payload.ProfileResponse;
 import taskflower.taskflower.model.dto.UserDto;
 import taskflower.taskflower.model.entity.SocialAccount;
 import taskflower.taskflower.model.entity.User;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-04-25T17:26:59+0900",
+    date = "2024-05-01T14:29:01+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.9 (Amazon.com Inc.)"
 )
 @Component
