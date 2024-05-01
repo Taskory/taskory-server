@@ -95,7 +95,7 @@ This client project uses Yarn as package manager
 npm install --global yarn
 ```
 
-### ⚙️ Installation
+### ⚙️ Installation & Running
 
 Clone the project
 
@@ -129,15 +129,21 @@ cd taskflower
    yarn start
    ```
 
-   
-
 2. server
-
-### 🏃 Running
 
 ## 👋 Contributing
 
+Seongwon Yang
+
+- https://github.com/codeartitect
+- https://codeartitect.github.io/resume
+- ysw991106@gmail.com
+
 ## ⚠️ License
+
+Apache-2.0 license
+
+Please view "License" file
 
 ## 🤝 Contact
 
