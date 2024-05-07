@@ -28,7 +28,6 @@ public class GoogleCalendarService {
         List<Event> items = events.getItems();
 
         log.info("[LOG - GoogleCalendarService.getListEvents] items : {}", items.get(0));
-        log.info("[LOG - GoogleCalendarService.getListEvents] items : {}", items.get(0).get);
     }
 
     private static GoogleCredentials getCredential(String accessToken) {
