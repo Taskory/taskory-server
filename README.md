@@ -131,6 +131,13 @@ cd taskflower
 
 2. server
 
+   Start the server
+
+   ```
+   ./gradlew bootRun
+   ```
+
+
 ## 👋 Contributing
 
 Seongwon Yang
