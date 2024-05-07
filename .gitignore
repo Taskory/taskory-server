@@ -44,3 +44,4 @@ credentials.json
 credentials-web.json
 
 tokens
+src/main/generated
