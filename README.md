@@ -47,6 +47,8 @@ Tool
 
 ### 🎯 Features
 
+[Project Feature Design](./document/Project_Feature_Design.md)
+
 ### 🔑 Environment Variables
 
 To run this project, you will need to add the following environment variables to your "application-secrets.yml" file.
@@ -148,9 +150,7 @@ Seongwon Yang
 
 ## ⚠️ License
 
-Apache-2.0 license
-
-Please view "License" file
+[Apache-2.0 license](./LICENSE)
 
 ## 🤝 Contact
 

@@ -1,6 +1,53 @@
-# 프로젝트 기능 설계
+# Project Feature Design
 
-## 요구 사항 정의
+## ENG
+
+### Requirement Definition
+
+- Project Objective
+
+  : Efficient management of multiple calendars or simultaneous use of calendars and to-do lists in situations where it is necessary.
+
+- Requirements
+
+  - Integration with frequently used social calendar applications like Google Calendar.
+  - Calendar functionality.
+  - To-do list functionality.
+
+### Feature Specification
+
+- Integration with Social Calendar:
+  - Users should be able to synchronize the app with their social accounts to integrate with platforms like Google Calendar.
+  - Authorization to read and write events from the integrated social calendar is required.
+  - Users should be able to view and manage events from the integrated calendar within the app.
+- Calendar Functionality:
+  - Users should be able to create multiple calendars within the app.
+  - Each calendar should have functionality to add, modify, and delete events.
+  - Events should have attributes such as start date, end date, time, title, and description.
+  - Events should be viewable in various formats such as daily, weekly, and monthly views.
+  - Users should have the ability to share calendars and collaborate on events with other users.
+- To-do List Functionality:
+  - Users should be able to create and manage to-do lists within the app.
+  - Each to-do item should have attributes like title, description, due date, and priority.
+  - To-do items should be distinguishable based on completion status, and completed items should be accessible separately.
+  - Users should have the capability to add, modify, and delete to-do items, and mark completed items as incomplete.
+- Miscellaneous Features:
+  - The user interface should be intuitive and user-friendly.
+  - The app should operate reliably, ensuring the security of user data.
+  - Basic functionality should be available offline, with synchronization occurring when online.
+  - Users should be able to configure and manage notifications, receiving alerts for important events.
+
+### Feature Priority
+
+1. Integration with Social Calendar
+2. Calendar Functionality
+3. To-do List Functionality
+
+-----
+
+## KOR
+
+### 요구 사항 정의
 
 - 프로젝트 목적
 
@@ -12,8 +59,7 @@
   - 캘린더 기능
   - 할 일 목록 기능
 
-
-## 기능 명세
+### 기능 명세
 
 - 소셜 캘린더와의 연동 기능:
    - 사용자가 소셜 계정을 연동하여 구글 캘린더와 앱을 동기화할 수 있어야 한다
@@ -36,7 +82,8 @@
    - 앱은 오프라인에서도 기본 기능을 사용할 수 있어야 하며, 온라인으로 연결되었을 때 동기화되어야 한다.
    - 사용자는 설정을 통해 알림을 설정하고 관리할 수 있어야 하며, 중요한 일정에 대한 알림을 받을 수 있어야 한다.
 
-## 기능 우선순위
+### 기능 우선순위
+
 1. 소셜 캘린더와의 연동 기능
 2. 캘린더 기능
 3. 할 일 목록 기능
