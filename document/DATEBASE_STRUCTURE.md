@@ -1,5 +1,61 @@
 # Datebase Structure
 
+## ENG
+
+1. **Schedule Table**:
+   - id: Unique identifier for the schedule.
+   - parent_user: Identifier of the user who created the schedule.
+   - name: Name of the schedule.
+   - tag: Tag or category associated with the schedule.
+   - hashtag: Hashtags related to the schedule.
+   - description: Additional description or memo for the schedule.
+   - start_date_time: Start date and time of the schedule.
+   - end_date_time: End date and time of the schedule.
+   - location: Location where the schedule takes place.
+   - child_task_set: Identifier of the task set associated with the schedule (NULL allowed).
+2. **Task Set Table**:
+   - id: Unique identifier for the task set.
+   - parent_user: Identifier of the user who created the task set.
+   - name: Name of the task set.
+   - hashtag: Hashtags related to the task set.
+   - description: Additional description or memo for the task set.
+   - parent_schedule: Identifier of the schedule associated with the task set (NULL allowed).
+3. **Task Table**:
+   - id: Unique identifier for the task.
+   - parent_user: Identifier of the user who created the task.
+   - name: Name of the task.
+   - parent_task_set: Identifier of the task set associated with the task (NULL allowed).
+   - tag: Tag or category associated with the task.
+   - hashtag: Hashtags related to the task.
+   - description: Additional description or memo for the task.
+   - status: Status of the task (Todo, InProgress, Done, etc.).
+   - datetime_start: Start date and time of the task.
+   - parent_task: Identifier of the parent task for the task (NULL allowed).
+4. **Routine Table**:
+   - id: Unique identifier for the routine.
+   - parent_user: Identifier of the user who created the routine.
+   - name: Name of the routine.
+   - tag: Tag or category associated with the routine.
+   - hashtag: Hashtags related to the routine.
+   - description: Additional description or memo for the routine.
+   - days: Days or frequency on which the routine occurs.
+5. **Tag Table**:
+   - id: Unique identifier for the tag.
+   - parent_user: Identifier of the user who created the tag.
+   - name: Name of the tag.
+   - hashtag: Hashtags related to the tag.
+   - description: Description of the tag.
+6. **Hashtag Table**:
+   - id: Unique identifier for the hashtag.
+   - parent_user: Identifier of the user who created the hashtag.
+   - name: Name of the hashtag.
+7. **User Table**:
+   - id: Unique identifier for the user.
+   - username: Username of the user.
+   - password: Password of the user.
+
+## KOR
+
 1. **Schedule 테이블**:
    - id: 일정의 고유 식별자
    - parent_user: 일정을 생성한 사용자의 식별자
