@@ -30,7 +30,6 @@
    - description: Additional description or memo for the task.
    - status: Status of the task (Todo, InProgress, Done, etc.).
    - datetime_start: Start date and time of the task.
-   - parent_task: Identifier of the parent task for the task (NULL allowed).
 4. Checklist Table:
    - id: Unique identifier for the checklist item.
    - parent_user: Identifier of the user who created the checklist item.
@@ -90,14 +89,12 @@
    - description: 작업에 대한 추가 설명 또는 메모
    - status: 작업의 상태 (Todo, InProgress, Done 등)
    - datetime_start: 작업의 시작 일시
-   - parent_task: 작업의 부모 작업의 식별자 (NULL 허용)
 4. Checklist 테이블
    1. id: 체크의 고유 식별자
    2. parent_user: 체크를 생성한 사용자의 식별자
    3. name: 체크의 이름
    4. parent_task: 해당 체크와 연관된 작업의 식별자
    5. checked - boolean: 체크 여부
-
 5. **Routine 테이블**:
    - id: 루틴의 고유 식별자
    - parent_user: 루틴을 생성한 사용자의 식별자
@@ -116,7 +113,6 @@
    - id: 해시태그의 고유 식별자
    - parent_user: 해시태그를 생성한 사용자의 식별자
    - name: 해시태그의 이름
-
 8. User 테이블
 
    - id
