@@ -31,7 +31,13 @@
    - status: Status of the task (Todo, InProgress, Done, etc.).
    - datetime_start: Start date and time of the task.
    - parent_task: Identifier of the parent task for the task (NULL allowed).
-4. **Routine Table**:
+4. Checklist Table:
+   - id: Unique identifier for the checklist item.
+   - parent_user: Identifier of the user who created the checklist item.
+   - name: Name of the checklist item.
+   - parent_task: Identifier of the task associated with the checklist item.
+   - checked - boolean: Boolean indicating whether the checklist item is checked.
+5. **Routine Table**:
    - id: Unique identifier for the routine.
    - parent_user: Identifier of the user who created the routine.
    - name: Name of the routine.
@@ -39,17 +45,17 @@
    - hashtag: Hashtags related to the routine.
    - description: Additional description or memo for the routine.
    - days: Days or frequency on which the routine occurs.
-5. **Tag Table**:
+6. **Tag Table**:
    - id: Unique identifier for the tag.
    - parent_user: Identifier of the user who created the tag.
    - name: Name of the tag.
    - hashtag: Hashtags related to the tag.
    - description: Description of the tag.
-6. **Hashtag Table**:
+7. **Hashtag Table**:
    - id: Unique identifier for the hashtag.
    - parent_user: Identifier of the user who created the hashtag.
    - name: Name of the hashtag.
-7. **User Table**:
+8. **User Table**:
    - id: Unique identifier for the user.
    - username: Username of the user.
    - password: Password of the user.
@@ -85,7 +91,14 @@
    - status: 작업의 상태 (Todo, InProgress, Done 등)
    - datetime_start: 작업의 시작 일시
    - parent_task: 작업의 부모 작업의 식별자 (NULL 허용)
-4. **Routine 테이블**:
+4. Checklist 테이블
+   1. id: 체크의 고유 식별자
+   2. parent_user: 체크를 생성한 사용자의 식별자
+   3. name: 체크의 이름
+   4. parent_task: 해당 체크와 연관된 작업의 식별자
+   5. checked - boolean: 체크 여부
+
+5. **Routine 테이블**:
    - id: 루틴의 고유 식별자
    - parent_user: 루틴을 생성한 사용자의 식별자
    - name: 루틴의 이름
@@ -93,18 +106,18 @@
    - hashtag: 루틴의 해시태그
    - description: 루틴에 대한 추가 설명 또는 메모
    - days: 루틴이 발생하는 요일 또는 주기
-5. **Tag 테이블**:
+6. **Tag 테이블**:
    - id: 태그의 고유 식별자
    - parent_user: 태그를 생성한 사용자의 식별자
    - name: 태그의 이름
    - hashtag: 태그의 해시태그
    - description: 태그에 대한 설명
-6. **Hashtag 테이블**:
+7. **Hashtag 테이블**:
    - id: 해시태그의 고유 식별자
    - parent_user: 해시태그를 생성한 사용자의 식별자
    - name: 해시태그의 이름
 
-7. User 테이블
+8. User 테이블
 
    - id
 
