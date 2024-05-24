@@ -51,3 +51,5 @@ src/main/generated
 
 wiki
 /wiki
+
+node_modules/
