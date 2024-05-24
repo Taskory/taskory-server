@@ -166,5 +166,3 @@ Seongwon Yang
 - https://github.com/codeartitect
 - https://codeartitect.github.io/resume
 - ysw991106@gmail.com
-
-
