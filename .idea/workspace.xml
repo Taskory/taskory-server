@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="61493859-afe1-4395-9c95-af14dfc001d3" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/gradlew" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/gradlew.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/TaskflowerApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/TaskflowerApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/annotation/CurrentUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/annotation/CurrentUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/config/BeansConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/config/BeansConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/config/GoogleOAuth2Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/config/GoogleOAuth2Config.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/controller/AuthenticationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/controller/AuthenticationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/controller/GoogleCalendarController.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/controller/GoogleCalendarController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/controller/TagController.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/controller/TagController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/controller/TaskConroller.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/controller/TaskConroller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/exception/TagExistException.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/exception/TagExistException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/exception/TagNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/exception/TagNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/exception/TaskNotFoundExeption.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/exception/TaskNotFoundExeption.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/exception/TaskTitleExistException.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/exception/TaskTitleExistException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/exception/UserAlreadyExistedException.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/exception/UserAlreadyExistedException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/exception/UserNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/exception/UserNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/mapper/TagMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/mapper/TagMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/mapper/TaskMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/mapper/TaskMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/mapper/UserMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/model/dto/TagDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/model/dto/TagDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/model/dto/TaskDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/model/dto/TaskDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/model/dto/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/model/dto/UserDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/model/entity/BaseTimeEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/model/entity/BaseTimeEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/model/entity/SocialAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/model/entity/SocialAccount.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/model/entity/Tag.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/model/entity/Tag.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/model/entity/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/model/entity/Task.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/model/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/model/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/model/enums/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/model/enums/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/model/enums/SocialProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/model/enums/SocialProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/model/enums/TaskStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/model/enums/TaskStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/payload/LoginRequset.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/payload/LoginRequset.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/payload/LoginResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/payload/LoginResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/payload/ProfileResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/payload/ProfileResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/payload/SignupRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/payload/SignupRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/payload/SignupResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/payload/SignupResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/repository/SocialAccountRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/repository/SocialAccountRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/repository/TagRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/repository/TagRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/repository/TaskRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/repository/TaskRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/security/filter/TokenFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/security/filter/TokenFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/security/handler/OAuth2AuthenticationFailureHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/security/handler/OAuth2AuthenticationFailureHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/security/handler/OAuth2AuthenticationSuccessHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/security/handler/OAuth2AuthenticationSuccessHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/security/model/GoogleOAuth2UserInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/security/model/GoogleOAuth2UserInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/security/model/OAuth2UserInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/security/model/OAuth2UserInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/security/model/UserPrincipal.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/security/model/UserPrincipal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/security/repository/HttpCookieOAuth2AuthorizationRequestRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/security/repository/HttpCookieOAuth2AuthorizationRequestRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/security/service/CustomOAuth2UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/security/service/CustomOAuth2UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/security/service/CustomUserDetailsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/security/service/CustomUserDetailsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/security/service/TokenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/security/service/TokenService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/security/util/CookieUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/security/util/CookieUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/service/GoogleCalendarService.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/service/GoogleCalendarService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/service/SocialAccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/service/SocialAccountService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/service/TagService.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/service/TagService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/service/TaskService.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/service/TaskService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/taskflower/taskflower/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/java/taskflower/taskflower/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/taskflower/taskflower/TaskflowerApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/mvp/src/test/java/taskflower/taskflower/TaskflowerApplicationTests.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CompilerWorkspaceConfiguration">
+    <option name="MAKE_PROJECT_ON_SAVE" value="true" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="taskflower" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="taskflower" type="f1a62948:ProjectNode" />
+                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="taskflower" type="f1a62948:ProjectNode" />
+                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
+                <item name="compileClasspath" type="62daadca:ExternalSystemViewDefaultContributor$DependencyScopeExternalSystemNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="taskflower" type="f1a62948:ProjectNode" />
+                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
+                <item name="compileClasspath" type="62daadca:ExternalSystemViewDefaultContributor$DependencyScopeExternalSystemNode" />
+                <item name="org.springframework.boot:spring-boot-starter-security:3.2.4" type="b3323d55:ExternalSystemViewDefaultContributor$DependencyExternalSystemNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="AnnotationType" />
+        <option value="com.haulmont.jpb.JpaEntity" />
+        <option value="Interface" />
+        <option value="Enum" />
+        <option value="JUnit5 Test Class" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;codeartitect&quot;
+  }
+}</component>
+  <component name="GitToolBoxStore">
+    <option name="projectConfigVersion" value="5" />
+    <option name="recentBranches">
+      <RecentBranches>
+        <option name="branchesForRepo">
+          <list>
+            <RecentBranchesForRepo>
+              <option name="branches">
+                <list>
+                  <RecentBranch>
+                    <option name="branchName" value="1-feature/user-management" />
+                    <option name="lastUsedInstant" value="1716529727" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="main" />
+                    <option name="lastUsedInstant" value="1715072815" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="document" />
+                    <option name="lastUsedInstant" value="1715072424" />
+                  </RecentBranch>
+                </list>
+              </option>
+              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
+            </RecentBranchesForRepo>
+          </list>
+        </option>
+      </RecentBranches>
+    </option>
+  </component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/codeartitect/project_taskflower&quot;,
+    &quot;accountId&quot;: &quot;c7c74ea7-ae6f-4a24-beaf-c8cc61590219&quot;
+  }
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.apis/google-api-services-calendar/v3-rev20220715-2.0.0/c129ba0c45358802675565a95b3ca0c04cf67055/google-api-services-calendar-v3-rev20220715-2.0.0-sources.jar!/com/google/api/services/calendar/Calendar.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.apis/google-api-services-calendar/v3-rev20220715-2.0.0/c129ba0c45358802675565a95b3ca0c04cf67055/google-api-services-calendar-v3-rev20220715-2.0.0-sources.jar!/com/google/api/services/calendar/model/Event.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-config/6.2.3/281d0393358b963147b5499789ad211f7362d460/spring-security-config-6.2.3.jar!/org/springframework/security/config/annotation/web/configuration/EnableWebSecurity.class" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-config/6.2.3/281d0393358b963147b5499789ad211f7362d460/spring-security-config-6.2.3.jar!/org/springframework/security/config/annotation/web/configurers/AuthorizeHttpRequestsConfigurer.class" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-core/6.2.3/52f2751381dcfad2c8cd2bfb4c7ca7b1adf2ea5e/spring-security-core-6.2.3.jar!/org/springframework/security/authorization/AuthorityAuthorizationManager.class" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-oauth2-core/6.2.3/c7f84b6b878b82632fb7eb531a47ece54c726eca/spring-security-oauth2-core-6.2.3.jar!/org/springframework/security/oauth2/core/OAuth2AuthenticatedPrincipal.class" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.sdkman/candidates/java/17.0.9-amzn/lib/src.zip!/java.base/java/io/Serializable.java" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="JpbToolWindowState">
+    <option name="isToolWindowVisible" value="false" />
+  </component>
+  <component name="JvmLoggingSettingsStorage">
+    <option name="loggerId" value="Lombok Slf4j" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2cJUq73CMDmK36LAYIjgYXHvk8k" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.CalendarQuickstart.executor&quot;: &quot;Run&quot;,
+    &quot;Application.taskflower.taskflower.service.CalendarQuickstart.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Build taskflower.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Tests in 'taskflower.taskflower.user'.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Tests in 'taskflower.test'.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.UserServiceTest.signup.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.taskflower.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All in taskflower.test (1).executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All in taskflower.test (2).executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All in taskflower.test.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GoogleCalendarServiceTest.connectText.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GoogleCalendarServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GoogleCalendarServiceTest.temp.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.TaskServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceTest.signup.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.TaskflowerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;1-feature/user-management&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/seongwon/workspace/project/taskflower/taskflower&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.build.tools.auto.reload&quot;: &quot;ALL&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;b08c37d4346297a11ce0259b668a749e&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="ReactDesignerToolWindowState">
+    <option name="myId2Visible">
+      <map>
+        <entry key="com.intellij.reactbuddy.reactComponents" value="false" />
+        <entry key="com.intellij.reactbuddy.reactInspector" value="false" />
+      </map>
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="taskflower.taskflower.exception" />
+      <recent name="taskflower.taskflower.service" />
+      <recent name="taskflower.taskflower.controller" />
+      <recent name="taskflower.taskflower.model.enums" />
+      <recent name="taskflower.taskflower.user.model" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/taskflower/taskflower/model/dto" />
+      <recent name="$PROJECT_DIR$/src/main/resources" />
+      <recent name="$PROJECT_DIR$/src/test/java/taskflower/taskflower/google" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/mvp" />
+      <recent name="$PROJECT_DIR$/src/main/resources" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="taskflower.taskflower.service" />
+      <recent name="taskflower.taskflower.user" />
+      <recent name="taskflower.taskflower.task.calendar" />
+      <recent name="taskflower.taskflower.task.tag" />
+      <recent name="taskflower.taskflower.task" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="taskflower.taskflower.service" />
+      <recent name="taskflower.taskflower.controller" />
+      <recent name="taskflower.taskflower.exception" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.CalendarQuickstart">
+    <configuration name="CalendarQuickstart" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="taskflower.taskflower.google.CalendarQuickstart" />
+      <module name="taskflower.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="taskflower.taskflower.google.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="taskflower.taskflower.service.CalendarQuickstart" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="taskflower.taskflower.service.CalendarQuickstart" />
+      <module name="taskflower.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="taskflower.taskflower.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="All in taskflower.test (2)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="taskflower.test" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GoogleCalendarServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="taskflower.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="taskflower.taskflower.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="taskflower.taskflower.service" />
+      <option name="MAIN_CLASS_NAME" value="taskflower.taskflower.service.GoogleCalendarServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GoogleCalendarServiceTest.temp" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="taskflower.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="taskflower.taskflower.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="taskflower.taskflower.service" />
+      <option name="MAIN_CLASS_NAME" value="taskflower.taskflower.service.GoogleCalendarServiceTest" />
+      <option name="METHOD_NAME" value="temp" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TaskflowerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="taskflower.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="taskflower.taskflower.TaskflowerApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-WS-241.14494.235" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="61493859-afe1-4395-9c95-af14dfc001d3" name="Changes" comment="" />
+      <created>1707829364562</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1707829364562</updated>
+      <workItem from="1707829367759" duration="1355000" />
+      <workItem from="1707877394905" duration="12352000" />
+      <workItem from="1707968989305" duration="3561000" />
+      <workItem from="1707973361776" duration="17001000" />
+      <workItem from="1708074444970" duration="2466000" />
+      <workItem from="1708307514105" duration="11242000" />
+      <workItem from="1708408298921" duration="7287000" />
+      <workItem from="1708492695292" duration="4338000" />
+      <workItem from="1708497878144" duration="10169000" />
+      <workItem from="1708665164435" duration="4679000" />
+      <workItem from="1708754558180" duration="10962000" />
+      <workItem from="1708842310612" duration="6273000" />
+      <workItem from="1708915502113" duration="12580000" />
+      <workItem from="1709010132845" duration="2005000" />
+      <workItem from="1709082481456" duration="15597000" />
+      <workItem from="1709175418922" duration="5439000" />
+      <workItem from="1709312928380" duration="4326000" />
+      <workItem from="1709363375858" duration="2472000" />
+      <workItem from="1709393024477" duration="4017000" />
+      <workItem from="1709527123569" duration="11397000" />
+      <workItem from="1709691757489" duration="1342000" />
+      <workItem from="1709786990279" duration="5018000" />
+      <workItem from="1709880210719" duration="1255000" />
+      <workItem from="1709883458114" duration="1109000" />
+      <workItem from="1709903538123" duration="788000" />
+      <workItem from="1710129094492" duration="5290000" />
+      <workItem from="1710210373325" duration="995000" />
+      <workItem from="1710211530125" duration="5129000" />
+      <workItem from="1710383455774" duration="12546000" />
+      <workItem from="1710482687102" duration="9853000" />
+      <workItem from="1710562397415" duration="1495000" />
+      <workItem from="1710649951994" duration="3518000" />
+      <workItem from="1710723355786" duration="3253000" />
+      <workItem from="1710814298757" duration="23166000" />
+      <workItem from="1711348920209" duration="7109000" />
+      <workItem from="1711518190858" duration="6538000" />
+      <workItem from="1711613749359" duration="2659000" />
+      <workItem from="1711700689381" duration="898000" />
+      <workItem from="1711701609306" duration="4091000" />
+      <workItem from="1711861899739" duration="625000" />
+      <workItem from="1711862540678" duration="88000" />
+      <workItem from="1711862641437" duration="3192000" />
+      <workItem from="1711865988283" duration="8552000" />
+      <workItem from="1712024867893" duration="6131000" />
+      <workItem from="1712116859235" duration="15497000" />
+      <workItem from="1712198245548" duration="21411000" />
+      <workItem from="1712295036868" duration="23369000" />
+      <workItem from="1712546669132" duration="415000" />
+      <workItem from="1712547203873" duration="85000" />
+      <workItem from="1712547311657" duration="1871000" />
+      <workItem from="1712551450227" duration="14458000" />
+      <workItem from="1712637535096" duration="5957000" />
+      <workItem from="1712646644448" duration="1734000" />
+      <workItem from="1712648395346" duration="4223000" />
+      <workItem from="1712803959134" duration="24427000" />
+      <workItem from="1712985540321" duration="18753000" />
+      <workItem from="1713069724639" duration="14026000" />
+      <workItem from="1713163342122" duration="5135000" />
+      <workItem from="1713234511625" duration="11527000" />
+      <workItem from="1713327932594" duration="18498000" />
+      <workItem from="1713420755776" duration="9286000" />
+      <workItem from="1713498389973" duration="7696000" />
+      <workItem from="1713510704498" duration="4964000" />
+      <workItem from="1713595145715" duration="12470000" />
+      <workItem from="1713753933625" duration="11386000" />
+      <workItem from="1713840956060" duration="16509000" />
+      <workItem from="1713927109768" duration="15311000" />
+      <workItem from="1714010694615" duration="10965000" />
+      <workItem from="1714115418025" duration="3947000" />
+      <workItem from="1714357648750" duration="603000" />
+      <workItem from="1714530299436" duration="14245000" />
+      <workItem from="1714708461456" duration="635000" />
+      <workItem from="1715053734456" duration="7396000" />
+      <workItem from="1715143179475" duration="602000" />
+      <workItem from="1716528415788" duration="478000" />
+      <workItem from="1716528908094" duration="30000" />
+      <workItem from="1716528947034" duration="4678000" />
+      <workItem from="1716533887823" duration="1678000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

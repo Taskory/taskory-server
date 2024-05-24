@@ -1,7 +1,7 @@
-HELP.md
+mvp/HELP.md
 .gradle
 build/
-!gradle/wrapper/gradle-wrapper.jar
+!mvp/gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
 
@@ -18,7 +18,7 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
-.idea
+mvp/.idea
 *.iws
 *.iml
 *.ipr
@@ -38,12 +38,12 @@ out/
 
 application-secrets.yml
 
-.jpb
+mvp/.jpb
 
 credentials.json
 credentials-web.json
 
-tokens
+mvp/tokens
 src/main/generated
 
 .DS_Store
