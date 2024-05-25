@@ -10,8 +10,8 @@ import taskflower.taskflower.model.entity.Task;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-05-24T16:52:29+0900",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.9 (Amazon.com Inc.)"
+    date = "2024-05-25T22:13:38+0900",
+    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.11 (Amazon.com Inc.)"
 )
 @Component
 public class TaskMapperImpl implements TaskMapper {

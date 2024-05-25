@@ -9,5 +9,4 @@ public class TaskflowerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TaskflowerApplication.class, args);
 	}
-
 }
