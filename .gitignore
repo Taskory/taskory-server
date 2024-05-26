@@ -1,7 +1,7 @@
-mvp/HELP.md
+HELP.md
 .gradle
 build/
-!mvp/gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
 
@@ -18,7 +18,7 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
-mvp/.idea
+.idea
 *.iws
 *.iml
 *.ipr
@@ -36,26 +36,17 @@ out/
 ### VS Code ###
 .vscode/
 
+### env secret ###
+application-secret.yml
 application-secrets.yml
-
-mvp/.jpb
-
 credentials.json
-credentials-web.json
+tokens
 
-mvp/tokens
-src/main/generated
-
+### OS ###
 .DS_Store
-/.DS_Store
 
+### Wiki ###
 wiki
-/wiki
 
-node_modules/
-
-.idea
-
-
-# Ignore Gradle build output directory
-build
+### node_modules ###
+node_modules
