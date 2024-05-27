@@ -1,4 +1,4 @@
-package codeartitect.taskflower.user;
+package codeartitect.taskflower.user.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,12 +1,15 @@
-package codeartitect.taskflower.user;
+package codeartitect.taskflower.user.entity;
 
+import codeartitect.taskflower.user.dto.UserSignupRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Set;
 
 @Entity
 @Getter
+@Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,4 +22,11 @@ public class User {
     private String zoneId;
     @OneToMany
     private Set<SocialAccount> socialAccounts;
+
+    public User(UserSignupRequest userSignupRequest) {
+        this.username = userSignupRequest.getUsername();
+        this.password = userSignupRequest.getPassword();
+        this.zoneId = userSignupRequest.getZoneId();
+    }
+
 }

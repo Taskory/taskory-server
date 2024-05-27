@@ -1,6 +1,6 @@
 package codeartitect.taskflower.global;
 
-import codeartitect.taskflower.user.User;
+import codeartitect.taskflower.user.entity.User;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
