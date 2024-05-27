@@ -37,7 +37,7 @@ public class UserService {
      * @throws InvalidUsernameException Username already exists
      */
     public UserResponse signup(UserSignupRequest userSignupRequest) throws InvalidZoneIdException,InvalidUsernameException {
-        if (userRepository.existByUsername(userSignupRequest.getUsername())) {
+        if (userRepository.existsByUsername(userSignupRequest.getUsername())) {
             throw new InvalidUsernameException();
         }
 
@@ -76,7 +76,7 @@ public class UserService {
         User user = userRepository.findById(userUpdateRequest.getId())
                 .orElseThrow(() -> new UsernameNotFoundException("user not found."));
 
-        if (userRepository.existByUsername(userUpdateRequest.getUsername())) {
+        if (userRepository.existsByUsername(userUpdateRequest.getUsername())) {
             throw new InvalidUsernameException();
         }
 
