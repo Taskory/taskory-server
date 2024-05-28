@@ -76,7 +76,8 @@ public class UserService {
         User user = userRepository.findById(userUpdateRequest.getId())
                 .orElseThrow(() -> new UsernameNotFoundException("user not found."));
 
-        if (userRepository.existsByUsername(userUpdateRequest.getUsername())) {
+        if (userRepository.existsByUsername(userUpdateRequest.getUsername()) &&
+                !Objects.equals(userUpdateRequest.getUsername(), user.getUsername())) {
             throw new InvalidUsernameException();
         }
 
