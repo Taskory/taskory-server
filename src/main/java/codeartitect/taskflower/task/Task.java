@@ -7,11 +7,19 @@ import codeartitect.taskflower.global.BaseTimeEntity;
 import codeartitect.taskflower.hashtag.HashTag;
 import codeartitect.taskflower.user.entity.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.ZoneId;
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Task extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,8 +54,29 @@ public class Task extends BaseTimeEntity {
     @Enumerated(value = EnumType.STRING)
     private Status status;
 
+    public Task(User user, SaveTaskRequest saveTaskRequest) {
+        this.user = user;
+        this.title = saveTaskRequest.getTitle();
+        this.flow = saveTaskRequest.getFlow();
+        this.event = saveTaskRequest.getEvent();
+        this.tag = saveTaskRequest.getTag();
+        this.hashTags = saveTaskRequest.getHashTags();
+        this.description = saveTaskRequest.getDescription();
+        this.status = saveTaskRequest.getStatus();
+    }
+
     @Override
     public ZoneId getUserZoneId() {
         return ZoneId.of(this.user.getZoneId());
+    }
+
+    public void update(SaveTaskRequest saveTaskRequest) {
+        this.title = saveTaskRequest.getTitle();
+        this.flow = saveTaskRequest.getFlow();
+        this.event = saveTaskRequest.getEvent();
+        this.tag = saveTaskRequest.getTag();
+        this.hashTags = saveTaskRequest.getHashTags();
+        this.description = saveTaskRequest.getDescription();
+        this.status = saveTaskRequest.getStatus();
     }
 }
