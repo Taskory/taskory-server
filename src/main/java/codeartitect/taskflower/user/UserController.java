@@ -1,4 +1,12 @@
 package codeartitect.taskflower.user;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("${app.url-base}/user")
 public class UserController {
+
 }
