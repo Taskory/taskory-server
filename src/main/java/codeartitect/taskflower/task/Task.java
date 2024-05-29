@@ -4,7 +4,7 @@ import codeartitect.taskflower.Tag.Tag;
 import codeartitect.taskflower.event.Event;
 import codeartitect.taskflower.flow.Flow;
 import codeartitect.taskflower.global.BaseTimeEntity;
-import codeartitect.taskflower.hashtag.HashTag;
+import codeartitect.taskflower.hashtag.Hashtag;
 import codeartitect.taskflower.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.ZoneId;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -23,6 +24,7 @@ import java.util.Set;
 public class Task extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "task_id")
     private Long id;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -44,8 +46,8 @@ public class Task extends BaseTimeEntity {
     @JoinColumn(name = "tag_id")
     private Tag tag;
 
-    @ManyToMany
-    private Set<HashTag> hashTags;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Hashtag> hashtags = new HashSet<>();
 
     @Column
     private String description;
@@ -60,9 +62,17 @@ public class Task extends BaseTimeEntity {
         this.flow = saveTaskRequest.getFlow();
         this.event = saveTaskRequest.getEvent();
         this.tag = saveTaskRequest.getTag();
-        this.hashTags = saveTaskRequest.getHashTags();
+        setHashtags(saveTaskRequest.getHashtags());
         this.description = saveTaskRequest.getDescription();
         this.status = saveTaskRequest.getStatus();
+    }
+
+    private void setHashtags(Set<Hashtag> hashtags) {
+        if (hashtags == null || hashtags.isEmpty()) {
+            return;
+        }
+        this.hashtags.clear();
+        this.hashtags.addAll(hashtags);
     }
 
     @Override
@@ -75,7 +85,7 @@ public class Task extends BaseTimeEntity {
         this.flow = saveTaskRequest.getFlow();
         this.event = saveTaskRequest.getEvent();
         this.tag = saveTaskRequest.getTag();
-        this.hashTags = saveTaskRequest.getHashTags();
+        setHashtags(saveTaskRequest.getHashtags());
         this.description = saveTaskRequest.getDescription();
         this.status = saveTaskRequest.getStatus();
     }

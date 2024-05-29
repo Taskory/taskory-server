@@ -38,8 +38,7 @@ public class TaskService {
      * @return TaskResponse
      */
     public TaskResponse getById(Long id) {
-        Task task = taskRepository.findById(id)
-                .orElseThrow(TaskNotFoundException::new);
+        Task task = taskRepository.findById(id).orElseThrow(TaskNotFoundException::new);
         return new TaskResponse(task);
     }
 
@@ -63,7 +62,7 @@ public class TaskService {
      * Find all task filtered by flow info or event info
      * Both flow and event should not be null
      * Either flow or event should be null
-     * @param user User information
+     * @param user User information - not null
      * @param flow Flow information - nullable
      * @param event Event information - nullable
      * @return TaskResponse list
