@@ -1,11 +1,13 @@
 package codeartitect.taskflower.user;
 
+import codeartitect.taskflower.task.TaskRepository;
 import codeartitect.taskflower.user.dto.UserResponse;
 import codeartitect.taskflower.user.dto.UserSignupRequest;
 import codeartitect.taskflower.user.dto.UserUpdateRequest;
 import codeartitect.taskflower.user.entity.User;
 import codeartitect.taskflower.user.exception.InvalidUsernameException;
 import codeartitect.taskflower.user.exception.InvalidZoneIdException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Service for manage user info and user crud
@@ -22,11 +25,13 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TaskRepository taskRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, TaskRepository taskRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.taskRepository = taskRepository;
     }
 
     /**
@@ -98,10 +103,14 @@ public class UserService {
      * Delete user
      * @param id User id for delete
      */
+    @Transactional
     public void deleteById(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new UsernameNotFoundException("User Not Found");
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            throw new UsernameNotFoundException("User not found");
         }
+        taskRepository.deleteAllByUser(user.get());
+
         userRepository.deleteById(id);
     }
 
