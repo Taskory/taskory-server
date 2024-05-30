@@ -1,6 +1,7 @@
 package codeartitect.taskflower.user;
 
 import codeartitect.taskflower.event.EventRepository;
+import codeartitect.taskflower.flow.FlowRepository;
 import codeartitect.taskflower.task.TaskRepository;
 import codeartitect.taskflower.user.dto.UserResponse;
 import codeartitect.taskflower.user.dto.UserSignupRequest;
@@ -28,13 +29,15 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final TaskRepository taskRepository;
     private final EventRepository eventRepository;
+    private final FlowRepository flowRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, TaskRepository taskRepository, EventRepository eventRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, TaskRepository taskRepository, EventRepository eventRepository, FlowRepository flowRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.taskRepository = taskRepository;
         this.eventRepository = eventRepository;
+        this.flowRepository = flowRepository;
     }
 
     /**
@@ -112,6 +115,7 @@ public class UserService {
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("User not found");
         }
+        flowRepository.deleteAllByUser(user.get());
         taskRepository.deleteAllByUser(user.get());
         eventRepository.deleteAllByUser(user.get());
 
