@@ -69,10 +69,8 @@ public class Task extends BaseTimeEntity {
 
     private void setHashtags(Set<Hashtag> hashtags) {
         if (hashtags == null || hashtags.isEmpty()) {
-            return;
-        }
-        this.hashtags.clear();
-        this.hashtags.addAll(hashtags);
+            this.hashtags = new HashSet<>();
+        } else this.hashtags = hashtags;
     }
 
     @Override
@@ -85,7 +83,7 @@ public class Task extends BaseTimeEntity {
         this.flow = saveTaskRequest.getFlow();
         this.event = saveTaskRequest.getEvent();
         this.tag = saveTaskRequest.getTag();
-        this.hashtags = saveTaskRequest.getHashtags();
+        setHashtags(saveTaskRequest.getHashtags());
         this.description = saveTaskRequest.getDescription();
         this.status = saveTaskRequest.getStatus();
     }
