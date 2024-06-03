@@ -33,9 +33,9 @@ public class TaskItem {
     @Column
     private boolean completed = false;
 
-    public TaskItem(User user, SaveTaskItemRequest saveTaskItemRequest) {
+    public TaskItem(User user, Task task, SaveTaskItemRequest saveTaskItemRequest) {
         this.user = user;
-        this.task = saveTaskItemRequest.getTask();
+        this.task = task;
         this.title = saveTaskItemRequest.getTitle();
     }
 }

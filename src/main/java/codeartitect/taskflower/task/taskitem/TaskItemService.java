@@ -1,6 +1,8 @@
 package codeartitect.taskflower.task.taskitem;
 
 import codeartitect.taskflower.task.Task;
+import codeartitect.taskflower.task.TaskNotFoundException;
+import codeartitect.taskflower.task.TaskRepository;
 import codeartitect.taskflower.user.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +14,12 @@ import java.util.List;
 public class TaskItemService {
 
     private final TaskItemRepository taskItemRepository;
+    private final TaskRepository taskRepository;
 
     @Autowired
-    public TaskItemService(TaskItemRepository taskItemRepository) {
+    public TaskItemService(TaskItemRepository taskItemRepository, TaskRepository taskRepository) {
         this.taskItemRepository = taskItemRepository;
+        this.taskRepository = taskRepository;
     }
 
     /**
@@ -25,7 +29,8 @@ public class TaskItemService {
      * @return TaskItemResponse
      */
     public TaskItemResponse save(User user, SaveTaskItemRequest saveTaskItemRequest) {
-        TaskItem taskItem = new TaskItem(user, saveTaskItemRequest);
+        Task task = taskRepository.findById(saveTaskItemRequest.getTaskId()).orElseThrow(TaskNotFoundException::new);
+        TaskItem taskItem = new TaskItem(user, task, saveTaskItemRequest);
 
         taskItemRepository.save(taskItem);
 
@@ -34,20 +39,21 @@ public class TaskItemService {
 
     /**
      * Get task item by task item id
-     * @param id Task item id
+     * @param itemId Task item id
      * @return TaskItemResponse
      */
-    public TaskItemResponse getById(Long id) {
-        TaskItem taskItem = taskItemRepository.findById(id).orElseThrow(TaskItemNotFoundException::new);
+    public TaskItemResponse getById(Long itemId) {
+        TaskItem taskItem = taskItemRepository.findById(itemId).orElseThrow(TaskItemNotFoundException::new);
         return new TaskItemResponse(taskItem);
     }
 
     /**
      * Find all task items by task info
-     * @param task Task information
+     * @param taskId Task id
      * @return TaskItemResponse list
      */
-    public List<TaskItemResponse> findAllByTask(Task task) {
+    public List<TaskItemResponse> findAllByTaskId(Long taskId) {
+        Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
         List<TaskItem> items = taskItemRepository.findAllByTask(task);
 
         List<TaskItemResponse> taskItemList = new ArrayList<>();

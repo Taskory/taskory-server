@@ -4,10 +4,14 @@ import codeartitect.taskflower.Tag.Tag;
 import codeartitect.taskflower.event.Event;
 import codeartitect.taskflower.flow.Flow;
 import codeartitect.taskflower.hashtag.Hashtag;
+import codeartitect.taskflower.task.taskitem.TaskItem;
+import codeartitect.taskflower.task.taskitem.TaskItemResponse;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -22,6 +26,7 @@ public class TaskResponse {
     private Set<Hashtag> hashtags;
     private String description;
     private Status status;
+    private List<TaskItemResponse> items;
 
     public TaskResponse(Task task) {
         this.id = task.getId();
@@ -32,5 +37,17 @@ public class TaskResponse {
         this.hashtags = task.getHashtags();
         this.description = task.getDescription();
         this.status = task.getStatus();
+        setItems(task.getItems());
+    }
+
+    private void setItems(List<TaskItem> items) {
+        if (items == null || items.isEmpty()) {
+            this.items = new ArrayList<>();
+        } else {
+            this.items = new ArrayList<>();
+            for (TaskItem item : items) {
+                this.items.add(new TaskItemResponse(item));
+            }
+        }
     }
 }

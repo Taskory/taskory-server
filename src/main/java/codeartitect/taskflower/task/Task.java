@@ -14,7 +14,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -57,9 +59,8 @@ public class Task extends BaseTimeEntity {
     @Enumerated(value = EnumType.STRING)
     private Status status;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @Column(name = "items")
-    private Set<TaskItem> items;
+    @OneToMany(mappedBy = "task", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TaskItem> items = new ArrayList<>();
 
     public Task(User user, SaveTaskRequest saveTaskRequest) {
         this.user = user;
