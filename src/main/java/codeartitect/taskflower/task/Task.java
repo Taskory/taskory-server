@@ -5,6 +5,7 @@ import codeartitect.taskflower.event.Event;
 import codeartitect.taskflower.flow.Flow;
 import codeartitect.taskflower.global.BaseTimeEntity;
 import codeartitect.taskflower.hashtag.Hashtag;
+import codeartitect.taskflower.task.taskitem.TaskItem;
 import codeartitect.taskflower.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -55,6 +56,10 @@ public class Task extends BaseTimeEntity {
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Status status;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @Column(name = "items")
+    private Set<TaskItem> items;
 
     public Task(User user, SaveTaskRequest saveTaskRequest) {
         this.user = user;

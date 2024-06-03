@@ -2,6 +2,7 @@ package codeartitect.taskflower.task;
 
 import codeartitect.taskflower.event.Event;
 import codeartitect.taskflower.flow.Flow;
+import codeartitect.taskflower.task.taskitem.TaskItemRepository;
 import codeartitect.taskflower.user.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,10 +14,12 @@ import java.util.List;
 public class TaskService {
 
     private final TaskRepository taskRepository;
+    private final TaskItemRepository taskitemRepository;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository, TaskItemRepository taskitemRepository) {
         this.taskRepository = taskRepository;
+        this.taskitemRepository = taskitemRepository;
     }
 
     /**
@@ -109,5 +112,13 @@ public class TaskService {
         if (taskRepository.existsById(id)) {
             taskRepository.deleteById(id);
         } else throw new TaskNotFoundException();
+    }
+
+    public void deleteAllByUser(User user) {
+        List<Task> tasks = taskRepository.findAllByUser(user);
+        for (Task task : tasks) {
+            taskitemRepository.deleteAllByTask(task);
+        }
+        taskRepository.deleteAllByUser(user);
     }
 }
