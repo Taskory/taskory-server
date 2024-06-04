@@ -3,6 +3,7 @@ package codeartitect.taskflower.task;
 import codeartitect.taskflower.task.taskitem.SaveTaskItemRequest;
 import codeartitect.taskflower.task.taskitem.TaskItemResponse;
 import codeartitect.taskflower.task.taskitem.TaskItemService;
+import codeartitect.taskflower.user.Role;
 import codeartitect.taskflower.user.UserRepository;
 import codeartitect.taskflower.user.UserService;
 import codeartitect.taskflower.user.entity.User;
@@ -13,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
+import java.util.Collections;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -49,7 +50,7 @@ public class TaskAndTaskItemTest {
         String username = tempUsername.toString();
         String password = "1234";
         String zoneId = "Asia/Seoul";
-        user = new User(null, username, password, zoneId, null);
+        user = new User(null, username, password, zoneId, null, Collections.singletonList(Role.USER));
         userRepository.save(user);
     }
 

@@ -5,6 +5,7 @@ import codeartitect.taskflower.event.Event;
 import codeartitect.taskflower.flow.Flow;
 import codeartitect.taskflower.hashtag.Hashtag;
 import codeartitect.taskflower.task.*;
+import codeartitect.taskflower.user.Role;
 import codeartitect.taskflower.user.UserRepository;
 import codeartitect.taskflower.user.UserService;
 import codeartitect.taskflower.user.entity.User;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -52,7 +54,7 @@ class TaskItemServiceTest {
         String username = tempUsername.toString();
         String password = "1234";
         String zoneId = "Asia/Seoul";
-        user = new User(null, username, password, zoneId, null);
+        user = new User(null, username, password, zoneId, null, Collections.singletonList(Role.USER));
         userRepository.save(user);
 
         String title = "test title";

@@ -12,4 +12,6 @@ spring:
     open-in-view: false
 
 app:
+  cors:
+    allowed-origins: http://localhost:3000, http://localhost:8000
   url-base: /api/v1
