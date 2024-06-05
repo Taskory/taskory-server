@@ -1,4 +1,4 @@
-package codeartitect.taskflower.user.dto;
+package codeartitect.taskflower.user.payload;
 
 import codeartitect.taskflower.user.entity.User;
 import lombok.Getter;

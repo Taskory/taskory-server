@@ -1,7 +1,7 @@
 package codeartitect.taskflower.user.entity;
 
 import codeartitect.taskflower.user.Role;
-import codeartitect.taskflower.user.dto.UserSignupRequest;
+import codeartitect.taskflower.user.payload.SignupRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -36,10 +35,10 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private List<Role> roles = new ArrayList<>();
 
-    public User(UserSignupRequest userSignupRequest) {
-        this.username = userSignupRequest.getUsername();
-        this.password = userSignupRequest.getPassword();
-        this.zoneId = userSignupRequest.getZoneId();
+    public User(SignupRequest signupRequest) {
+        this.username = signupRequest.getUsername();
+        this.password = signupRequest.getPassword();
+        this.zoneId = signupRequest.getZoneId();
         this.roles.add(Role.USER);
 
     }

@@ -3,13 +3,12 @@ package codeartitect.taskflower.user;
 import codeartitect.taskflower.Tag.TagRepository;
 import codeartitect.taskflower.event.EventRepository;
 import codeartitect.taskflower.flow.FlowRepository;
-import codeartitect.taskflower.task.TaskRepository;
 import codeartitect.taskflower.task.TaskService;
-import codeartitect.taskflower.user.dto.UserResponse;
-import codeartitect.taskflower.user.dto.UserSignupRequest;
-import codeartitect.taskflower.user.dto.UserUpdateRequest;
+import codeartitect.taskflower.user.payload.UserResponse;
+import codeartitect.taskflower.user.payload.SignupRequest;
+import codeartitect.taskflower.user.payload.UserUpdateRequest;
 import codeartitect.taskflower.user.entity.User;
-import codeartitect.taskflower.user.exception.InvalidUsernameException;
+import codeartitect.taskflower.user.exception.UsernameAlreadyExistsException;
 import codeartitect.taskflower.user.exception.InvalidZoneIdException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,22 +45,22 @@ public class UserService {
 
     /**
      * User signup
-     * @param userSignupRequest Information for signup
+     * @param signupRequest Information for signup
      * @return UserResponse
      * @throws InvalidZoneIdException ZoneId is invalid
-     * @throws InvalidUsernameException Username already exists
+     * @throws UsernameAlreadyExistsException Username already exists
      */
-    public UserResponse signup(UserSignupRequest userSignupRequest) throws InvalidZoneIdException,InvalidUsernameException {
-        if (userRepository.existsByUsername(userSignupRequest.getUsername())) {
-            throw new InvalidUsernameException();
+    public UserResponse signup(SignupRequest signupRequest) throws InvalidZoneIdException, UsernameAlreadyExistsException {
+        if (userRepository.existsByUsername(signupRequest.getUsername())) {
+            throw new UsernameAlreadyExistsException();
         }
 
-        if (isInvalidateZoneId(userSignupRequest.getZoneId())) {
+        if (isInvalidateZoneId(signupRequest.getZoneId())) {
             throw new InvalidZoneIdException();
         }
 
-        userSignupRequest.setPassword(encode(userSignupRequest.getPassword()));
-        User user = new User(userSignupRequest);
+        signupRequest.setPassword(encode(signupRequest.getPassword()));
+        User user = new User(signupRequest);
 
         userRepository.save(user);
 
@@ -85,15 +84,15 @@ public class UserService {
      * @param userUpdateRequest Information for user info update
      * @return UserResponse
      * @throws InvalidZoneIdException ZoneId is invalid
-     * @throws InvalidUsernameException Username already exists
+     * @throws UsernameAlreadyExistsException Username already exists
      */
-    public UserResponse updateUser(UserUpdateRequest userUpdateRequest) throws InvalidZoneIdException, InvalidUsernameException {
+    public UserResponse updateUser(UserUpdateRequest userUpdateRequest) throws InvalidZoneIdException, UsernameAlreadyExistsException {
         User user = userRepository.findById(userUpdateRequest.getId())
                 .orElseThrow(() -> new UsernameNotFoundException("user not found."));
 
         if (userRepository.existsByUsername(userUpdateRequest.getUsername()) &&
                 !Objects.equals(userUpdateRequest.getUsername(), user.getUsername())) {
-            throw new InvalidUsernameException();
+            throw new UsernameAlreadyExistsException();
         }
 
         if (isInvalidateZoneId(userUpdateRequest.getZoneId())) {

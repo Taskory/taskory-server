@@ -1,9 +1,9 @@
 package codeartitect.taskflower.user;
 
-import codeartitect.taskflower.user.dto.UserResponse;
-import codeartitect.taskflower.user.dto.UserSignupRequest;
-import codeartitect.taskflower.user.dto.UserUpdateRequest;
-import codeartitect.taskflower.user.exception.InvalidUsernameException;
+import codeartitect.taskflower.user.payload.UserResponse;
+import codeartitect.taskflower.user.payload.SignupRequest;
+import codeartitect.taskflower.user.payload.UserUpdateRequest;
+import codeartitect.taskflower.user.exception.UsernameAlreadyExistsException;
 import codeartitect.taskflower.user.exception.InvalidZoneIdException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -66,12 +66,12 @@ class UserServiceTest {
      */
     @Test
     @DisplayName("Signup test and Get user")
-    void signup_getByUsername() throws InvalidUsernameException, InvalidZoneIdException {
+    void signup_getByUsername() throws UsernameAlreadyExistsException, InvalidZoneIdException {
 //        Arrange
-        UserSignupRequest userSignupRequest = new UserSignupRequest(username, password, zoneId);
+        SignupRequest signupRequest = new SignupRequest(username, password, zoneId);
 
 //        Act
-        UserResponse userResponse = userService.signup(userSignupRequest);
+        UserResponse userResponse = userService.signup(signupRequest);
 
 //        Assert
         UserResponse signupUser = userService.getByUsername(username);
@@ -85,15 +85,15 @@ class UserServiceTest {
      */
     @Test
     @DisplayName("Invalid username signup")
-    void signup_invalid_username() throws InvalidUsernameException, InvalidZoneIdException {
+    void signup_invalid_username() throws UsernameAlreadyExistsException, InvalidZoneIdException {
 //        Arrange
-        UserSignupRequest userSignupRequest = new UserSignupRequest(username, password, zoneId);
+        SignupRequest signupRequest = new SignupRequest(username, password, zoneId);
 
 //        Act
-        userService.signup(userSignupRequest);
+        userService.signup(signupRequest);
 
 //        Assert
-        assertThrows(InvalidUsernameException.class, () -> userService.signup(userSignupRequest));
+        assertThrows(UsernameAlreadyExistsException.class, () -> userService.signup(signupRequest));
     }
 
     /**
@@ -104,10 +104,10 @@ class UserServiceTest {
     @DisplayName("Invalid zone id signup")
     void signup_invalid_zoneId() {
 //        Arrange
-        UserSignupRequest userSignupRequest = new UserSignupRequest(username, password, "invalid zone");
+        SignupRequest signupRequest = new SignupRequest(username, password, "invalid zone");
 
 //        Act and Assert
-        assertThrows(InvalidZoneIdException.class, () -> userService.signup(userSignupRequest));
+        assertThrows(InvalidZoneIdException.class, () -> userService.signup(signupRequest));
     }
 
     /**
@@ -116,10 +116,10 @@ class UserServiceTest {
      */
     @Test
     @DisplayName("Update user")
-    void updateUser() throws InvalidUsernameException, InvalidZoneIdException {
+    void updateUser() throws UsernameAlreadyExistsException, InvalidZoneIdException {
 //        Arrange
-        UserSignupRequest userSignupRequest = new UserSignupRequest(username, password, zoneId);
-        UserResponse userResponse = userService.signup(userSignupRequest);
+        SignupRequest signupRequest = new SignupRequest(username, password, zoneId);
+        UserResponse userResponse = userService.signup(signupRequest);
 
 //        Act
         String updateUsername = getUsername();
@@ -139,19 +139,19 @@ class UserServiceTest {
      */
     @Test
     @DisplayName("Invalid username  update user")
-    void updateUser_invalid_username() throws InvalidUsernameException, InvalidZoneIdException {
+    void updateUser_invalid_username() throws UsernameAlreadyExistsException, InvalidZoneIdException {
 //        Arrange
 //        first user
-        UserSignupRequest userSignupRequest = new UserSignupRequest(username, password, zoneId);
-        UserResponse userResponse = userService.signup(userSignupRequest);
+        SignupRequest signupRequest = new SignupRequest(username, password, zoneId);
+        UserResponse userResponse = userService.signup(signupRequest);
 //        second user
         String invalidUsername = "invalidUsername";
-        UserSignupRequest duplicatedUser = new UserSignupRequest(invalidUsername, password, zoneId);
+        SignupRequest duplicatedUser = new SignupRequest(invalidUsername, password, zoneId);
         UserResponse duplicatedUserResponse = userService.signup(duplicatedUser);
 
 //        Act and Assert
         UserUpdateRequest userUpdateRequest = new UserUpdateRequest(userResponse.getId(), invalidUsername, "4321", "Asia/Seoul");
-        assertThrows(InvalidUsernameException.class, () -> userService.updateUser(userUpdateRequest));
+        assertThrows(UsernameAlreadyExistsException.class, () -> userService.updateUser(userUpdateRequest));
 
 //        duplicatedUser delete
         userService.deleteById(duplicatedUserResponse.getId());
@@ -163,10 +163,10 @@ class UserServiceTest {
      */
     @Test
     @DisplayName("Invalid zone id update user")
-    void updateUser_invalid_zoneId() throws InvalidUsernameException, InvalidZoneIdException {
+    void updateUser_invalid_zoneId() throws UsernameAlreadyExistsException, InvalidZoneIdException {
 //        Arrange
-        UserSignupRequest userSignupRequest = new UserSignupRequest(username, password, zoneId);
-        UserResponse userResponse = userService.signup(userSignupRequest);
+        SignupRequest signupRequest = new SignupRequest(username, password, zoneId);
+        UserResponse userResponse = userService.signup(signupRequest);
 
 //        Act and Assert
         UserUpdateRequest userUpdateRequest = new UserUpdateRequest(userResponse.getId(), userResponse.getUsername(), "4321", "Invalid zone id");
@@ -178,10 +178,10 @@ class UserServiceTest {
      */
     @Test
     @DisplayName("Delete user")
-    void deleteById() throws InvalidUsernameException, InvalidZoneIdException {
+    void deleteById() throws UsernameAlreadyExistsException, InvalidZoneIdException {
 //        Arrange
-        UserSignupRequest userSignupRequest = new UserSignupRequest(username, password, zoneId);
-        UserResponse userResponse = userService.signup(userSignupRequest);
+        SignupRequest signupRequest = new SignupRequest(username, password, zoneId);
+        UserResponse userResponse = userService.signup(signupRequest);
 
 //        Act
         userService.deleteById(userResponse.getId());

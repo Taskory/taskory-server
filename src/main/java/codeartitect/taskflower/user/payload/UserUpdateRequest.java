@@ -1,4 +1,4 @@
-package codeartitect.taskflower.user.dto;
+package codeartitect.taskflower.user.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,7 +8,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class UserSignupRequest {
+@NoArgsConstructor
+public class UserUpdateRequest {
+    private Long id;
     private String username;
     private String password;
     private String zoneId;
