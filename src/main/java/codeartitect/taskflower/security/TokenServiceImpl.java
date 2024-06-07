@@ -86,7 +86,7 @@ public class TokenServiceImpl implements TokenService{
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         } else {
-            throw new IllegalStateException("Invalid token");
+            return null;
         }
     }
 }

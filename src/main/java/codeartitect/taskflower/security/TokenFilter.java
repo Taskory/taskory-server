@@ -29,7 +29,6 @@ public class TokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = tokenService.getTokenFromRequest(request);
-
         if (StringUtils.hasText(token) && tokenService.isValidatedToken(token)) {
             Long userId = tokenService.getUserIdFromToken(token);
 
