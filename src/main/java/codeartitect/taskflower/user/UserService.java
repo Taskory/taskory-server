@@ -58,8 +58,8 @@ public class UserService {
         if (isInvalidateZoneId(signupRequest.getZoneId())) {
             throw new InvalidZoneIdException();
         }
-
-        signupRequest.setPassword(encode(signupRequest.getPassword()));
+        String encodedPassword = encode(signupRequest.getPassword());
+        signupRequest.setPassword(encodedPassword);
         User user = new User(signupRequest);
 
         userRepository.save(user);
