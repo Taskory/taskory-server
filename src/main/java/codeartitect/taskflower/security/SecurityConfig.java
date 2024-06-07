@@ -32,24 +32,23 @@ import java.util.List;
         jsr250Enabled = true
 )
 public class SecurityConfig {
-
     @Value("${app.url-base}")
     private String urlBase;
-
     @Value("${app.cors.allowed-origins}")
     private List<String> allowedOrigins;
-    private List<String> allowedMehtods = Arrays.asList(
+
+    private final List<String> allowedMethods = Arrays.asList(
             HttpMethod.GET.name(),
             HttpMethod.POST.name(),
             HttpMethod.PUT.name(),
             HttpMethod.DELETE.name()
     );
-    private List<String> allowedHeaders = Arrays.asList(
+    private final List<String> allowedHeaders = Arrays.asList(
             HttpHeaders.CONTENT_TYPE,
             HttpHeaders.AUTHORIZATION
     );
-    private final TokenFilter tokenFilter;
 
+    private final TokenFilter tokenFilter;
     @Autowired
     public SecurityConfig(TokenFilter tokenFilter) {
         this.tokenFilter = tokenFilter;
@@ -81,6 +80,7 @@ public class SecurityConfig {
         httpSecurity
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(urlBase + "/auth/**").permitAll()
+                        .anyRequest().denyAll()
                 );
 
 //        JWT Token filter
@@ -93,7 +93,7 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(allowedOrigins);
-        configuration.setAllowedMethods(allowedMehtods);
+        configuration.setAllowedMethods(allowedMethods);
         configuration.setAllowedHeaders(allowedHeaders);
         configuration.setAllowCredentials(true);
 
