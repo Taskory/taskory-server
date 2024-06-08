@@ -1,7 +1,7 @@
 package codeartitect.taskflower.security;
 
-import codeartitect.taskflower.user.Role;
-import codeartitect.taskflower.user.entity.User;
+import codeartitect.taskflower.user.model.Role;
+import codeartitect.taskflower.user.model.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

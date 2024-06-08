@@ -1,6 +1,8 @@
 package codeartitect.taskflower.flow;
 
-import codeartitect.taskflower.user.entity.User;
+import codeartitect.taskflower.flow.payload.FlowResponse;
+import codeartitect.taskflower.flow.payload.SaveFlowRequest;
+import codeartitect.taskflower.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

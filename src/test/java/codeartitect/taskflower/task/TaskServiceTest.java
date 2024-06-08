@@ -1,14 +1,19 @@
 package codeartitect.taskflower.task;
 
-import codeartitect.taskflower.Tag.Tag;
+import codeartitect.taskflower.Tag.model.Tag;
 import codeartitect.taskflower.event.Event;
 import codeartitect.taskflower.flow.Flow;
 import codeartitect.taskflower.hashtag.Hashtag;
+import codeartitect.taskflower.task.exception.TaskNotFoundException;
+import codeartitect.taskflower.task.model.Status;
+import codeartitect.taskflower.task.payload.SaveTaskRequest;
+import codeartitect.taskflower.task.payload.TaskResponse;
+import codeartitect.taskflower.task.service.TaskService;
 import codeartitect.taskflower.user.UserRepository;
 import codeartitect.taskflower.user.UserService;
 import codeartitect.taskflower.user.payload.UserResponse;
 import codeartitect.taskflower.user.payload.SignupRequest;
-import codeartitect.taskflower.user.entity.User;
+import codeartitect.taskflower.user.model.User;
 import codeartitect.taskflower.user.exception.UsernameAlreadyExistsException;
 import codeartitect.taskflower.user.exception.InvalidZoneIdException;
 import org.junit.jupiter.api.AfterEach;

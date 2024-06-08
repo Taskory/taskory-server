@@ -1,6 +1,8 @@
 package codeartitect.taskflower.event;
 
-import codeartitect.taskflower.user.entity.User;
+import codeartitect.taskflower.event.payload.EventResponse;
+import codeartitect.taskflower.event.payload.SaveEventRequest;
+import codeartitect.taskflower.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

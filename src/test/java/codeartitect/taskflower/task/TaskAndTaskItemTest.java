@@ -1,12 +1,16 @@
 package codeartitect.taskflower.task;
 
-import codeartitect.taskflower.task.taskitem.SaveTaskItemRequest;
-import codeartitect.taskflower.task.taskitem.TaskItemResponse;
-import codeartitect.taskflower.task.taskitem.TaskItemService;
-import codeartitect.taskflower.user.Role;
+import codeartitect.taskflower.task.model.Status;
+import codeartitect.taskflower.task.payload.SaveTaskRequest;
+import codeartitect.taskflower.task.payload.SaveTaskItemRequest;
+import codeartitect.taskflower.task.payload.TaskItemResponse;
+import codeartitect.taskflower.task.payload.TaskResponse;
+import codeartitect.taskflower.task.service.TaskItemService;
+import codeartitect.taskflower.task.service.TaskService;
+import codeartitect.taskflower.user.model.Role;
 import codeartitect.taskflower.user.UserRepository;
 import codeartitect.taskflower.user.UserService;
-import codeartitect.taskflower.user.entity.User;
+import codeartitect.taskflower.user.model.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

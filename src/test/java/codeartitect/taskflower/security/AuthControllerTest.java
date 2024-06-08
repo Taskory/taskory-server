@@ -2,7 +2,7 @@ package codeartitect.taskflower.security;
 
 import codeartitect.taskflower.user.UserRepository;
 import codeartitect.taskflower.user.UserService;
-import codeartitect.taskflower.user.entity.User;
+import codeartitect.taskflower.user.model.User;
 import codeartitect.taskflower.user.exception.InvalidZoneIdException;
 import codeartitect.taskflower.user.exception.UsernameAlreadyExistsException;
 import codeartitect.taskflower.user.payload.SignupRequest;

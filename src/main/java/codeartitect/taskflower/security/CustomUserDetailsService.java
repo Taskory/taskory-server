@@ -1,7 +1,7 @@
 package codeartitect.taskflower.security;
 
 import codeartitect.taskflower.user.UserRepository;
-import codeartitect.taskflower.user.entity.User;
+import codeartitect.taskflower.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

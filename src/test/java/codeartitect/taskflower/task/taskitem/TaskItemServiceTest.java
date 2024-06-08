@@ -1,14 +1,20 @@
 package codeartitect.taskflower.task.taskitem;
 
-import codeartitect.taskflower.Tag.Tag;
+import codeartitect.taskflower.Tag.model.Tag;
 import codeartitect.taskflower.event.Event;
 import codeartitect.taskflower.flow.Flow;
 import codeartitect.taskflower.hashtag.Hashtag;
-import codeartitect.taskflower.task.*;
-import codeartitect.taskflower.user.Role;
+import codeartitect.taskflower.task.model.Status;
+import codeartitect.taskflower.task.model.Task;
+import codeartitect.taskflower.task.exception.TaskItemNotFoundException;
+import codeartitect.taskflower.task.payload.SaveTaskItemRequest;
+import codeartitect.taskflower.task.payload.TaskItemResponse;
+import codeartitect.taskflower.task.repository.TaskRepository;
+import codeartitect.taskflower.task.service.TaskItemService;
+import codeartitect.taskflower.user.model.Role;
 import codeartitect.taskflower.user.UserRepository;
 import codeartitect.taskflower.user.UserService;
-import codeartitect.taskflower.user.entity.User;
+import codeartitect.taskflower.user.model.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

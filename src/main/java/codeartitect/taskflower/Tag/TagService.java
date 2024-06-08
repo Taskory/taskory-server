@@ -1,6 +1,9 @@
 package codeartitect.taskflower.Tag;
 
-import codeartitect.taskflower.user.entity.User;
+import codeartitect.taskflower.Tag.model.Tag;
+import codeartitect.taskflower.Tag.payload.SaveTagRequest;
+import codeartitect.taskflower.Tag.payload.TagResponse;
+import codeartitect.taskflower.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

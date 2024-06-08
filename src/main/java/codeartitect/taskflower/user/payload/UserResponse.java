@@ -1,6 +1,6 @@
 package codeartitect.taskflower.user.payload;
 
-import codeartitect.taskflower.user.entity.User;
+import codeartitect.taskflower.user.model.User;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

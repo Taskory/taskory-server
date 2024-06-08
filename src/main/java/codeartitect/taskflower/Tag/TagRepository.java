@@ -1,6 +1,7 @@
 package codeartitect.taskflower.Tag;
 
-import codeartitect.taskflower.user.entity.User;
+import codeartitect.taskflower.Tag.model.Tag;
+import codeartitect.taskflower.user.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

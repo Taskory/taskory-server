@@ -1,8 +1,9 @@
 package codeartitect.taskflower.flow;
 
-import codeartitect.taskflower.global.BaseTimeEntity;
+import codeartitect.taskflower.flow.payload.SaveFlowRequest;
+import codeartitect.taskflower.common.BaseTimeEntity;
 import codeartitect.taskflower.hashtag.Hashtag;
-import codeartitect.taskflower.user.entity.User;
+import codeartitect.taskflower.user.model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+@Entity(name = "Flow")
 @Getter
 @Setter
 @NoArgsConstructor
