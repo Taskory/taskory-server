@@ -22,15 +22,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
-    @Column(nullable = false)
+    @Column(name = "username", nullable = false)
     private String username;
-    @Column(nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
-    @Column(nullable = false)
+    @Column(name = "zone_id", nullable = false)
     private String zoneId;
     @OneToMany
     private Set<SocialAccount> socialAccounts;
-    @Column(nullable = false)
+    @Column(name = "roles", nullable = false)
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(value = EnumType.STRING)
     private List<Role> roles = new ArrayList<>();

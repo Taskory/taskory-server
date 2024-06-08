@@ -27,7 +27,7 @@ public class Event extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column
+    @Column(name = "title")
     private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,16 +37,16 @@ public class Event extends BaseTimeEntity {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Hashtag> hashtags = new HashSet<>();
 
-    @Column
+    @Column(name = "description")
     private String description;
 
-    @Column
+    @Column(name = "start_date_time")
     private LocalDateTime startDateTime;
 
-    @Column
+    @Column(name = "due_date_time")
     private LocalDateTime dueDateTime;
 
-    @Column
+    @Column(name = "location")
     private String location;
 
     public Event(User user, SaveEventRequest saveEventRequest) {

@@ -34,7 +34,7 @@ public class Task extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column
+    @Column(name = "title")
     private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -52,10 +52,10 @@ public class Task extends BaseTimeEntity {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Hashtag> hashtags = new HashSet<>();
 
-    @Column
+    @Column(name = "description")
     private String description;
 
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Status status;
 

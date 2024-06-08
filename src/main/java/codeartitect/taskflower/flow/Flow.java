@@ -28,13 +28,13 @@ public class Flow extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column
+    @Column(name = "title")
     private String title;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Hashtag> hashtags = new HashSet<>();
 
-    @Column
+    @Column(name = "description")
     private String description;
 
     public Flow(User user, SaveFlowRequest saveFlowRequest) {

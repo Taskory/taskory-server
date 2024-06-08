@@ -22,10 +22,10 @@ public class Tag {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column
+    @Column(name = "title")
     private String title;
 
-    @Column(nullable = false)
+    @Column(name = "color", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Color color;
 

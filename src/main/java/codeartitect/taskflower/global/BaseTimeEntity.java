@@ -8,10 +8,10 @@ import java.time.ZoneId;
 @MappedSuperclass
 public abstract class BaseTimeEntity {
 
-    @Column
+    @Column(name = "created_at")
     private LocalDateTime created_at;
 
-    @Column
+    @Column(name = "updated_at")
     private LocalDateTime updated_at;
 
     @PrePersist

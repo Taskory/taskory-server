@@ -27,10 +27,10 @@ public class TaskItem {
     @JoinColumn(name = "task_id")
     private Task task;
 
-    @Column
+    @Column(name = "title")
     private String title;
 
-    @Column
+    @Column(name = "completed")
     private boolean completed = false;
 
     public TaskItem(User user, Task task, SaveTaskItemRequest saveTaskItemRequest) {
