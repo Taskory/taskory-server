@@ -1,6 +1,7 @@
 package codeartitect.taskflower.user.entity;
 
 import codeartitect.taskflower.user.Role;
+import codeartitect.taskflower.user.payload.ProfileUpdateRequest;
 import codeartitect.taskflower.user.payload.SignupRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -43,4 +44,8 @@ public class User {
 
     }
 
+    public void updateProfile(ProfileUpdateRequest profileUpdateRequest) {
+        this.username = profileUpdateRequest.getUsername();
+        this.zoneId = profileUpdateRequest.getZoneId();
+    }
 }

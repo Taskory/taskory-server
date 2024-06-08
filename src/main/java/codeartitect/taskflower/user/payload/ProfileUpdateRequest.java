@@ -7,12 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-@Deprecated
-public class UserUpdateRequest {
-    private Long id;
+@AllArgsConstructor
+public class ProfileUpdateRequest {
     private String username;
-    private String password;
     private String zoneId;
 }

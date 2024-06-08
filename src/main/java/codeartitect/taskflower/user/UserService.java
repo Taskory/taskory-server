@@ -3,7 +3,11 @@ package codeartitect.taskflower.user;
 import codeartitect.taskflower.Tag.TagRepository;
 import codeartitect.taskflower.event.EventRepository;
 import codeartitect.taskflower.flow.FlowRepository;
+import codeartitect.taskflower.task.Task;
+import codeartitect.taskflower.task.TaskNotFoundException;
+import codeartitect.taskflower.task.TaskResponse;
 import codeartitect.taskflower.task.TaskService;
+import codeartitect.taskflower.user.payload.ProfileUpdateRequest;
 import codeartitect.taskflower.user.payload.UserResponse;
 import codeartitect.taskflower.user.payload.SignupRequest;
 import codeartitect.taskflower.user.payload.UserUpdateRequest;
@@ -80,12 +84,14 @@ public class UserService {
     }
 
     /**
+     * @deprecated Please use {@link #updateProfile(Long, ProfileUpdateRequest)}}
      * Update user info
      * @param userUpdateRequest Information for user info update
      * @return UserResponse
      * @throws InvalidZoneIdException ZoneId is invalid
      * @throws UsernameAlreadyExistsException Username already exists
      */
+    @Deprecated
     public UserResponse updateUser(UserUpdateRequest userUpdateRequest) throws InvalidZoneIdException, UsernameAlreadyExistsException {
         User user = userRepository.findById(userUpdateRequest.getId())
                 .orElseThrow(() -> new UsernameNotFoundException("user not found."));
@@ -106,6 +112,29 @@ public class UserService {
         userRepository.save(user);
 
         return new UserResponse(user);
+    }
+
+    /**
+     * Update user profile
+     * @param userId User id
+     * @param profileUpdateRequest Information for profile update
+     * @return UserResponse
+     */
+    public UserResponse updateProfile(Long userId, ProfileUpdateRequest profileUpdateRequest) throws UsernameAlreadyExistsException, InvalidZoneIdException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        if (userRepository.existsByUsername(profileUpdateRequest.getUsername()) && !Objects.equals(profileUpdateRequest.getUsername(), user.getUsername())) {
+                throw new UsernameAlreadyExistsException();
+        }
+
+        if (isInvalidateZoneId(profileUpdateRequest.getZoneId())) {
+            throw new InvalidZoneIdException();
+        }
+
+        user.updateProfile(profileUpdateRequest);
+        User updatedUser = userRepository.save(user);
+        return new UserResponse(updatedUser);
     }
 
     /**
