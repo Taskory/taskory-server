@@ -3,7 +3,6 @@ package codeartitect.taskflower.user;
 import codeartitect.taskflower.user.payload.ProfileUpdateRequest;
 import codeartitect.taskflower.user.payload.UserResponse;
 import codeartitect.taskflower.user.payload.SignupRequest;
-//import codeartitect.taskflower.user.payload.UserUpdateRequest;
 import codeartitect.taskflower.user.exception.UsernameAlreadyExistsException;
 import codeartitect.taskflower.user.exception.InvalidZoneIdException;
 import org.junit.jupiter.api.AfterEach;
@@ -112,29 +111,6 @@ class UserServiceTest {
         assertThrows(InvalidZoneIdException.class, () -> userService.signup(signupRequest));
     }
 
-//    /**
-//     * Test for update user
-//     * Valid user
-//     */
-//    @Test
-//    @DisplayName("Update user")
-//    void updateUser() throws UsernameAlreadyExistsException, InvalidZoneIdException {
-////        Arrange
-//        SignupRequest signupRequest = new SignupRequest(username, password, zoneId);
-//        UserResponse userResponse = userService.signup(signupRequest);
-//
-////        Act
-//        String updateUsername = getUsername();
-//        UserUpdateRequest userUpdateRequest = new UserUpdateRequest(userResponse.getId(), updateUsername, "4321", "Asia/Seoul");
-//        UserResponse updatedUserResponse = userService.updateUser(userUpdateRequest);
-//
-////        Assert
-//        assertEquals(updatedUserResponse.toString(), userService.getByUsername(updateUsername).toString());
-//
-////        For AfterEach
-//        this.username = updateUsername;
-//    }
-
     /**
      * Test for update user profile
      * Valid user
@@ -160,30 +136,6 @@ class UserServiceTest {
         this.username = updateUsername;
     }
 
-//    /**
-//     * Test for failed user update
-//     * Invalid username
-//     */
-//    @Test
-//    @DisplayName("Invalid username  update user")
-//    void updateUser_invalid_username() throws UsernameAlreadyExistsException, InvalidZoneIdException {
-////        Arrange
-////        first user
-//        SignupRequest signupRequest = new SignupRequest(username, password, zoneId);
-//        UserResponse userResponse = userService.signup(signupRequest);
-////        second user
-//        String invalidUsername = "invalidUsername";
-//        SignupRequest duplicatedUser = new SignupRequest(invalidUsername, password, zoneId);
-//        UserResponse duplicatedUserResponse = userService.signup(duplicatedUser);
-//
-////        Act and Assert
-//        UserUpdateRequest userUpdateRequest = new UserUpdateRequest(userResponse.getId(), invalidUsername, "4321", "Asia/Seoul");
-//        assertThrows(UsernameAlreadyExistsException.class, () -> userService.updateUser(userUpdateRequest));
-//
-////        duplicatedUser delete
-//        userService.deleteById(duplicatedUserResponse.getId());
-//    }
-
     /**
      * Test for fail user profile update
      * Invalid username
@@ -207,22 +159,6 @@ class UserServiceTest {
 //        duplicatedUser delete
         userService.deleteById(duplicatedUserResponse.getId());
     }
-
-//    /**
-//     * Test for fail user update
-//     * Invalid zone id
-//     */
-//    @Test
-//    @DisplayName("Invalid zone id update user")
-//    void updateUser_invalid_zoneId() throws UsernameAlreadyExistsException, InvalidZoneIdException {
-////        Arrange
-//        SignupRequest signupRequest = new SignupRequest(username, password, zoneId);
-//        UserResponse userResponse = userService.signup(signupRequest);
-//
-////        Act and Assert
-//        UserUpdateRequest userUpdateRequest = new UserUpdateRequest(userResponse.getId(), userResponse.getUsername(), "4321", "Invalid zone id");
-//        assertThrows(InvalidZoneIdException.class, () -> userService.updateUser(userUpdateRequest));
-//    }
 
     /**
      * Test for fail user profile update

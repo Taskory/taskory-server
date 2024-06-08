@@ -3,14 +3,10 @@ package codeartitect.taskflower.user;
 import codeartitect.taskflower.Tag.TagRepository;
 import codeartitect.taskflower.event.EventRepository;
 import codeartitect.taskflower.flow.FlowRepository;
-import codeartitect.taskflower.task.Task;
-import codeartitect.taskflower.task.TaskNotFoundException;
-import codeartitect.taskflower.task.TaskResponse;
 import codeartitect.taskflower.task.TaskService;
 import codeartitect.taskflower.user.payload.ProfileUpdateRequest;
 import codeartitect.taskflower.user.payload.UserResponse;
 import codeartitect.taskflower.user.payload.SignupRequest;
-import codeartitect.taskflower.user.payload.UserUpdateRequest;
 import codeartitect.taskflower.user.entity.User;
 import codeartitect.taskflower.user.exception.UsernameAlreadyExistsException;
 import codeartitect.taskflower.user.exception.InvalidZoneIdException;
@@ -81,37 +77,6 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found."));
         return new UserResponse(user);
 
-    }
-
-    /**
-     * @deprecated Please use {@link #updateProfile(Long, ProfileUpdateRequest)}}
-     * Update user info
-     * @param userUpdateRequest Information for user info update
-     * @return UserResponse
-     * @throws InvalidZoneIdException ZoneId is invalid
-     * @throws UsernameAlreadyExistsException Username already exists
-     */
-    @Deprecated
-    public UserResponse updateUser(UserUpdateRequest userUpdateRequest) throws InvalidZoneIdException, UsernameAlreadyExistsException {
-        User user = userRepository.findById(userUpdateRequest.getId())
-                .orElseThrow(() -> new UsernameNotFoundException("user not found."));
-
-        if (userRepository.existsByUsername(userUpdateRequest.getUsername()) &&
-                !Objects.equals(userUpdateRequest.getUsername(), user.getUsername())) {
-            throw new UsernameAlreadyExistsException();
-        }
-
-        if (isInvalidateZoneId(userUpdateRequest.getZoneId())) {
-            throw new InvalidZoneIdException();
-        }
-
-        user.setUsername(userUpdateRequest.getUsername());
-        user.setPassword(encode(userUpdateRequest.getPassword()));
-        user.setZoneId(userUpdateRequest.getZoneId());
-
-        userRepository.save(user);
-
-        return new UserResponse(user);
     }
 
     /**
