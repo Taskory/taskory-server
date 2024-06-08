@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EventService {
@@ -49,11 +50,11 @@ public class EventService {
      * @return EventResponse list
      */
     public List<EventResponse> findAll(User user) {
-        List<Event> events = eventRepository.findAllByUser(user);
+        List<Optional<Event>> events = eventRepository.findAllByUser(user);
 
         List<EventResponse> eventResponseList = new ArrayList<>();
-        for (Event event : events) {
-            eventResponseList.add(new EventResponse(event));
+        for (Optional<Event> event : events) {
+            event.ifPresent(value -> eventResponseList.add(new EventResponse(value)));
         }
         return eventResponseList;
     }

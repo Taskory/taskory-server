@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TaskItemService {
@@ -59,11 +60,11 @@ public class TaskItemService {
      */
     public List<TaskItemResponse> findAllByTaskId(Long taskId) {
         Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
-        List<TaskItem> items = taskItemRepository.findAllByTask(task);
+        List<Optional<TaskItem>> items = taskItemRepository.findAllByTask(task);
 
         List<TaskItemResponse> taskItemList = new ArrayList<>();
-        for (TaskItem item : items) {
-            taskItemList.add(new TaskItemResponse(item));
+        for (Optional<TaskItem> item : items) {
+            item.ifPresent(value -> taskItemList.add(new TaskItemResponse(value)));
         }
         return taskItemList;
     }

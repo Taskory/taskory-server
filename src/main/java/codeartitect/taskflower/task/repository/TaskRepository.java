@@ -8,16 +8,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
-    List<Task> findAllByUser(User user);
+    List<Optional<Task>> findAllByUser(User user);
 
-    List<Task> findAllByUserAndEvent(User user, Event event);
+    List<Optional<Task>> findAllByUserAndEvent(User user, Event event);
 
-    List<Task> findAllByUserAndFlow(User user, Flow flow);
+    List<Optional<Task>> findAllByUserAndFlow(User user, Flow flow);
 
-    List<Task> findAllByUserAndFlowAndEvent(User user, Flow flow, Event event);
+    List<Optional<Task>> findAllByUserAndFlowAndEvent(User user, Flow flow, Event event);
 
     void deleteAllByUser(User user);
 }

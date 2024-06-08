@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FlowService {
@@ -49,11 +50,11 @@ public class FlowService {
      * @return FlowResponse list
      */
     public List<FlowResponse> findAll(User user) {
-        List<Flow> flows = flowRepository.findAllByUser(user);
+        List<Optional<Flow>> flows = flowRepository.findAllByUser(user);
 
         List<FlowResponse> flowResponseList = new ArrayList<>();
-        for (Flow flow : flows) {
-            flowResponseList.add(new FlowResponse(flow));
+        for (Optional<Flow> flow : flows) {
+            flow.ifPresent(value -> flowResponseList.add(new FlowResponse(value)));
         }
         return flowResponseList;
     }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TagService {
@@ -49,11 +50,11 @@ public class TagService {
      * @return TagResponse list
      */
     public List<TagResponse> findAll(User user) {
-        List<Tag> tags = tagRepository.findAllByUser(user);
+        List<Optional<Tag>> tags = tagRepository.findAllByUser(user);
 
         List<TagResponse> tagResponseList = new ArrayList<>();
-        for (Tag tag : tags) {
-            tagResponseList.add(new TagResponse(tag));
+        for (Optional<Tag> tag : tags) {
+            tag.ifPresent(value -> tagResponseList.add(new TagResponse(value)));
         }
         return tagResponseList;
     }
