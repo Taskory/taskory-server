@@ -37,20 +37,20 @@ public class Task extends BaseTimeEntity {
     @Column(name = "title")
     private String title;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "flow_id")
     private Flow flow;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "event_id")
     private Event event;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tag_id")
     private Tag tag;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Hashtag> hashtags = new HashSet<>();
+    private List<Hashtag> hashtags = new ArrayList<>();
 
     @Column(name = "description")
     private String description;
@@ -73,9 +73,9 @@ public class Task extends BaseTimeEntity {
         this.status = saveTaskRequest.getStatus();
     }
 
-    private void setHashtags(Set<Hashtag> hashtags) {
+    private void setHashtags(List<Hashtag> hashtags) {
         if (hashtags == null || hashtags.isEmpty()) {
-            this.hashtags = new HashSet<>();
+            this.hashtags = new ArrayList<>();
         } else this.hashtags = hashtags;
     }
 

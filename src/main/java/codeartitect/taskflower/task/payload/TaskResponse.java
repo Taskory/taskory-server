@@ -24,7 +24,7 @@ public class TaskResponse {
     private Flow flow;
     private Event event;
     private Tag tag;
-    private Set<Hashtag> hashtags;
+    private List<Hashtag> hashtags;
     private String description;
     private Status status;
     private List<TaskItemResponse> items;

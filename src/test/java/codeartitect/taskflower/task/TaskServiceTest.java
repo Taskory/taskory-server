@@ -2,12 +2,16 @@ package codeartitect.taskflower.task;
 
 import codeartitect.taskflower.Tag.model.Tag;
 import codeartitect.taskflower.event.Event;
+import codeartitect.taskflower.event.EventRepository;
 import codeartitect.taskflower.flow.Flow;
+import codeartitect.taskflower.flow.FlowRepository;
 import codeartitect.taskflower.hashtag.Hashtag;
 import codeartitect.taskflower.task.exception.TaskNotFoundException;
 import codeartitect.taskflower.task.model.Status;
+import codeartitect.taskflower.task.model.Task;
 import codeartitect.taskflower.task.payload.SaveTaskRequest;
 import codeartitect.taskflower.task.payload.TaskResponse;
+import codeartitect.taskflower.task.repository.TaskRepository;
 import codeartitect.taskflower.task.service.TaskService;
 import codeartitect.taskflower.user.UserRepository;
 import codeartitect.taskflower.user.UserService;
@@ -23,6 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,6 +46,12 @@ class TaskServiceTest {
 
 
     private User user;
+    @Autowired
+    private FlowRepository flowRepository;
+    @Autowired
+    private EventRepository eventRepository;
+    @Autowired
+    private TaskRepository taskRepository;
 
     @BeforeEach
     void setUp() throws UsernameAlreadyExistsException, InvalidZoneIdException {
@@ -78,7 +89,7 @@ class TaskServiceTest {
         Flow flow = null;
         Event event = null;
         Tag tag = null;
-        Set<Hashtag> hashtags = null;
+        List<Hashtag> hashtags = null;
         String description = "test description";
         SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, flow, event, tag, hashtags, description, Status.TODO);
 
@@ -101,7 +112,7 @@ class TaskServiceTest {
         Flow flow = null;
         Event event = null;
         Tag tag = null;
-        Set<Hashtag> hashtags = null;
+        List<Hashtag> hashtags = null;
         String description = "test description";
         SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, flow, event, tag, hashtags, description, Status.TODO);
 
@@ -110,7 +121,7 @@ class TaskServiceTest {
         Flow flow2 = null;
         Event event2 = null;
         Tag tag2 = null;
-        Set<Hashtag> hashTags2 = null;
+        List<Hashtag> hashTags2 = null;
         String description2 = "test description2";
         SaveTaskRequest saveTaskRequest2 = new SaveTaskRequest(title2, flow2, event2, tag2, hashTags2, description2, Status.IN_PROGRESS);
 
@@ -133,10 +144,25 @@ class TaskServiceTest {
         assertEquals(taskResponse2.toString(), actualTaskResponse2.toString());
     }
 
-//    After implement flow and event
+    /**
+     * Test for get all tasks filtered by flow and event
+     */
     @Test
     @DisplayName("find task filtered by flow or event")
     void findAllByFlowOrEvent() {
+        Flow flow = new Flow(null, user, "flow title", null, "flow description");
+        flowRepository.save(flow);
+        Event event = new Event(null, user, "event title", null, null, "event description", LocalDateTime.now(), LocalDateTime.now().plusDays(1), null);
+        eventRepository.save(event);
+        Task task = new Task(null, user, "task title", flow, event, null, null, "task description", Status.TODO, null);
+        taskRepository.save(task);
+
+        List<TaskResponse> taskResponseList = taskService.findAllByFlowOrEvent(user, flow, event);
+        TaskResponse savedTask = taskResponseList.get(0);
+
+        assertEquals(flow.getId(), savedTask.getFlow().getId());
+        assertEquals(event.getId(), savedTask.getEvent().getId());
+        assertEquals(task.getId(), savedTask.getId());
     }
 
     /**
@@ -151,7 +177,7 @@ class TaskServiceTest {
         Flow flow = null;
         Event event = null;
         Tag tag = null;
-        Set<Hashtag> hashtags = null;
+        List<Hashtag> hashtags = null;
         String description = "test description";
         SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, flow, event, tag, hashtags, description, Status.TODO);
 
@@ -162,7 +188,7 @@ class TaskServiceTest {
         Flow updateFlow = null;
         Event updateEvent = null;
         Tag updateTag = null;
-        Set<Hashtag> updateHashtags = null;
+        List<Hashtag> updateHashtags = null;
         String updateDescription = "test description2";
         SaveTaskRequest updateTaskRequest = new SaveTaskRequest(updateTitle, updateFlow, updateEvent, updateTag, updateHashtags, updateDescription, Status.IN_PROGRESS);
 
@@ -185,7 +211,7 @@ class TaskServiceTest {
         Flow flow = null;
         Event event = null;
         Tag tag = null;
-        Set<Hashtag> hashtags = null;
+        List<Hashtag> hashtags = null;
         String description = "test description";
         SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, flow, event, tag, hashtags, description, Status.TODO);
 

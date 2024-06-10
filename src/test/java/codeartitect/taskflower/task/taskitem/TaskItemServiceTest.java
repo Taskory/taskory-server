@@ -67,7 +67,7 @@ class TaskItemServiceTest {
         Flow flow = null;
         Event event = null;
         Tag tag = null;
-        Set<Hashtag> hashtags = null;
+        List<Hashtag> hashtags = null;
         String description = "test description";
         task = new Task(null, user, title, flow, event, tag, hashtags, description, Status.TODO, null);
         taskRepository.save(task);

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -14,7 +15,7 @@ import java.util.Set;
 public class FlowResponse {
     private Long id;
     private String title;
-    private Set<Hashtag> hashtags;
+    private List<Hashtag> hashtags;
     private String description;
 
     public FlowResponse(Flow flow) {

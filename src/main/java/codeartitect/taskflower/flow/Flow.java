@@ -5,13 +5,12 @@ import codeartitect.taskflower.common.BaseTimeEntity;
 import codeartitect.taskflower.hashtag.Hashtag;
 import codeartitect.taskflower.user.model.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity(name = "Flow")
@@ -19,6 +18,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = "user")
 public class Flow extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +33,7 @@ public class Flow extends BaseTimeEntity {
     private String title;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Hashtag> hashtags = new HashSet<>();
+    private List<Hashtag> hashtags = new ArrayList<>();
 
     @Column(name = "description")
     private String description;
@@ -47,7 +47,7 @@ public class Flow extends BaseTimeEntity {
 
     private void setHashtags(Set<Hashtag> hashtags) {
         if (hashtags == null || hashtags.isEmpty()) {
-            this.hashtags = new HashSet<>();
+            this.hashtags = new ArrayList<>();
         }
     }
 

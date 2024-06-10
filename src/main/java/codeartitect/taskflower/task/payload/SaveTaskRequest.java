@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -19,7 +20,7 @@ public class SaveTaskRequest {
     private Flow flow;
     private Event event;
     private Tag tag;
-    private Set<Hashtag> hashtags;
+    private List<Hashtag> hashtags;
     private String description;
     private Status status;
 }
