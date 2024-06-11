@@ -34,7 +34,7 @@ public class TaskItemService {
      * @param saveTaskItemRequest Information to save task item
      * @return TaskItemResponse
      */
-    public TaskItemResponse save(User user, SaveTaskItemRequest saveTaskItemRequest) {
+    public TaskItemResponse save(User user, SaveTaskItemRequest saveTaskItemRequest) throws TaskNotFoundException {
         Task task = taskRepository.findById(saveTaskItemRequest.getTaskId()).orElseThrow(TaskNotFoundException::new);
         TaskItem taskItem = new TaskItem(user, task, saveTaskItemRequest);
 
@@ -48,7 +48,7 @@ public class TaskItemService {
      * @param itemId Task item id
      * @return TaskItemResponse
      */
-    public TaskItemResponse getById(Long itemId) {
+    public TaskItemResponse getById(Long itemId) throws TaskItemNotFoundException {
         TaskItem taskItem = taskItemRepository.findById(itemId).orElseThrow(TaskItemNotFoundException::new);
         return new TaskItemResponse(taskItem);
     }
@@ -58,7 +58,7 @@ public class TaskItemService {
      * @param taskId Task id
      * @return TaskItemResponse list
      */
-    public List<TaskItemResponse> findAllByTaskId(Long taskId) {
+    public List<TaskItemResponse> findAllByTaskId(Long taskId) throws TaskNotFoundException {
         Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
         List<Optional<TaskItem>> items = taskItemRepository.findAllByTask(task);
 
@@ -75,7 +75,7 @@ public class TaskItemService {
      * @param updateTitle Title for update title of task item
      * @return TaskItemResponse
      */
-    public TaskItemResponse updateTitle(Long id, String updateTitle) {
+    public TaskItemResponse updateTitle(Long id, String updateTitle) throws TaskItemNotFoundException {
         TaskItem taskItem = taskItemRepository.findById(id).orElseThrow(TaskItemNotFoundException::new);
         taskItem.setTitle(updateTitle);
         TaskItem updatedTaskItem = taskItemRepository.save(taskItem);
@@ -88,7 +88,7 @@ public class TaskItemService {
      * @param completed boolean
      * @return TaskItemResponse
      */
-    public TaskItemResponse setCompleted(Long id, boolean completed) {
+    public TaskItemResponse setCompleted(Long id, boolean completed) throws TaskItemNotFoundException {
         TaskItem taskItem = taskItemRepository.findById(id).orElseThrow(TaskItemNotFoundException::new);
         taskItem.setCompleted(completed);
         TaskItem updatedTaskItem = taskItemRepository.save(taskItem);
@@ -99,7 +99,7 @@ public class TaskItemService {
      * Delete task item by task item id
      * @param id Task item id for delete
      */
-    public void deleteById(Long id) {
+    public void deleteById(Long id) throws TaskItemNotFoundException {
         if (taskItemRepository.existsById(id)) {
             taskItemRepository.deleteById(id);
         } else throw new TaskItemNotFoundException();

@@ -1,5 +1,6 @@
 package codeartitect.taskflower.routine;
 
+import codeartitect.taskflower.tag.TagNotFoundException;
 import codeartitect.taskflower.user.UserRepository;
 import codeartitect.taskflower.user.UserService;
 import codeartitect.taskflower.user.exception.InvalidZoneIdException;
@@ -62,7 +63,7 @@ class RoutineServiceTest {
      */
     @Test
     @DisplayName("save routine and get routine test")
-    void save() throws InvalidDaysException {
+    void save() throws InvalidDaysException, RoutineNotFoundException {
 //        Arrange
         String title = "test tile";
         String description = "test description";
@@ -135,7 +136,7 @@ class RoutineServiceTest {
      */
     @Test
     @DisplayName("update a routine")
-    void updateRoutine() throws InvalidDaysException {
+    void updateRoutine() throws InvalidDaysException, TagNotFoundException, RoutineNotFoundException {
 //        Arrange
 //        to save a routine
         String title = "test tile";
@@ -184,7 +185,7 @@ class RoutineServiceTest {
      */
     @Test
     @DisplayName("delete routine")
-    void deleteById() throws InvalidDaysException {
+    void deleteById() throws InvalidDaysException, RoutineNotFoundException {
 //        Arrange
 //        save a routine
         String title = "test tile";

@@ -65,7 +65,7 @@ class TagServiceTest {
      */
     @Test
     @DisplayName("save tag and get tag test")
-    void save() {
+    void save() throws TagNotFoundException {
 //        Arrange
         String title = "test tile";
         SaveTagRequest saveTagRequest = new SaveTagRequest(title, Color.BLUE);
@@ -116,7 +116,7 @@ class TagServiceTest {
      */
     @Test
     @DisplayName("update a tag")
-    void updateTask() {
+    void updateTask() throws TagNotFoundException {
 //        Arrange
 //        to save a tag
         String title = "test tile";
@@ -140,7 +140,7 @@ class TagServiceTest {
      */
     @Test
     @DisplayName("delete tag")
-    void deleteById() {
+    void deleteById() throws TagNotFoundException {
 //        Arrange
 //        save a tag
         String title = "test tile";

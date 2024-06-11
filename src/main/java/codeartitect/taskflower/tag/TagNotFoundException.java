@@ -1,6 +1,6 @@
 package codeartitect.taskflower.tag;
 
-public class TagNotFoundException extends RuntimeException{
+public class TagNotFoundException extends Exception{
     public TagNotFoundException() {
         super("Tag no found.");
     }

@@ -83,7 +83,7 @@ class TaskServiceTest {
      */
     @Test
     @DisplayName("save task and get task test")
-    void save() {
+    void save() throws TaskNotFoundException {
 //        Arrange
         String title = "test title";
         Flow flow = null;
@@ -170,7 +170,7 @@ class TaskServiceTest {
      */
     @Test
     @DisplayName("update a task")
-    void updateTask() {
+    void updateTask() throws TaskNotFoundException {
 //        Arrange
 //        save a task
         String title = "test title";
@@ -204,7 +204,7 @@ class TaskServiceTest {
      */
     @Test
     @DisplayName("delete task")
-    void deleteById() {
+    void deleteById() throws TaskNotFoundException {
 //        Arrange
 //        save a task
         String title = "test title";

@@ -1,6 +1,6 @@
 package codeartitect.taskflower.event;
 
-public class EventNotFoundException extends RuntimeException{
+public class EventNotFoundException extends Exception{
     public EventNotFoundException() {
         super("Event not fouind");
     }

@@ -40,7 +40,7 @@ public class RoutineService {
      * @param id routine id
      * @return RoutineResponse
      */
-    public RoutineResponse getById(Long id) {
+    public RoutineResponse getById(Long id) throws RoutineNotFoundException {
         Routine routine = routineRepository.findById(id).orElseThrow(RoutineNotFoundException::new);
         return new RoutineResponse(routine);
     }
@@ -66,7 +66,7 @@ public class RoutineService {
      * @param saveRoutineRequest Information to update routine
      * @return RoutineResponse
      */
-    public RoutineResponse updateRoutine(Long routineId, SaveRoutineRequest saveRoutineRequest) throws InvalidDaysException {
+    public RoutineResponse updateRoutine(Long routineId, SaveRoutineRequest saveRoutineRequest) throws InvalidDaysException, TagNotFoundException {
         if (isInvalidDays(saveRoutineRequest.getDays())) {
             throw new InvalidDaysException();
         }
@@ -81,7 +81,7 @@ public class RoutineService {
      * Delete routine by routine id
      * @param id Routine id for delete
      */
-    public void deleteById(Long id) {
+    public void deleteById(Long id) throws RoutineNotFoundException {
         if (routineRepository.existsById(id)) {
             routineRepository.deleteById(id);
         } else throw new RoutineNotFoundException();

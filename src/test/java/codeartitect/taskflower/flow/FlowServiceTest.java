@@ -65,7 +65,7 @@ class FlowServiceTest {
      */
     @Test
     @DisplayName("save flow and get flow test")
-    void save() {
+    void save() throws FlowNotFoundException {
 //        Arrange
         String title = "test tile";
         List<Hashtag> hashtags = null;
@@ -122,7 +122,7 @@ class FlowServiceTest {
      */
     @Test
     @DisplayName("update an flow")
-    void updateTask() {
+    void updateTask() throws FlowNotFoundException {
 //        Arrange
 //        to save a flow
         String title = "test tile";
@@ -150,7 +150,7 @@ class FlowServiceTest {
      */
     @Test
     @DisplayName("delete flow")
-    void deleteById() {
+    void deleteById() throws FlowNotFoundException {
 //        Arrange
 //        save a task
         String title = "test title";

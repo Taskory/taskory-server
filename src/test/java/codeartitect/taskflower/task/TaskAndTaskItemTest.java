@@ -1,5 +1,6 @@
 package codeartitect.taskflower.task;
 
+import codeartitect.taskflower.task.exception.TaskNotFoundException;
 import codeartitect.taskflower.task.model.Status;
 import codeartitect.taskflower.task.payload.SaveTaskRequest;
 import codeartitect.taskflower.task.payload.SaveTaskItemRequest;
@@ -65,7 +66,7 @@ public class TaskAndTaskItemTest {
 
     @Test
     @DisplayName("is correct task item in correct task")
-    void saveTaskAndTaskItem() {
+    void saveTaskAndTaskItem() throws TaskNotFoundException {
 //        Arrange, Act
         SaveTaskRequest saveTaskRequest = new SaveTaskRequest("test task title", null, null, null, null, null, Status.TODO);
         TaskResponse taskResponse = taskService.save(user, saveTaskRequest);

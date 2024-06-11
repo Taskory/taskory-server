@@ -4,6 +4,7 @@ import codeartitect.taskflower.tag.model.Tag;
 import codeartitect.taskflower.event.Event;
 import codeartitect.taskflower.flow.Flow;
 import codeartitect.taskflower.hashtag.Hashtag;
+import codeartitect.taskflower.task.exception.TaskNotFoundException;
 import codeartitect.taskflower.task.model.Status;
 import codeartitect.taskflower.task.model.Task;
 import codeartitect.taskflower.task.exception.TaskItemNotFoundException;
@@ -83,7 +84,7 @@ class TaskItemServiceTest {
      */
     @Test
     @DisplayName("save task item and get flow test")
-    void save() {
+    void save() throws TaskNotFoundException, TaskItemNotFoundException {
 //        Arrange
         String title = "test tile";
         SaveTaskItemRequest saveTaskItemRequest = new SaveTaskItemRequest(task.getId(), title);
@@ -100,7 +101,7 @@ class TaskItemServiceTest {
      */
     @Test
     @DisplayName("find all task items by task")
-    void findAllByTaskId() {
+    void findAllByTaskId() throws TaskNotFoundException {
 //        Arrange
         String title = "test tile";
         SaveTaskItemRequest saveTaskItemRequest = new SaveTaskItemRequest(task.getId(), title);
@@ -125,7 +126,7 @@ class TaskItemServiceTest {
      */
     @Test
     @DisplayName("update task item title")
-    void updateTitle() {
+    void updateTitle() throws TaskNotFoundException, TaskItemNotFoundException {
 //        Arrange
         String title = "test title";
         SaveTaskItemRequest saveTaskItemRequest = new SaveTaskItemRequest(task.getId(), title);
@@ -144,7 +145,7 @@ class TaskItemServiceTest {
      */
     @Test
     @DisplayName("set completed of task item")
-    void setCompleted() {
+    void setCompleted() throws TaskNotFoundException, TaskItemNotFoundException {
 //        Arrange
         String title = "test title";
         SaveTaskItemRequest saveTaskItemRequest = new SaveTaskItemRequest(task.getId(), title);
@@ -163,7 +164,7 @@ class TaskItemServiceTest {
      */
     @Test
     @DisplayName("delete task item")
-    void deleteById() {
+    void deleteById() throws TaskNotFoundException, TaskItemNotFoundException {
 //        Arrange
 //        save a task item
         String title = "test title";

@@ -39,7 +39,7 @@ public class EventService {
      * @param id Event id
      * @return EventResponse
      */
-    public EventResponse getById(Long id) {
+    public EventResponse getById(Long id) throws EventNotFoundException {
         Event event = eventRepository.findById(id).orElseThrow(EventNotFoundException::new);
         return new EventResponse(event);
     }
@@ -65,7 +65,7 @@ public class EventService {
      * @param saveEventRequest Information to update event
      * @return EventResponse
      */
-    public EventResponse updateEvent(Long eventId, SaveEventRequest saveEventRequest) {
+    public EventResponse updateEvent(Long eventId, SaveEventRequest saveEventRequest) throws EventNotFoundException {
         Event event = eventRepository.findById(eventId).orElseThrow(EventNotFoundException::new);
         event.update(saveEventRequest);
 
@@ -77,7 +77,7 @@ public class EventService {
      * Delete event by event id
      * @param id event id for delete
      */
-    public void deleteById(Long id) {
+    public void deleteById(Long id) throws EventNotFoundException {
         if (eventRepository.existsById(id)) {
             eventRepository.deleteById(id);
         } else throw new EventNotFoundException();

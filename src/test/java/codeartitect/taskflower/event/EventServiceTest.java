@@ -67,7 +67,7 @@ class EventServiceTest {
      */
     @Test
     @DisplayName("save event and get event test")
-    void save() {
+    void save() throws EventNotFoundException {
 //        Arrange
         String title = "test title";
         Tag tag = null;
@@ -136,7 +136,7 @@ class EventServiceTest {
      */
     @Test
     @DisplayName("update an event")
-    void updateTask() {
+    void updateTask() throws EventNotFoundException {
 //        Arrange
 //        to save an event
         String title = "test title";
@@ -172,7 +172,7 @@ class EventServiceTest {
      */
     @Test
     @DisplayName("delete event")
-    void deleteById() {
+    void deleteById() throws EventNotFoundException {
 //        Arrange
 //        save a task
         String title = "test title";

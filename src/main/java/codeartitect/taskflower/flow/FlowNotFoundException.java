@@ -1,6 +1,6 @@
 package codeartitect.taskflower.flow;
 
-public class FlowNotFoundException extends RuntimeException {
+public class FlowNotFoundException extends Exception {
     public FlowNotFoundException() {
         super("Flow not found");
     }

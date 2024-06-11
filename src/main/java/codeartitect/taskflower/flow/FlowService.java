@@ -39,7 +39,7 @@ public class FlowService {
      * @param id Flow id
      * @return FlowResponse
      */
-    public FlowResponse getById(Long id) {
+    public FlowResponse getById(Long id) throws FlowNotFoundException {
         Flow flow = flowRepository.findById(id).orElseThrow(FlowNotFoundException::new);
         return new FlowResponse(flow);
     }
@@ -65,7 +65,7 @@ public class FlowService {
      * @param saveFlowRequest Information to update flow
      * @return FlowResponse
      */
-    public FlowResponse updateFlow(Long flowId, SaveFlowRequest saveFlowRequest) {
+    public FlowResponse updateFlow(Long flowId, SaveFlowRequest saveFlowRequest) throws FlowNotFoundException {
         Flow flow = flowRepository.findById(flowId).orElseThrow(FlowNotFoundException::new);
         flow.update(saveFlowRequest);
 
@@ -77,7 +77,7 @@ public class FlowService {
      * Delete flow by flow id
      * @param id Flow id for delete
      */
-    public void deleteById(Long id) {
+    public void deleteById(Long id) throws FlowNotFoundException {
         if (flowRepository.existsById(id)) {
             flowRepository.deleteById(id);
         } else throw new FlowNotFoundException();

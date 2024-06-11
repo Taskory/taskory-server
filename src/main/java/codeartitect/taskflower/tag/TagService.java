@@ -39,7 +39,7 @@ public class TagService {
      * @param id tag id
      * @return TagResponse
      */
-    public TagResponse getById(Long id) {
+    public TagResponse getById(Long id) throws TagNotFoundException {
         Tag tag = tagRepository.findById(id).orElseThrow(TagNotFoundException::new);
         return new TagResponse(tag);
     }
@@ -65,7 +65,7 @@ public class TagService {
      * @param saveTagRequest Information to update tag
      * @return TagResponse
      */
-    public TagResponse updateTag(Long tagId, SaveTagRequest saveTagRequest) {
+    public TagResponse updateTag(Long tagId, SaveTagRequest saveTagRequest) throws TagNotFoundException {
         Tag tag = tagRepository.findById(tagId).orElseThrow(TagNotFoundException::new);
         tag.update(saveTagRequest);
 
@@ -77,7 +77,7 @@ public class TagService {
      * Delete tag by tag id
      * @param id Tag id for delete
      */
-    public void deleteById(Long id) {
+    public void deleteById(Long id) throws TagNotFoundException {
         if (tagRepository.existsById(id)) {
             tagRepository.deleteById(id);
         } else throw new TagNotFoundException();

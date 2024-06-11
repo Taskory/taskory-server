@@ -46,7 +46,7 @@ public class TaskService {
      * @param id Id of task
      * @return TaskResponse
      */
-    public TaskResponse getById(Long id) {
+    public TaskResponse getById(Long id) throws TaskNotFoundException {
         Task task = taskRepository.findById(id).orElseThrow(TaskNotFoundException::new);
         return new TaskResponse(task);
     }
@@ -102,7 +102,7 @@ public class TaskService {
      * @param saveTaskRequest Task information to be updated
      * @return TaskResponse
      */
-    public TaskResponse updateTask(Long taskId, SaveTaskRequest saveTaskRequest) {
+    public TaskResponse updateTask(Long taskId, SaveTaskRequest saveTaskRequest) throws TaskNotFoundException {
         Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
         task.update(saveTaskRequest);
 
@@ -114,7 +114,7 @@ public class TaskService {
      * Delete task
      * @param id Task id for delete task
      */
-    public void deleteById(Long id) {
+    public void deleteById(Long id) throws TaskNotFoundException {
         if (taskRepository.existsById(id)) {
             taskRepository.deleteById(id);
         } else throw new TaskNotFoundException();
