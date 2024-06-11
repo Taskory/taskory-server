@@ -1,5 +1,6 @@
-package codeartitect.taskflower.routine;
+package codeartitect.taskflower.routine.payload;
 
+import codeartitect.taskflower.routine.model.Routine;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -9,7 +10,7 @@ public class RoutineResponse {
     private Long id;
     private String title;
     private String description;
-    private byte[] days;
+    private boolean[] days;
 
     public RoutineResponse(Routine routine) {
         this.id = routine.getId();

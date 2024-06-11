@@ -1,4 +1,4 @@
-package codeartitect.taskflower.routine;
+package codeartitect.taskflower.routine.exception;
 
 public class InvalidDaysException extends Exception {
     public InvalidDaysException() {

@@ -1,5 +1,10 @@
 package codeartitect.taskflower.routine;
 
+import codeartitect.taskflower.routine.exception.InvalidDaysException;
+import codeartitect.taskflower.routine.exception.RoutineNotFoundException;
+import codeartitect.taskflower.routine.payload.RoutineResponse;
+import codeartitect.taskflower.routine.payload.SaveRoutineRequest;
+import codeartitect.taskflower.routine.service.RoutineService;
 import codeartitect.taskflower.tag.TagNotFoundException;
 import codeartitect.taskflower.user.UserRepository;
 import codeartitect.taskflower.user.UserService;
@@ -67,7 +72,7 @@ class RoutineServiceTest {
 //        Arrange
         String title = "test tile";
         String description = "test description";
-        byte[] days = {1, 1, 1, 1, 1, 1, 1};
+        boolean[] days = {false, false, false, false, false, false, false};
         SaveRoutineRequest saveRoutineRequest = new SaveRoutineRequest(title, description, days);
 
 //        Act
@@ -86,7 +91,7 @@ class RoutineServiceTest {
 //        Arrange
         String title = "test tile";
         String description = "test description";
-        byte[] days = {1};
+        boolean[] days = {false, false, false, false, false};
         SaveRoutineRequest saveRoutineRequest = new SaveRoutineRequest(title, description, days);
 
 //        Act, Assert
@@ -103,13 +108,13 @@ class RoutineServiceTest {
 //        the first routine
         String title = "test tile";
         String description = "test description";
-        byte[] days = {1, 1, 1, 1, 1, 1, 1};
+        boolean[] days = {false, false, false, false, false, false, false};
         SaveRoutineRequest saveRoutineRequest = new SaveRoutineRequest(title, description, days);
 
 //        the second routine
         String title2 = "test tile2";
         String description2 = "test description2";
-        byte[] days2 = {0, 0, 1, 1, 1, 1, 1};
+        boolean[] days2 = {false, false, false, false, false, false, false};
         SaveRoutineRequest saveRoutineRequest2 = new SaveRoutineRequest(title2, description2, days2);
 
 //        save a first routine
@@ -141,7 +146,7 @@ class RoutineServiceTest {
 //        to save a routine
         String title = "test tile";
         String description = "test description";
-        byte[] days = {1, 1, 1, 1, 1, 1, 1};
+        boolean[] days = {false, false, false, false, false, false, false};
         SaveRoutineRequest saveRoutineRequest = new SaveRoutineRequest(title, description, days);
 
         RoutineResponse routineResponse = routineService.save(user, saveRoutineRequest);
@@ -167,14 +172,14 @@ class RoutineServiceTest {
 //        to save a routine
         String title = "test tile";
         String description = "test description";
-        byte[] days = {1, 1, 1, 1, 1, 1, 1};
+        boolean[] days = {false, false, false, false, false, false, false};
         SaveRoutineRequest saveRoutineRequest = new SaveRoutineRequest(title, description, days);
 
         RoutineResponse routineResponse = routineService.save(user, saveRoutineRequest);
 
 //        Act, Assert
 //        update a routine
-        byte[] updateDays = {1, 1, 1};
+        boolean[] updateDays = {false, false, false, false, false};
         SaveRoutineRequest updateRoutineRequest = new SaveRoutineRequest(title, description, updateDays);
         assertThrows(InvalidDaysException.class, () -> routineService.updateRoutine(routineResponse.getId(), updateRoutineRequest)) ;
 
@@ -190,7 +195,7 @@ class RoutineServiceTest {
 //        save a routine
         String title = "test tile";
         String description = "test description";
-        byte[] days = {1, 1, 1, 1, 1, 1, 1};
+        boolean[] days = {false, false, false, false, false, false, false};
         SaveRoutineRequest saveRoutineRequest = new SaveRoutineRequest(title, description, days);
 
         RoutineResponse routineResponse = routineService.save(user, saveRoutineRequest);

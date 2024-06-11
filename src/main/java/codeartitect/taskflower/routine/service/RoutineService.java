@@ -1,6 +1,11 @@
-package codeartitect.taskflower.routine;
+package codeartitect.taskflower.routine.service;
 
-import codeartitect.taskflower.tag.TagNotFoundException;
+import codeartitect.taskflower.routine.repository.RoutineRepository;
+import codeartitect.taskflower.routine.exception.InvalidDaysException;
+import codeartitect.taskflower.routine.exception.RoutineNotFoundException;
+import codeartitect.taskflower.routine.model.Routine;
+import codeartitect.taskflower.routine.payload.RoutineResponse;
+import codeartitect.taskflower.routine.payload.SaveRoutineRequest;
 import codeartitect.taskflower.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,11 +71,11 @@ public class RoutineService {
      * @param saveRoutineRequest Information to update routine
      * @return RoutineResponse
      */
-    public RoutineResponse updateRoutine(Long routineId, SaveRoutineRequest saveRoutineRequest) throws InvalidDaysException, TagNotFoundException {
+    public RoutineResponse updateRoutine(Long routineId, SaveRoutineRequest saveRoutineRequest) throws InvalidDaysException, RoutineNotFoundException {
         if (isInvalidDays(saveRoutineRequest.getDays())) {
             throw new InvalidDaysException();
         }
-        Routine routine = routineRepository.findById(routineId).orElseThrow(TagNotFoundException::new);
+        Routine routine = routineRepository.findById(routineId).orElseThrow(RoutineNotFoundException::new);
         routine.update(saveRoutineRequest);
 
         Routine updateRoutine = routineRepository.save(routine);
@@ -92,7 +97,7 @@ public class RoutineService {
      * @param days Days information
      * @return boolean
      */
-    private static boolean isInvalidDays(byte[] days) {
+    private static boolean isInvalidDays(boolean[] days) {
         return days.length != 7;
     }
 }

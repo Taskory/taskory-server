@@ -1,6 +1,7 @@
 package codeartitect.taskflower.user;
 
-import codeartitect.taskflower.routine.RoutineRepository;
+import codeartitect.taskflower.routine.repository.RoutineHistoryRepository;
+import codeartitect.taskflower.routine.repository.RoutineRepository;
 import codeartitect.taskflower.tag.TagRepository;
 import codeartitect.taskflower.event.EventRepository;
 import codeartitect.taskflower.flow.FlowRepository;
@@ -34,9 +35,10 @@ public class UserService {
     private final TagRepository tagRepository;
     private final TaskService taskService;
     private final RoutineRepository routineRepository;
+    private final RoutineHistoryRepository routineHistoryRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EventRepository eventRepository, FlowRepository flowRepository, TagRepository tagRepository, TaskService taskService, RoutineRepository routineRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EventRepository eventRepository, FlowRepository flowRepository, TagRepository tagRepository, TaskService taskService, RoutineRepository routineRepository, RoutineHistoryRepository routineHistoryRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.taskService = taskService;
@@ -44,6 +46,7 @@ public class UserService {
         this.flowRepository = flowRepository;
         this.tagRepository = tagRepository;
         this.routineRepository = routineRepository;
+        this.routineHistoryRepository = routineHistoryRepository;
     }
 
     /**
@@ -119,6 +122,7 @@ public class UserService {
         flowRepository.deleteAllByUser(user.get());
         taskService.deleteAllByUser(user.get());
         eventRepository.deleteAllByUser(user.get());
+        routineHistoryRepository.deleteAllByUser(user.get());
         routineRepository.deleteAllByUser(user.get());
         userRepository.deleteById(id);
     }

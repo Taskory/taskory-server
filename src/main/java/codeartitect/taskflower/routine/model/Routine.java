@@ -1,8 +1,10 @@
-package codeartitect.taskflower.routine;
+package codeartitect.taskflower.routine.model;
 
+import codeartitect.taskflower.routine.payload.SaveRoutineRequest;
 import codeartitect.taskflower.user.model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Routine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +29,8 @@ public class Routine {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "days")
-    private byte[] days = {0, 0, 0, 0, 0, 0, 0};
+    @Column(name = "days", nullable = false)
+    private boolean[] days = {false, false, false, false, false, false, false};
 
     public Routine(User user, SaveRoutineRequest saveRoutineRequest) {
         this.user = user;
