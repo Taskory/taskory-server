@@ -1,4 +1,4 @@
-package codeartitect.taskflower.Tag;
+package codeartitect.taskflower.tag;
 
 public class TagNotFoundException extends RuntimeException{
     public TagNotFoundException() {

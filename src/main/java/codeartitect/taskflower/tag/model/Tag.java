@@ -1,6 +1,6 @@
-package codeartitect.taskflower.Tag.model;
+package codeartitect.taskflower.tag.model;
 
-import codeartitect.taskflower.Tag.payload.SaveTagRequest;
+import codeartitect.taskflower.tag.payload.SaveTagRequest;
 import codeartitect.taskflower.user.model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

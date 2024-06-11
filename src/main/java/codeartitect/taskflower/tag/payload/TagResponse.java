@@ -1,7 +1,7 @@
-package codeartitect.taskflower.Tag.payload;
+package codeartitect.taskflower.tag.payload;
 
-import codeartitect.taskflower.Tag.model.Color;
-import codeartitect.taskflower.Tag.model.Tag;
+import codeartitect.taskflower.tag.model.Color;
+import codeartitect.taskflower.tag.model.Tag;
 import lombok.*;
 
 @Getter

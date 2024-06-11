@@ -1,4 +1,4 @@
-package codeartitect.taskflower.Tag.model;
+package codeartitect.taskflower.tag.model;
 
 public enum Color {
     BLACK,

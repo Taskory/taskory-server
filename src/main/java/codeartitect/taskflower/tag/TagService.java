@@ -1,8 +1,8 @@
-package codeartitect.taskflower.Tag;
+package codeartitect.taskflower.tag;
 
-import codeartitect.taskflower.Tag.model.Tag;
-import codeartitect.taskflower.Tag.payload.SaveTagRequest;
-import codeartitect.taskflower.Tag.payload.TagResponse;
+import codeartitect.taskflower.tag.model.Tag;
+import codeartitect.taskflower.tag.payload.SaveTagRequest;
+import codeartitect.taskflower.tag.payload.TagResponse;
 import codeartitect.taskflower.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
