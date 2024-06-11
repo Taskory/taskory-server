@@ -62,7 +62,7 @@ public class TagService {
     /**
      * Update tag
      * @param tagId tag id
-     * @param saveTagRequest Information to update flow
+     * @param saveTagRequest Information to update tag
      * @return TagResponse
      */
     public TagResponse updateTag(Long tagId, SaveTagRequest saveTagRequest) {

@@ -1,6 +1,6 @@
 package codeartitect.taskflower.event.payload;
 
-import codeartitect.taskflower.Tag.model.Tag;
+import codeartitect.taskflower.tag.model.Tag;
 import codeartitect.taskflower.hashtag.Hashtag;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,6 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter

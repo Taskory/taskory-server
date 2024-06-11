@@ -1,8 +1,8 @@
-package codeartitect.taskflower.Tag;
+package codeartitect.taskflower.tag;
 
-import codeartitect.taskflower.Tag.model.Color;
-import codeartitect.taskflower.Tag.payload.SaveTagRequest;
-import codeartitect.taskflower.Tag.payload.TagResponse;
+import codeartitect.taskflower.tag.model.Color;
+import codeartitect.taskflower.tag.payload.SaveTagRequest;
+import codeartitect.taskflower.tag.payload.TagResponse;
 import codeartitect.taskflower.user.UserRepository;
 import codeartitect.taskflower.user.UserService;
 import codeartitect.taskflower.user.payload.UserResponse;
@@ -68,10 +68,10 @@ class TagServiceTest {
     void save() {
 //        Arrange
         String title = "test tile";
-        SaveTagRequest saveFlowRequest = new SaveTagRequest(title, Color.BLUE);
+        SaveTagRequest saveTagRequest = new SaveTagRequest(title, Color.BLUE);
 
 //        Act
-        TagResponse tagResponse = tagService.save(user, saveFlowRequest);
+        TagResponse tagResponse = tagService.save(user, saveTagRequest);
 
 //        Assert
         assertEquals(tagResponse.toString(), tagService.getById(tagResponse.getId()).toString());

@@ -1,6 +1,6 @@
 package codeartitect.taskflower.task.model;
 
-import codeartitect.taskflower.Tag.model.Tag;
+import codeartitect.taskflower.tag.model.Tag;
 import codeartitect.taskflower.common.EntityUtil;
 import codeartitect.taskflower.event.Event;
 import codeartitect.taskflower.flow.Flow;

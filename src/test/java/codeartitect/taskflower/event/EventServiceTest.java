@@ -1,6 +1,6 @@
 package codeartitect.taskflower.event;
 
-import codeartitect.taskflower.Tag.model.Tag;
+import codeartitect.taskflower.tag.model.Tag;
 import codeartitect.taskflower.event.payload.EventResponse;
 import codeartitect.taskflower.event.payload.SaveEventRequest;
 import codeartitect.taskflower.hashtag.Hashtag;

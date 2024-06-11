@@ -1,6 +1,7 @@
 package codeartitect.taskflower.user;
 
-import codeartitect.taskflower.Tag.TagRepository;
+import codeartitect.taskflower.routine.RoutineRepository;
+import codeartitect.taskflower.tag.TagRepository;
 import codeartitect.taskflower.event.EventRepository;
 import codeartitect.taskflower.flow.FlowRepository;
 import codeartitect.taskflower.task.service.TaskService;
@@ -32,15 +33,17 @@ public class UserService {
     private final FlowRepository flowRepository;
     private final TagRepository tagRepository;
     private final TaskService taskService;
+    private final RoutineRepository routineRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EventRepository eventRepository, FlowRepository flowRepository, TagRepository tagRepository, TaskService taskService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EventRepository eventRepository, FlowRepository flowRepository, TagRepository tagRepository, TaskService taskService, RoutineRepository routineRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.taskService = taskService;
         this.eventRepository = eventRepository;
         this.flowRepository = flowRepository;
         this.tagRepository = tagRepository;
+        this.routineRepository = routineRepository;
     }
 
     /**
@@ -116,6 +119,7 @@ public class UserService {
         flowRepository.deleteAllByUser(user.get());
         taskService.deleteAllByUser(user.get());
         eventRepository.deleteAllByUser(user.get());
+        routineRepository.deleteAllByUser(user.get());
         userRepository.deleteById(id);
     }
 

@@ -1,6 +1,6 @@
 package codeartitect.taskflower.event;
 
-import codeartitect.taskflower.Tag.model.Tag;
+import codeartitect.taskflower.tag.model.Tag;
 import codeartitect.taskflower.common.EntityUtil;
 import codeartitect.taskflower.event.payload.SaveEventRequest;
 import codeartitect.taskflower.common.BaseTimeEntity;

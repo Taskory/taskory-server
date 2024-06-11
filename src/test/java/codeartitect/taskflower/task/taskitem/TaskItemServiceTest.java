@@ -1,6 +1,6 @@
 package codeartitect.taskflower.task.taskitem;
 
-import codeartitect.taskflower.Tag.model.Tag;
+import codeartitect.taskflower.tag.model.Tag;
 import codeartitect.taskflower.event.Event;
 import codeartitect.taskflower.flow.Flow;
 import codeartitect.taskflower.hashtag.Hashtag;
@@ -25,7 +25,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
