@@ -10,6 +10,8 @@ import codeartitect.taskflower.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -59,11 +61,33 @@ public class RoutineService {
         List<Optional<Routine>> routines = routineRepository.findAllByUser(user);
 
         List<RoutineResponse> routineResponseList = new ArrayList<>();
-        for (Optional<Routine> tag : routines) {
-            tag.ifPresent(value -> routineResponseList.add(new RoutineResponse(value)));
+        for (Optional<Routine> routine : routines) {
+            routine.ifPresent(value -> routineResponseList.add(new RoutineResponse(value)));
         }
         return routineResponseList;
     }
+
+    /**
+     * Find all today's routine
+     * @param user User information
+     * @return RoutineResponse list
+     */
+    public List<RoutineResponse> findAllToday(User user) {
+        int today = LocalDateTime.now(ZoneId.of(user.getZoneId())).getDayOfWeek().getValue() - 1;
+
+        List<Optional<Routine>> routines = routineRepository.findAllByUser(user);
+
+        List<RoutineResponse> routineResponseList = new ArrayList<>();
+        for (Optional<Routine> routine : routines) {
+            if (routine.isPresent()) {
+                if (routine.get().getDays()[today]) {
+                    routineResponseList.add(new RoutineResponse(routine.get()));
+                }
+            }
+        }
+        return routineResponseList;
+    }
+
 
     /**
      * Update routine

@@ -1,4 +1,4 @@
-package codeartitect.taskflower.routine.service;
+package codeartitect.taskflower.routine;
 
 import codeartitect.taskflower.routine.exception.RoutineNotFoundException;
 import codeartitect.taskflower.routine.model.Routine;
@@ -6,6 +6,7 @@ import codeartitect.taskflower.routine.model.RoutineHistory;
 import codeartitect.taskflower.routine.payload.RoutineHistoryResponse;
 import codeartitect.taskflower.routine.repository.RoutineHistoryRepository;
 import codeartitect.taskflower.routine.repository.RoutineRepository;
+import codeartitect.taskflower.routine.service.RoutineHistoryService;
 import codeartitect.taskflower.user.UserRepository;
 import codeartitect.taskflower.user.UserService;
 import codeartitect.taskflower.user.exception.InvalidZoneIdException;

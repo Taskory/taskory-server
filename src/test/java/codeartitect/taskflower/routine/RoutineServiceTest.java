@@ -20,6 +20,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
@@ -134,6 +136,43 @@ class RoutineServiceTest {
 
         assertEquals(routineResponse.toString(), actualRoutineResponse.toString());
         assertEquals(routineResponse2.toString(), actualRoutineResponse2.toString());
+    }
+
+
+    /**
+     * Test for find today's routines
+     */
+    @Test
+    @DisplayName("find all today's routine")
+    void findAllToday() throws InvalidDaysException {
+//        Arrange
+//        not today's routine
+        String title = "test tile";
+        String description = "test description";
+        boolean[] days = {false, false, false, false, false, false, false};
+        SaveRoutineRequest notRoutine = new SaveRoutineRequest(title, description, days);
+
+//        today's routine
+        String title2 = "test tile2";
+        String description2 = "test description2";
+        boolean[] days2 = {false, false, false, false, false, false, false};
+        int today = LocalDateTime.now().getDayOfWeek().getValue() - 1;
+        days2[today] = true;
+        SaveRoutineRequest correctRoutine = new SaveRoutineRequest(title2, description2, days2);
+
+//        save a first routine
+        RoutineResponse notRoutineResponse = routineService.save(user, notRoutine);
+//        save a second routine
+        RoutineResponse correctRoutineResponse = routineService.save(user, correctRoutine);
+
+//        Act
+//        find all today routines
+        List<RoutineResponse> routineResponseList = routineService.findAllToday(user);
+        RoutineResponse actualRoutineResponse = routineResponseList.get(0);
+
+//        Assert
+//        find a first routine
+        assertEquals(correctRoutineResponse.toString(), actualRoutineResponse.toString());
     }
 
     /**

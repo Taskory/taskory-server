@@ -1,4 +1,4 @@
-package codeartitect.taskflower.task.taskitem;
+package codeartitect.taskflower.task;
 
 import codeartitect.taskflower.tag.model.Tag;
 import codeartitect.taskflower.event.Event;
