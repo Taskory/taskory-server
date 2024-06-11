@@ -1,6 +1,7 @@
 package codeartitect.taskflower.event;
 
 import codeartitect.taskflower.Tag.model.Tag;
+import codeartitect.taskflower.common.EntityUtil;
 import codeartitect.taskflower.event.payload.SaveEventRequest;
 import codeartitect.taskflower.common.BaseTimeEntity;
 import codeartitect.taskflower.hashtag.Hashtag;
@@ -10,8 +11,8 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "Event")
 @AllArgsConstructor
@@ -37,7 +38,7 @@ public class Event extends BaseTimeEntity {
     private Tag tag;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Hashtag> hashtags = new HashSet<>();
+    private List<Hashtag> hashtags = new ArrayList<>();
 
     @Column(name = "description")
     private String description;
@@ -55,17 +56,11 @@ public class Event extends BaseTimeEntity {
         this.user = user;
         this.title = saveEventRequest.getTitle();
         this.tag = saveEventRequest.getTag();
-        setHashtags(saveEventRequest.getHashtags());
+        this.hashtags = EntityUtil.setListElements(saveEventRequest.getHashtags());
         this.description = saveEventRequest.getDescription();
         this.startDateTime = saveEventRequest.getStartDateTime();
         this.dueDateTime = saveEventRequest.getDueDateTime();
         this.location = saveEventRequest.getLocation();
-    }
-
-    private void setHashtags(Set<Hashtag> hashtags) {
-        if (hashtags == null || hashtags.isEmpty()) {
-            this.hashtags = new HashSet<>();
-        } else this.hashtags = hashtags;
     }
 
     @Override
@@ -76,7 +71,7 @@ public class Event extends BaseTimeEntity {
     public void update(SaveEventRequest saveEventRequest) {
         this.title = saveEventRequest.getTitle();
         this.tag = saveEventRequest.getTag();
-        setHashtags(saveEventRequest.getHashtags());
+        this.hashtags = EntityUtil.setListElements(saveEventRequest.getHashtags());
         this.description = saveEventRequest.getDescription();
         this.startDateTime = saveEventRequest.getStartDateTime();
         this.dueDateTime = saveEventRequest.getDueDateTime();

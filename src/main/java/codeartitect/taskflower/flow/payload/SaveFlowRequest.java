@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -15,6 +16,6 @@ import java.util.Set;
 @NoArgsConstructor
 public class SaveFlowRequest {
     private String title;
-    private Set<Hashtag> hashtags;
+    private List<Hashtag> hashtags;
     private String description;
 }

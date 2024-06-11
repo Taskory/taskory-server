@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -17,7 +18,7 @@ import java.util.Set;
 public class SaveEventRequest {
     private String title;
     private Tag tag;
-    private Set<Hashtag> hashtags;
+    private List<Hashtag> hashtags;
     private String description;
     private LocalDateTime startDateTime;
     private LocalDateTime dueDateTime;

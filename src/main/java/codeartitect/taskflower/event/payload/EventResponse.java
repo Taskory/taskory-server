@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -17,7 +18,7 @@ public class EventResponse {
     private Long id;
     private String title;
     private Tag tag;
-    private Set<Hashtag> hashtags;
+    private List<Hashtag> hashtags;
     private String description;
     private LocalDateTime startDateTime;
     private LocalDateTime dueDateTime;

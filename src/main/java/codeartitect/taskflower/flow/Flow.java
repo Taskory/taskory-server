@@ -1,5 +1,6 @@
 package codeartitect.taskflower.flow;
 
+import codeartitect.taskflower.common.EntityUtil;
 import codeartitect.taskflower.flow.payload.SaveFlowRequest;
 import codeartitect.taskflower.common.BaseTimeEntity;
 import codeartitect.taskflower.hashtag.Hashtag;
@@ -9,9 +10,7 @@ import lombok.*;
 
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity(name = "Flow")
 @Getter
@@ -41,14 +40,8 @@ public class Flow extends BaseTimeEntity {
     public Flow(User user, SaveFlowRequest saveFlowRequest) {
         this.user = user;
         this.title = saveFlowRequest.getTitle();
-        setHashtags(saveFlowRequest.getHashtags());
+        this.hashtags = EntityUtil.setListElements(saveFlowRequest.getHashtags());
         this.description = saveFlowRequest.getDescription();
-    }
-
-    private void setHashtags(Set<Hashtag> hashtags) {
-        if (hashtags == null || hashtags.isEmpty()) {
-            this.hashtags = new ArrayList<>();
-        }
     }
 
     @Override
@@ -58,7 +51,7 @@ public class Flow extends BaseTimeEntity {
 
     public void update(SaveFlowRequest saveFlowRequest) {
         this.title = saveFlowRequest.getTitle();
-        setHashtags(saveFlowRequest.getHashtags());
+        this.hashtags = EntityUtil.setListElements(saveFlowRequest.getHashtags());
         this.description = saveFlowRequest.getDescription();
     }
 }

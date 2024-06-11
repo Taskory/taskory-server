@@ -68,7 +68,7 @@ class FlowServiceTest {
     void save() {
 //        Arrange
         String title = "test tile";
-        Set<Hashtag> hashtags = null;
+        List<Hashtag> hashtags = null;
         String description = "test description";
         SaveFlowRequest saveFlowRequest = new SaveFlowRequest(title, hashtags, description);
 
@@ -88,13 +88,13 @@ class FlowServiceTest {
 //        Arrange
 //        the first flow
         String title = "test tile";
-        Set<Hashtag> hashtags = null;
+        List<Hashtag> hashtags = null;
         String description = "test description";
         SaveFlowRequest saveFlowRequest = new SaveFlowRequest(title, hashtags, description);
 
 //        the second flow
         String title2 = "test tile2";
-        Set<Hashtag> hashtags2 = null;
+        List<Hashtag> hashtags2 = null;
         String description2 = "test description2";
         SaveFlowRequest saveFlowRequest2 = new SaveFlowRequest(title2, hashtags2, description2);
 
@@ -126,7 +126,7 @@ class FlowServiceTest {
 //        Arrange
 //        to save a flow
         String title = "test tile";
-        Set<Hashtag> hashtags = null;
+        List<Hashtag> hashtags = null;
         String description = "test description";
         SaveFlowRequest saveFlowRequest = new SaveFlowRequest(title, hashtags, description);;
 
@@ -134,7 +134,7 @@ class FlowServiceTest {
 
 //        update a flow
         String updateTitle = "update title";
-        Set<Hashtag> updateHashtags = null;
+        List<Hashtag> updateHashtags = null;
         String updateDescription = "test description";
         SaveFlowRequest updateFlowRequest = new SaveFlowRequest(updateTitle, updateHashtags, updateDescription);
 
@@ -154,7 +154,7 @@ class FlowServiceTest {
 //        Arrange
 //        save a task
         String title = "test title";
-        Set<Hashtag> hashtags = null;
+        List<Hashtag> hashtags = null;
         String description = "test description";
         SaveFlowRequest saveFlowRequest = new SaveFlowRequest(title, hashtags, description);
 

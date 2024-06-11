@@ -71,7 +71,7 @@ class EventServiceTest {
 //        Arrange
         String title = "test title";
         Tag tag = null;
-        Set<Hashtag> hashtags = null;
+        List<Hashtag> hashtags = null;
         String description = "test description";
         LocalDateTime startDateTime = LocalDateTime.now().minusDays(10);
         LocalDateTime dueDateTime = LocalDateTime.now().plusDays(10);
@@ -95,7 +95,7 @@ class EventServiceTest {
 //        the first event
         String title = "test title";
         Tag tag = null;
-        Set<Hashtag> hashtags = null;
+        List<Hashtag> hashtags = null;
         String description = "test description";
         LocalDateTime startDateTime = LocalDateTime.now().minusDays(10);
         LocalDateTime dueDateTime = LocalDateTime.now().plusDays(10);
@@ -105,7 +105,7 @@ class EventServiceTest {
 //        the second event
         String title2 = "test title";
         Tag tag2 = null;
-        Set<Hashtag> hashtags2 = null;
+        List<Hashtag> hashtags2 = null;
         String description2 = "test description";
         LocalDateTime startDateTime2 = LocalDateTime.now().minusDays(5);
         LocalDateTime dueDateTime2 = LocalDateTime.now().plusDays(5);
@@ -141,7 +141,7 @@ class EventServiceTest {
 //        to save an event
         String title = "test title";
         Tag tag = null;
-        Set<Hashtag> hashtags = null;
+        List<Hashtag> hashtags = null;
         String description = "test description";
         LocalDateTime startDateTime = LocalDateTime.now().minusDays(10);
         LocalDateTime dueDateTime = LocalDateTime.now().plusDays(10);
@@ -153,7 +153,7 @@ class EventServiceTest {
 //        update an event
         String updateTitle = "update title";
         Tag updateTag = null;
-        Set<Hashtag> updateHashtags = null;
+        List<Hashtag> updateHashtags = null;
         String updateDescription = "test description";
         LocalDateTime updateStartDateTime = LocalDateTime.now().minusDays(5);
         LocalDateTime updateDueDateTime = LocalDateTime.now().plusDays(5);
@@ -177,7 +177,7 @@ class EventServiceTest {
 //        save a task
         String title = "test title";
         Tag tag = null;
-        Set<Hashtag> hashtags = null;
+        List<Hashtag> hashtags = null;
         String description = "test description";
         LocalDateTime startDateTime = LocalDateTime.now().minusDays(10);
         LocalDateTime dueDateTime = LocalDateTime.now().plusDays(10);
