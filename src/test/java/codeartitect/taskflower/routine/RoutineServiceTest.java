@@ -8,11 +8,7 @@ import codeartitect.taskflower.routine.service.RoutineService;
 import codeartitect.taskflower.tag.TagNotFoundException;
 import codeartitect.taskflower.user.UserRepository;
 import codeartitect.taskflower.user.UserService;
-import codeartitect.taskflower.user.exception.InvalidZoneIdException;
-import codeartitect.taskflower.user.exception.UsernameAlreadyExistsException;
 import codeartitect.taskflower.user.model.User;
-import codeartitect.taskflower.user.payload.SignupRequest;
-import codeartitect.taskflower.user.payload.UserResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
@@ -42,7 +37,7 @@ class RoutineServiceTest {
     private User user;
 
     @BeforeEach
-    void setUp() throws UsernameAlreadyExistsException, InvalidZoneIdException {
+    void setUp() {
         StringBuilder tempUsername;
         do {
             tempUsername = new StringBuilder();
@@ -53,11 +48,12 @@ class RoutineServiceTest {
             }
         } while (userRepository.existsByUsername(tempUsername.toString()));
         String username = tempUsername.toString();
-        String password = "1234";
         String zoneId = "Asia/Seoul";
-        SignupRequest signupRequest = new SignupRequest(username, password, zoneId);
-        UserResponse userResponse = userService.signup(signupRequest);
-        user = userRepository.findById(userResponse.getId()).orElseThrow();
+        user = User.builder()
+                .username(username)
+                .zoneId(zoneId)
+                .build();
+        userRepository.save(user);
     }
 
     @AfterEach

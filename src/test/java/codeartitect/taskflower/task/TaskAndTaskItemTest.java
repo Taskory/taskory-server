@@ -8,7 +8,6 @@ import codeartitect.taskflower.task.payload.TaskItemResponse;
 import codeartitect.taskflower.task.payload.TaskResponse;
 import codeartitect.taskflower.task.service.TaskItemService;
 import codeartitect.taskflower.task.service.TaskService;
-import codeartitect.taskflower.user.model.Role;
 import codeartitect.taskflower.user.UserRepository;
 import codeartitect.taskflower.user.UserService;
 import codeartitect.taskflower.user.model.User;
@@ -19,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Collections;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -53,9 +51,11 @@ public class TaskAndTaskItemTest {
             }
         } while (userRepository.existsByUsername(tempUsername.toString()));
         String username = tempUsername.toString();
-        String password = "1234";
         String zoneId = "Asia/Seoul";
-        user = new User(null, username, password, zoneId, null, Collections.singletonList(Role.USER));
+        user = User.builder()
+                .username(username)
+                .zoneId(zoneId)
+                .build();
         userRepository.save(user);
     }
 

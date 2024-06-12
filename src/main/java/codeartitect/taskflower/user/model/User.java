@@ -1,12 +1,8 @@
 package codeartitect.taskflower.user.model;
 
 import codeartitect.taskflower.user.payload.ProfileUpdateRequest;
-import codeartitect.taskflower.user.payload.SignupRequest;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,15 +13,14 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
-    @Column(name = "password", nullable = false)
-    private String password;
     @Column(name = "zone_id", nullable = false)
     private String zoneId;
     @OneToMany
@@ -34,14 +29,6 @@ public class User {
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(value = EnumType.STRING)
     private List<Role> roles = new ArrayList<>();
-
-    public User(SignupRequest signupRequest) {
-        this.username = signupRequest.getUsername();
-        this.password = signupRequest.getPassword();
-        this.zoneId = signupRequest.getZoneId();
-        this.roles.add(Role.USER);
-
-    }
 
     public void updateProfile(ProfileUpdateRequest profileUpdateRequest) {
         this.username = profileUpdateRequest.getUsername();

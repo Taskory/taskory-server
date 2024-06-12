@@ -5,11 +5,7 @@ import codeartitect.taskflower.flow.payload.SaveFlowRequest;
 import codeartitect.taskflower.hashtag.Hashtag;
 import codeartitect.taskflower.user.UserRepository;
 import codeartitect.taskflower.user.UserService;
-import codeartitect.taskflower.user.payload.UserResponse;
-import codeartitect.taskflower.user.payload.SignupRequest;
 import codeartitect.taskflower.user.model.User;
-import codeartitect.taskflower.user.exception.UsernameAlreadyExistsException;
-import codeartitect.taskflower.user.exception.InvalidZoneIdException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -37,7 +33,7 @@ class FlowServiceTest {
     private User user;
 
     @BeforeEach
-    void setUp() throws UsernameAlreadyExistsException, InvalidZoneIdException {
+    void setUp() {
         StringBuilder tempUsername;
         do {
             tempUsername = new StringBuilder();
@@ -48,11 +44,12 @@ class FlowServiceTest {
             }
         } while (userRepository.existsByUsername(tempUsername.toString()));
         String username = tempUsername.toString();
-        String password = "1234";
         String zoneId = "Asia/Seoul";
-        SignupRequest signupRequest = new SignupRequest(username, password, zoneId);
-        UserResponse userResponse = userService.signup(signupRequest);
-        user = userRepository.findById(userResponse.getId()).orElseThrow();
+        user = User.builder()
+                .username(username)
+                .zoneId(zoneId)
+                .build();
+        userRepository.save(user);
     }
 
     @AfterEach

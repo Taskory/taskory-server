@@ -8,7 +8,6 @@ import codeartitect.taskflower.flow.FlowRepository;
 import codeartitect.taskflower.task.service.TaskService;
 import codeartitect.taskflower.user.payload.ProfileUpdateRequest;
 import codeartitect.taskflower.user.payload.UserResponse;
-import codeartitect.taskflower.user.payload.SignupRequest;
 import codeartitect.taskflower.user.model.User;
 import codeartitect.taskflower.user.exception.UsernameAlreadyExistsException;
 import codeartitect.taskflower.user.exception.InvalidZoneIdException;
@@ -47,31 +46,6 @@ public class UserService {
         this.tagRepository = tagRepository;
         this.routineRepository = routineRepository;
         this.routineHistoryRepository = routineHistoryRepository;
-    }
-
-    /**
-     * User signup
-     * @param signupRequest Information for signup
-     * @return UserResponse
-     * @throws InvalidZoneIdException ZoneId is invalid
-     * @throws UsernameAlreadyExistsException Username already exists
-     */
-    @Deprecated
-    public UserResponse signup(SignupRequest signupRequest) throws InvalidZoneIdException, UsernameAlreadyExistsException {
-        if (userRepository.existsByUsername(signupRequest.getUsername())) {
-            throw new UsernameAlreadyExistsException();
-        }
-
-        if (isInvalidateZoneId(signupRequest.getZoneId())) {
-            throw new InvalidZoneIdException();
-        }
-        String encodedPassword = encode(signupRequest.getPassword());
-        signupRequest.setPassword(encodedPassword);
-        User user = new User(signupRequest);
-
-        userRepository.save(user);
-
-        return new UserResponse(user);
     }
 
     /**
