@@ -1,6 +1,6 @@
 package codeartitect.taskflower.user.model;
 
-import codeartitect.taskflower.security.OAuth2UserInfo;
+import codeartitect.taskflower.security.model.OAuth2UserInfo;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

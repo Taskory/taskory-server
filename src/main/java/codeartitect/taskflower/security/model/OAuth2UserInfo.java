@@ -1,4 +1,4 @@
-package codeartitect.taskflower.security;
+package codeartitect.taskflower.security.model;
 
 import java.util.Map;
 

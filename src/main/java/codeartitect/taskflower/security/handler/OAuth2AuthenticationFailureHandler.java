@@ -1,5 +1,7 @@
-package codeartitect.taskflower.security;
+package codeartitect.taskflower.security.handler;
 
+import codeartitect.taskflower.security.cookie.CookieUtil;
+import codeartitect.taskflower.security.cookie.HttpCookieOAuth2AuthorizationRequestRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,7 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 
-import static codeartitect.taskflower.security.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
+import static codeartitect.taskflower.security.cookie.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 @Component
 public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {

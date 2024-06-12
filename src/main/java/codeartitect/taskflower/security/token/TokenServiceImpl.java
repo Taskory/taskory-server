@@ -1,6 +1,6 @@
 package codeartitect.taskflower.security.token;
 
-import codeartitect.taskflower.security.UserPrincipal;
+import codeartitect.taskflower.security.model.UserPrincipal;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

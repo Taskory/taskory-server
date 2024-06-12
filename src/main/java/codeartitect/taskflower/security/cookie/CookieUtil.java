@@ -1,4 +1,4 @@
-package codeartitect.taskflower.security;
+package codeartitect.taskflower.security.cookie;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

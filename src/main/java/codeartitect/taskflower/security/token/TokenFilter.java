@@ -1,7 +1,7 @@
 package codeartitect.taskflower.security.token;
 
-import codeartitect.taskflower.security.CustomUserDetailsService;
-import codeartitect.taskflower.security.UserPrincipal;
+import codeartitect.taskflower.security.service.CustomUserDetailsService;
+import codeartitect.taskflower.security.model.UserPrincipal;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

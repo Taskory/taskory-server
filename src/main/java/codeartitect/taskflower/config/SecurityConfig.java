@@ -1,11 +1,10 @@
 package codeartitect.taskflower.config;
 
-import codeartitect.taskflower.security.CustomOAuth2UserService;
-import codeartitect.taskflower.security.HttpCookieOAuth2AuthorizationRequestRepository;
-import codeartitect.taskflower.security.OAuth2AuthenticationFailureHandler;
-import codeartitect.taskflower.security.OAuth2AuthenticationSuccessHandler;
+import codeartitect.taskflower.security.service.CustomOAuth2UserService;
+import codeartitect.taskflower.security.cookie.HttpCookieOAuth2AuthorizationRequestRepository;
+import codeartitect.taskflower.security.handler.OAuth2AuthenticationFailureHandler;
+import codeartitect.taskflower.security.handler.OAuth2AuthenticationSuccessHandler;
 import codeartitect.taskflower.security.token.TokenFilter;
-import jakarta.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -21,14 +20,7 @@ import org.springframework.security.config.annotation.web.configurers.CsrfConfig
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;

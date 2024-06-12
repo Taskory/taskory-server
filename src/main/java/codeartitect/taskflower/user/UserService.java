@@ -2,7 +2,7 @@ package codeartitect.taskflower.user;
 
 import codeartitect.taskflower.routine.repository.RoutineHistoryRepository;
 import codeartitect.taskflower.routine.repository.RoutineRepository;
-import codeartitect.taskflower.security.OAuth2UserInfo;
+import codeartitect.taskflower.security.model.OAuth2UserInfo;
 import codeartitect.taskflower.tag.TagRepository;
 import codeartitect.taskflower.event.EventRepository;
 import codeartitect.taskflower.flow.FlowRepository;

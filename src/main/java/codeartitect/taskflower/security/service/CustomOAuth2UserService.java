@@ -1,5 +1,8 @@
-package codeartitect.taskflower.security;
+package codeartitect.taskflower.security.service;
 
+import codeartitect.taskflower.security.model.GoogleOAuth2UserInfo;
+import codeartitect.taskflower.security.model.OAuth2UserInfo;
+import codeartitect.taskflower.security.model.UserPrincipal;
 import codeartitect.taskflower.user.SocialAccountRepository;
 import codeartitect.taskflower.user.UserService;
 import codeartitect.taskflower.user.model.SocialAccount;

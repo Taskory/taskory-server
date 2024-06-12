@@ -1,5 +1,6 @@
-package codeartitect.taskflower.security;
+package codeartitect.taskflower.security.service;
 
+import codeartitect.taskflower.security.model.UserPrincipal;
 import codeartitect.taskflower.user.UserRepository;
 import codeartitect.taskflower.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;

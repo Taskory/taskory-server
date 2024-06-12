@@ -1,5 +1,8 @@
-package codeartitect.taskflower.security;
+package codeartitect.taskflower.security.handler;
 
+import codeartitect.taskflower.security.cookie.CookieUtil;
+import codeartitect.taskflower.security.cookie.HttpCookieOAuth2AuthorizationRequestRepository;
+import codeartitect.taskflower.security.model.UserPrincipal;
 import codeartitect.taskflower.security.token.TokenService;
 import codeartitect.taskflower.user.model.Role;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,7 +21,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.*;
 
-import static codeartitect.taskflower.security.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
+import static codeartitect.taskflower.security.cookie.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 @Component
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
