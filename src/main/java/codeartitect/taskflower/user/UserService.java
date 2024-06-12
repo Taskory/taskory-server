@@ -2,10 +2,12 @@ package codeartitect.taskflower.user;
 
 import codeartitect.taskflower.routine.repository.RoutineHistoryRepository;
 import codeartitect.taskflower.routine.repository.RoutineRepository;
+import codeartitect.taskflower.security.OAuth2UserInfo;
 import codeartitect.taskflower.tag.TagRepository;
 import codeartitect.taskflower.event.EventRepository;
 import codeartitect.taskflower.flow.FlowRepository;
 import codeartitect.taskflower.task.service.TaskService;
+import codeartitect.taskflower.user.model.SocialAccount;
 import codeartitect.taskflower.user.payload.ProfileUpdateRequest;
 import codeartitect.taskflower.user.payload.UserResponse;
 import codeartitect.taskflower.user.model.User;
@@ -14,7 +16,6 @@ import codeartitect.taskflower.user.exception.InvalidZoneIdException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
@@ -34,9 +35,10 @@ public class UserService {
     private final TaskService taskService;
     private final RoutineRepository routineRepository;
     private final RoutineHistoryRepository routineHistoryRepository;
+    private final SocialAccountRepository socialAccountRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, EventRepository eventRepository, FlowRepository flowRepository, TagRepository tagRepository, TaskService taskService, RoutineRepository routineRepository, RoutineHistoryRepository routineHistoryRepository) {
+    public UserService(UserRepository userRepository, EventRepository eventRepository, FlowRepository flowRepository, TagRepository tagRepository, TaskService taskService, RoutineRepository routineRepository, RoutineHistoryRepository routineHistoryRepository, SocialAccountRepository socialAccountRepository) {
         this.userRepository = userRepository;
         this.taskService = taskService;
         this.eventRepository = eventRepository;
@@ -44,6 +46,7 @@ public class UserService {
         this.tagRepository = tagRepository;
         this.routineRepository = routineRepository;
         this.routineHistoryRepository = routineHistoryRepository;
+        this.socialAccountRepository = socialAccountRepository;
     }
 
     /**
@@ -111,4 +114,19 @@ public class UserService {
         return true;
     }
 
+    public User registerTempUser(OAuth2UserInfo oAuth2UserInfo, String socialProvider) {
+        User user = User.builder()
+                .zoneId("Asia/Seoul")
+                .username(oAuth2UserInfo.getEmail())
+                .build();
+        userRepository.save(user);
+
+        SocialAccount socialAccount = SocialAccount.builder()
+                .user(user)
+                .subId(oAuth2UserInfo.getSucId())
+                .username(oAuth2UserInfo.getEmail())
+                .build();
+        socialAccountRepository.save(socialAccount);
+        return user;
+    }
 }

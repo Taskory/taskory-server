@@ -28,7 +28,7 @@ public class User {
     @Column(name = "roles", nullable = false)
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(value = EnumType.STRING)
-    private List<Role> roles = new ArrayList<>();
+    private List<Role> roles = new ArrayList<>(List.of(Role.TEMP_USER));
 
     public void updateProfile(ProfileUpdateRequest profileUpdateRequest) {
         this.username = profileUpdateRequest.getUsername();

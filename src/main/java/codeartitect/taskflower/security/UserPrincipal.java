@@ -6,21 +6,37 @@ import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
-public class UserPrincipal implements UserDetails {
+public class UserPrincipal implements UserDetails, OAuth2User {
     @Getter
-    private Long id;
-    private String username;
-    private List<Role> roles;
+    private final Long id;
+    private final String username;
+    @Getter
+    private final List<Role> roles;
+    private Map<String, Object> attributes;
 
     public UserPrincipal(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
         this.roles = user.getRoles();
+    }
+
+    public UserPrincipal(User user, Map<String, Object> attributes) {
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.roles = user.getRoles();
+        this.attributes = attributes;
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return Map.of();
     }
 
     @Override
@@ -39,6 +55,11 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public String getUsername() {
+        return this.username;
+    }
+
+    @Override
+    public String getName() {
         return this.username;
     }
 }
