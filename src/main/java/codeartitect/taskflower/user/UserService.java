@@ -28,7 +28,6 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final EventRepository eventRepository;
     private final FlowRepository flowRepository;
     private final TagRepository tagRepository;
@@ -37,9 +36,8 @@ public class UserService {
     private final RoutineHistoryRepository routineHistoryRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EventRepository eventRepository, FlowRepository flowRepository, TagRepository tagRepository, TaskService taskService, RoutineRepository routineRepository, RoutineHistoryRepository routineHistoryRepository) {
+    public UserService(UserRepository userRepository, EventRepository eventRepository, FlowRepository flowRepository, TagRepository tagRepository, TaskService taskService, RoutineRepository routineRepository, RoutineHistoryRepository routineHistoryRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
         this.taskService = taskService;
         this.eventRepository = eventRepository;
         this.flowRepository = flowRepository;
@@ -100,15 +98,6 @@ public class UserService {
         routineHistoryRepository.deleteAllByUser(user.get());
         routineRepository.deleteAllByUser(user.get());
         userRepository.deleteById(id);
-    }
-
-    /**
-     * Encode password
-     * @param password Not encoded password
-     * @return Encoded password
-     */
-    private String encode(String password) {
-        return passwordEncoder.encode(password);
     }
 
     /**
