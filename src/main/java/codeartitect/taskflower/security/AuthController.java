@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("${app.url-base}/auth")
 @Slf4j
+@Deprecated
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -45,11 +46,5 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginResponse(null, "Invalid username or password"));
 
         }
-    }
-
-    @GetMapping("/test")
-    public String test() {
-        log.info("dsfsdfsdsf");
-        return "test";
     }
 }
