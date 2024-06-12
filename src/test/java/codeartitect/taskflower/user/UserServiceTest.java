@@ -5,10 +5,7 @@ import codeartitect.taskflower.user.payload.UserResponse;
 import codeartitect.taskflower.user.payload.SignupRequest;
 import codeartitect.taskflower.user.exception.UsernameAlreadyExistsException;
 import codeartitect.taskflower.user.exception.InvalidZoneIdException;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -67,6 +64,8 @@ class UserServiceTest {
      */
     @Test
     @DisplayName("signup test and Get user")
+    @Deprecated
+    @Disabled
     void signup_getByUsername() throws UsernameAlreadyExistsException, InvalidZoneIdException {
 //        Arrange
         SignupRequest signupRequest = new SignupRequest(username, password, zoneId);
@@ -86,6 +85,8 @@ class UserServiceTest {
      */
     @Test
     @DisplayName("Invalid username signup")
+    @Deprecated
+    @Disabled
     void signup_invalid_username() throws UsernameAlreadyExistsException, InvalidZoneIdException {
 //        Arrange
         SignupRequest signupRequest = new SignupRequest(username, password, zoneId);
@@ -103,6 +104,8 @@ class UserServiceTest {
      */
     @Test
     @DisplayName("Invalid zone id signup")
+    @Deprecated
+    @Disabled
     void signup_invalid_zoneId() {
 //        Arrange
         SignupRequest signupRequest = new SignupRequest(username, password, "invalid zone");

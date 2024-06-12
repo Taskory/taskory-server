@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
+@Deprecated
 public class SignupRequest {
     @NotBlank
     private String username;

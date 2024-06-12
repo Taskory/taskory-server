@@ -1,5 +1,6 @@
 package codeartitect.taskflower.user.payload;
 
+@Deprecated
 public class SignupResponse {
     private String message;
     public SignupResponse(UserResponse userResponse) {

@@ -56,6 +56,7 @@ public class UserService {
      * @throws InvalidZoneIdException ZoneId is invalid
      * @throws UsernameAlreadyExistsException Username already exists
      */
+    @Deprecated
     public UserResponse signup(SignupRequest signupRequest) throws InvalidZoneIdException, UsernameAlreadyExistsException {
         if (userRepository.existsByUsername(signupRequest.getUsername())) {
             throw new UsernameAlreadyExistsException();

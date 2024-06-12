@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@Deprecated
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
