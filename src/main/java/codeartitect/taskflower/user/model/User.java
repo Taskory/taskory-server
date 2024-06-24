@@ -27,8 +27,9 @@ public class User {
     private Set<SocialAccount> socialAccounts;
     @Column(name = "roles", nullable = false)
     @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "User_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(value = EnumType.STRING)
-    private List<Role> roles = new ArrayList<>(List.of(Role.TEMP_USER));
+    private List<Role> roles = new ArrayList<>();
 
     public void updateProfile(ProfileUpdateRequest profileUpdateRequest) {
         this.username = profileUpdateRequest.getUsername();

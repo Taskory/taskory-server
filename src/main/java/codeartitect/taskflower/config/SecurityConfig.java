@@ -110,7 +110,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/oauth2/**").permitAll()
                         .requestMatchers(urlBase + "/auth/**").permitAll()
-                        .anyRequest().denyAll()
+                        .requestMatchers(urlBase + "/user/**").hasAnyRole("USER", "TEMPORARY_USER", "ADMIN")
+                        .anyRequest().authenticated()
                 );
 
 //        JWT Token filter

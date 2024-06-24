@@ -7,6 +7,7 @@ import codeartitect.taskflower.tag.TagRepository;
 import codeartitect.taskflower.event.EventRepository;
 import codeartitect.taskflower.flow.FlowRepository;
 import codeartitect.taskflower.task.service.TaskService;
+import codeartitect.taskflower.user.model.Role;
 import codeartitect.taskflower.user.model.SocialAccount;
 import codeartitect.taskflower.user.payload.ProfileUpdateRequest;
 import codeartitect.taskflower.user.payload.UserResponse;
@@ -19,6 +20,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -99,6 +101,7 @@ public class UserService {
         eventRepository.deleteAllByUser(user.get());
         routineHistoryRepository.deleteAllByUser(user.get());
         routineRepository.deleteAllByUser(user.get());
+        socialAccountRepository.deleteByUser(user.get());
         userRepository.deleteById(id);
     }
 
@@ -118,6 +121,7 @@ public class UserService {
         User user = User.builder()
                 .zoneId("Asia/Seoul")
                 .username(oAuth2UserInfo.getEmail())
+                .roles(Collections.singletonList(Role.TEMP_USER))
                 .build();
         userRepository.save(user);
 
@@ -125,6 +129,7 @@ public class UserService {
                 .user(user)
                 .subId(oAuth2UserInfo.getSubId())
                 .username(oAuth2UserInfo.getEmail())
+                .provider(socialProvider)
                 .build();
         socialAccountRepository.save(socialAccount);
         return user;

@@ -28,6 +28,9 @@ public class SocialAccount {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "provider")
+    private String provider;
+
     public void update(OAuth2UserInfo oAuth2UserInfo) {
         this.subId = oAuth2UserInfo.getSubId();
         this.username = oAuth2UserInfo.getEmail();
