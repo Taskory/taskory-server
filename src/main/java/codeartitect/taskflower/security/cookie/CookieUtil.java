@@ -15,6 +15,7 @@ public class CookieUtil {
         cookie.setPath("/");
         cookie.setHttpOnly(true);
         cookie.setMaxAge(expireSeconds);
+        response.addCookie(cookie);
     }
 
     public static Optional<Cookie> getCookie(HttpServletRequest request, String cookieName) {

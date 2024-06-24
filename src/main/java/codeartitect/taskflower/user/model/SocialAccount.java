@@ -2,19 +2,23 @@ package codeartitect.taskflower.user.model;
 
 import codeartitect.taskflower.security.model.OAuth2UserInfo;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity(name = "SocialAccount")
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SocialAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "SocialAccount_id")
     private Long id;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -25,7 +29,7 @@ public class SocialAccount {
     private String username;
 
     public void update(OAuth2UserInfo oAuth2UserInfo) {
-        this.subId = oAuth2UserInfo.getSucId();
+        this.subId = oAuth2UserInfo.getSubId();
         this.username = oAuth2UserInfo.getEmail();
     }
 }

@@ -26,10 +26,10 @@ import static codeartitect.taskflower.security.cookie.HttpCookieOAuth2Authorizat
 @Component
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private final ObjectMapper objectMapper;
     @Value(value = "${spring.security.oauth2.uris.authorized-redirect-uris}")
     private List<String> authorizedRedirectUris;
 
+    private final ObjectMapper objectMapper;
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRepository;
     private final TokenService tokenService;
 

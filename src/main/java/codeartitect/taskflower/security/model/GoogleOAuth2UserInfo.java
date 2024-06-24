@@ -14,7 +14,7 @@ public class GoogleOAuth2UserInfo extends OAuth2UserInfo {
     }
 
     @Override
-    public String getSucId() {
+    public String getSubId() {
         return attributes.get("sub").toString();
     }
 }

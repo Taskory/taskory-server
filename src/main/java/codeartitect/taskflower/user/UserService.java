@@ -123,7 +123,7 @@ public class UserService {
 
         SocialAccount socialAccount = SocialAccount.builder()
                 .user(user)
-                .subId(oAuth2UserInfo.getSucId())
+                .subId(oAuth2UserInfo.getSubId())
                 .username(oAuth2UserInfo.getEmail())
                 .build();
         socialAccountRepository.save(socialAccount);
