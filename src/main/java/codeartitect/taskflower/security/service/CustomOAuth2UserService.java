@@ -8,6 +8,7 @@ import codeartitect.taskflower.user.UserService;
 import codeartitect.taskflower.user.model.SocialAccount;
 import codeartitect.taskflower.user.model.SocialProvider;
 import codeartitect.taskflower.user.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 @Service
+@Slf4j
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final SocialAccountRepository socialAccountRepository;
     private final UserService userService;
@@ -29,6 +31,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        log.info("[LOG - CustomOAuth2UserService] loadUser");
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
         String socialProvider = userRequest.getClientRegistration().getRegistrationId();
