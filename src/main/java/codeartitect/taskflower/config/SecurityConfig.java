@@ -108,6 +108,7 @@ public class SecurityConfig {
 //        Request matchers
         httpSecurity
                 .authorizeHttpRequests(request -> request
+                        .requestMatchers("/oauth2/**").permitAll()
                         .requestMatchers(urlBase + "/auth/**").permitAll()
                         .anyRequest().denyAll()
                 );
