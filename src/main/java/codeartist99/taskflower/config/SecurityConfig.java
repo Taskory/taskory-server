@@ -1,9 +1,9 @@
 package codeartist99.taskflower.config;
 
-import codeartist99.taskflower.security.service.CustomOAuth2UserService;
 import codeartist99.taskflower.security.cookie.HttpCookieOAuth2AuthorizationRequestRepository;
 import codeartist99.taskflower.security.handler.OAuth2AuthenticationFailureHandler;
 import codeartist99.taskflower.security.handler.OAuth2AuthenticationSuccessHandler;
+import codeartist99.taskflower.security.service.CustomOAuth2UserService;
 import codeartist99.taskflower.security.token.TokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

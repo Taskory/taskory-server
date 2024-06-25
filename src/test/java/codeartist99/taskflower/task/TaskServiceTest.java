@@ -1,11 +1,11 @@
 package codeartist99.taskflower.task;
 
-import codeartist99.taskflower.tag.model.Tag;
 import codeartist99.taskflower.event.Event;
 import codeartist99.taskflower.event.EventRepository;
 import codeartist99.taskflower.flow.Flow;
 import codeartist99.taskflower.flow.FlowRepository;
 import codeartist99.taskflower.hashtag.Hashtag;
+import codeartist99.taskflower.tag.model.Tag;
 import codeartist99.taskflower.task.exception.TaskNotFoundException;
 import codeartist99.taskflower.task.model.Status;
 import codeartist99.taskflower.task.model.Task;
@@ -24,9 +24,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class TaskServiceTest {

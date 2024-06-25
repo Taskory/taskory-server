@@ -1,13 +1,13 @@
 package codeartist99.taskflower.task;
 
-import codeartist99.taskflower.tag.model.Tag;
 import codeartist99.taskflower.event.Event;
 import codeartist99.taskflower.flow.Flow;
 import codeartist99.taskflower.hashtag.Hashtag;
+import codeartist99.taskflower.tag.model.Tag;
+import codeartist99.taskflower.task.exception.TaskItemNotFoundException;
 import codeartist99.taskflower.task.exception.TaskNotFoundException;
 import codeartist99.taskflower.task.model.Status;
 import codeartist99.taskflower.task.model.Task;
-import codeartist99.taskflower.task.exception.TaskItemNotFoundException;
 import codeartist99.taskflower.task.payload.SaveTaskItemRequest;
 import codeartist99.taskflower.task.payload.TaskItemResponse;
 import codeartist99.taskflower.task.repository.TaskRepository;
@@ -25,7 +25,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class TaskItemServiceTest {

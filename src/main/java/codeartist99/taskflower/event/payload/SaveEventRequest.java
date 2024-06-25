@@ -1,7 +1,7 @@
 package codeartist99.taskflower.event.payload;
 
-import codeartist99.taskflower.tag.model.Tag;
 import codeartist99.taskflower.hashtag.Hashtag;
+import codeartist99.taskflower.tag.model.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

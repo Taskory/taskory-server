@@ -1,9 +1,9 @@
 package codeartist99.taskflower.event;
 
-import codeartist99.taskflower.tag.model.Tag;
 import codeartist99.taskflower.event.payload.EventResponse;
 import codeartist99.taskflower.event.payload.SaveEventRequest;
 import codeartist99.taskflower.hashtag.Hashtag;
+import codeartist99.taskflower.tag.model.Tag;
 import codeartist99.taskflower.user.UserRepository;
 import codeartist99.taskflower.user.UserService;
 import codeartist99.taskflower.user.model.User;
@@ -15,9 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class EventServiceTest {

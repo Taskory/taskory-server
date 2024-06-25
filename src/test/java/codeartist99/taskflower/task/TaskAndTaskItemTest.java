@@ -2,8 +2,8 @@ package codeartist99.taskflower.task;
 
 import codeartist99.taskflower.task.exception.TaskNotFoundException;
 import codeartist99.taskflower.task.model.Status;
-import codeartist99.taskflower.task.payload.SaveTaskRequest;
 import codeartist99.taskflower.task.payload.SaveTaskItemRequest;
+import codeartist99.taskflower.task.payload.SaveTaskRequest;
 import codeartist99.taskflower.task.payload.TaskItemResponse;
 import codeartist99.taskflower.task.payload.TaskResponse;
 import codeartist99.taskflower.task.service.TaskItemService;
@@ -20,7 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class TaskAndTaskItemTest {

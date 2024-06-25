@@ -1,10 +1,10 @@
 package codeartist99.taskflower.event;
 
-import codeartist99.taskflower.tag.model.Tag;
+import codeartist99.taskflower.common.BaseTimeEntity;
 import codeartist99.taskflower.common.EntityUtil;
 import codeartist99.taskflower.event.payload.SaveEventRequest;
-import codeartist99.taskflower.common.BaseTimeEntity;
 import codeartist99.taskflower.hashtag.Hashtag;
+import codeartist99.taskflower.tag.model.Tag;
 import codeartist99.taskflower.user.model.User;
 import jakarta.persistence.*;
 import lombok.*;

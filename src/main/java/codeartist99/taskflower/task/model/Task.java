@@ -1,11 +1,11 @@
 package codeartist99.taskflower.task.model;
 
-import codeartist99.taskflower.tag.model.Tag;
+import codeartist99.taskflower.common.BaseTimeEntity;
 import codeartist99.taskflower.common.EntityUtil;
 import codeartist99.taskflower.event.Event;
 import codeartist99.taskflower.flow.Flow;
-import codeartist99.taskflower.common.BaseTimeEntity;
 import codeartist99.taskflower.hashtag.Hashtag;
+import codeartist99.taskflower.tag.model.Tag;
 import codeartist99.taskflower.task.payload.SaveTaskRequest;
 import codeartist99.taskflower.user.model.User;
 import jakarta.persistence.*;
