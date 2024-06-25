@@ -35,22 +35,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
-### env secret ###
-application-secret.yml
-application-secrets.yml
-credentials.json
-tokens
-
-### OS ###
-.DS_Store
-
-### Wiki ###
-wiki
-
-### node_modules ###
-node_modules
-
-### vim ###
-.vim
-
