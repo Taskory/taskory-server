@@ -4,9 +4,7 @@ import codeartist99.taskflower.user.payload.ProfileUpdateRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity(name = "User")
 @Getter
@@ -34,5 +32,9 @@ public class User {
     public void updateProfile(ProfileUpdateRequest profileUpdateRequest) {
         this.username = profileUpdateRequest.getUsername();
         this.zoneId = profileUpdateRequest.getZoneId();
+    }
+
+    public void upgradeToOfficial() {
+        this.roles = new ArrayList<>(Collections.singletonList(Role.USER));
     }
 }

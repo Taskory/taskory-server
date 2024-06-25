@@ -81,6 +81,11 @@ public class UserService {
         }
 
         user.updateProfile(profileUpdateRequest);
+
+        for (Role role : user.getRoles()) {
+            if (role == Role.TEMP_USER) user.upgradeToOfficial();
+        }
+
         User updatedUser = userRepository.save(user);
         return new UserResponse(updatedUser);
     }
@@ -133,5 +138,11 @@ public class UserService {
                 .build();
         socialAccountRepository.save(socialAccount);
         return user;
+    }
+
+    public boolean isUsernameAvailable(String username) {
+        if (userRepository.existsByUsername(username)) {
+            return false;
+        } else return true;
     }
 }
