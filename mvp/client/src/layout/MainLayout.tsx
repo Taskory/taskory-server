@@ -18,7 +18,7 @@ export const MainLayout: React.FC = () => {
       <div className="w-full">
         <Header/>
       </div>
-      <div className="flex">
+      <div className="flex h-full">
         <div className="flex flex-col flex-1 min-h-screen">
           <main className="flex-1">
             <div className="container mx-auto py-8">
