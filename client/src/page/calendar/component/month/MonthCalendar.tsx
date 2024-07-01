@@ -84,14 +84,14 @@ export const MonthCalendar: React.FC = () => {
     };
 
     return (
-        <div
-            ref={containerRef}
-            style={{overflow: 'hidden', height: '90%', gridTemplateRows: '20px 1fr'}}
-            className={`border`}>
+        <div 
+            ref={containerRef} 
+            style={{ overflow: 'hidden', height: '90%', gridTemplateRows: '20px 1fr'}} 
+            className="border sm:h-2/3">
             <WeekdaysHeader/>
-            <div className={`grid grid-cols-7 h-full grid-rows-${weeksOfCurrentMonth}`}>
-                <EmptyCells count={monthInfo.firstDayOfWeek} startIndex={0}/>
-                {Array.from({length: monthInfo.daysInMonth}, (_, index) => {
+            <div  style={{height: '95%'}} className={`grid grid-cols-7 grid-rows-${weeksOfCurrentMonth()}`}>
+                <EmptyCells count={monthInfo.firstDayOfWeek} startIndex={0} />
+                {Array.from({ length: monthInfo.daysInMonth }, (_, index) => {
                     const day = index + 1;
                     const dayEvents = getEventsForDay(day);
                     return (
