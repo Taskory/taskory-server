@@ -6,6 +6,8 @@ import codeartist99.taskflower.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -50,11 +52,30 @@ public class EventService {
      * @return EventResponse list
      */
     public List<EventResponse> findAll(User user) {
-        List<Optional<Event>> events = eventRepository.findAllByUser(user);
+        List<Event> events = eventRepository.findAllByUser(user);
 
         List<EventResponse> eventResponseList = new ArrayList<>();
-        for (Optional<Event> event : events) {
-            event.ifPresent(value -> eventResponseList.add(new EventResponse(value)));
+        for (Event event : events) {
+            eventResponseList.add(new EventResponse(event));
+        }
+        return eventResponseList;
+    }
+
+    /**
+     * Find all events in period
+     * @param user User information
+     * @param startDate start date in period
+     * @param dueDate due date in period
+     * @return EventResponse list
+     */
+    public List<EventResponse> findAllInPeriod(User user, LocalDate startDate, LocalDate dueDate) {
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime dueDateTime = dueDate.atStartOfDay();
+        List<Event> events = eventRepository.findAllByUserInPeriod(user, startDateTime, dueDateTime);
+
+        List<EventResponse> eventResponseList = new ArrayList<>();
+        for (Event event : events) {
+            eventResponseList.add(new EventResponse(event));
         }
         return eventResponseList;
     }
