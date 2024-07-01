@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EventService {
@@ -69,8 +69,8 @@ public class EventService {
      * @return EventResponse list
      */
     public List<EventResponse> findAllInPeriod(User user, LocalDate startDate, LocalDate dueDate) {
-        LocalDateTime startDateTime = startDate.atStartOfDay();
-        LocalDateTime dueDateTime = dueDate.atStartOfDay();
+        LocalDateTime startDateTime = LocalDateTime.of(startDate, LocalTime.MIN);
+        LocalDateTime dueDateTime = LocalDateTime.of(dueDate, LocalTime.MAX);
         List<Event> events = eventRepository.findAllByUserInPeriod(user, startDateTime, dueDateTime);
 
         List<EventResponse> eventResponseList = new ArrayList<>();
