@@ -131,6 +131,63 @@ class EventServiceTest {
     }
 
     /**
+     * Test for find all events in period
+     */
+    @Test
+    @DisplayName("find all in period test")
+    void findAllInPeriod() {
+//        Arrange
+//        the first event - event happens through multiple months
+        String title = "test title";
+        String description = "test description";
+        LocalDateTime startDateTime = LocalDateTime.now().minusMonths(1);
+        LocalDateTime dueDateTime = LocalDateTime.now();
+        String location = "test location";
+        SaveEventRequest saveEventRequest = new SaveEventRequest(title, null, null, description, startDateTime, dueDateTime, location);
+
+//        the second event - event happens through multiple months
+        String title2 = "test title";
+        String description2 = "test description";
+        LocalDateTime startDateTime2 = LocalDateTime.now().minusMonths(1);
+        LocalDateTime dueDateTime2 = LocalDateTime.now().plusMonths(1);
+        String location2 = "test location";
+        SaveEventRequest saveEventRequest2 = new SaveEventRequest(title2, null, null, description2, startDateTime2, dueDateTime2, location2);
+
+        //        the third event - event for a single day
+        String title3 = "test title";
+        String description3 = "test description";
+        LocalDateTime startDateTime3 = LocalDateTime.now();
+        LocalDateTime dueDateTime3 = LocalDateTime.now();
+        String location3 = "test location";
+        SaveEventRequest saveEventRequest3 = new SaveEventRequest(title3, null, null, description3, startDateTime3, dueDateTime3, location3);
+
+//        save a first event
+        EventResponse eventResponse = eventService.save(user, saveEventRequest);
+//        save a second event
+        EventResponse eventResponse2 = eventService.save(user, saveEventRequest2);
+
+//        save a third event
+        EventResponse eventResponse3 = eventService.save(user, saveEventRequest3);
+
+//        Act
+//        find all events
+        List<EventResponse> eventResponseList = eventService.findAll(user);
+
+//        Assert
+//        find a first event
+        EventResponse actualEventResponse = eventResponseList.get(0);
+//        find a second event
+        EventResponse actualEventResponse2 = eventResponseList.get(1);
+
+//        find a third event
+        EventResponse actualEventResponse3 = eventResponseList.get(2);
+
+        assertEquals(eventResponse.toString(), actualEventResponse.toString());
+        assertEquals(eventResponse2.toString(), actualEventResponse2.toString());
+        assertEquals(eventResponse3.toString(), actualEventResponse3.toString());
+    }
+
+    /**
      * Test for update an event
      */
     @Test
