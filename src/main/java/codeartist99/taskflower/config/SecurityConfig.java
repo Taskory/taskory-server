@@ -111,6 +111,7 @@ public class SecurityConfig {
                         .requestMatchers("/oauth2/**").permitAll()
                         .requestMatchers(urlBase + "/auth/**").permitAll()
                         .requestMatchers(urlBase + "/user/**").hasAnyRole("USER", "TEMPORARY_USER", "ADMIN")
+                        .requestMatchers(urlBase + "/event/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 );
 
