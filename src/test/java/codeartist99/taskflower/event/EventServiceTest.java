@@ -1,6 +1,7 @@
 package codeartist99.taskflower.event;
 
 import codeartist99.taskflower.event.payload.EventResponse;
+import codeartist99.taskflower.event.payload.EventSummary;
 import codeartist99.taskflower.event.payload.SaveEventRequest;
 import codeartist99.taskflower.hashtag.Hashtag;
 import codeartist99.taskflower.tag.model.Tag;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
@@ -249,5 +251,54 @@ class EventServiceTest {
 
 //        Assert
         assertThrows(EventNotFoundException.class, () -> eventService.getById(eventId));
+    }
+
+    /**
+     * Test for find all monthly events
+     */
+    @Test
+    @DisplayName("find all monthly events test")
+    void findAllMonthlyEvents() {
+//        Arrange
+        LocalDate date = LocalDate.now();
+        LocalDate firstDayOfMonth = LocalDate.of(date.getYear(), date.getMonth(), 1);
+        LocalDate lastDayOfMonth = firstDayOfMonth.withDayOfMonth(firstDayOfMonth.lengthOfMonth());
+
+        String title = "test title";
+        Tag tag = null;
+        List<Hashtag> hashtags = null;
+        String description = "test description";
+
+        // Event 1 within the same month
+        LocalDateTime startDateTime1 = firstDayOfMonth.atStartOfDay();
+        LocalDateTime dueDateTime1 = startDateTime1.plusDays(10);
+        String location = "test location";
+        SaveEventRequest saveEventRequest1 = new SaveEventRequest(title, tag, hashtags, description, startDateTime1, dueDateTime1, location);
+
+        // Event 2 within the same month
+        LocalDateTime startDateTime2 = startDateTime1.plusDays(15);
+        LocalDateTime dueDateTime2 = startDateTime2.plusDays(5);
+        SaveEventRequest saveEventRequest2 = new SaveEventRequest(title, tag, hashtags, description, startDateTime2, dueDateTime2, location);
+
+        // Event 3 starting in the previous month and ending in the current month
+        LocalDateTime startDateTime3 = startDateTime1.minusDays(5);
+        LocalDateTime dueDateTime3 = startDateTime1.plusDays(5);
+        SaveEventRequest saveEventRequest3 = new SaveEventRequest(title, tag, hashtags, description, startDateTime3, dueDateTime3, location);
+
+        // Event 4 starting in the current month and ending in the next month
+        LocalDateTime startDateTime4 = lastDayOfMonth.minusDays(5).atStartOfDay();
+        LocalDateTime dueDateTime4 = lastDayOfMonth.plusDays(5).atStartOfDay();
+        SaveEventRequest saveEventRequest4 = new SaveEventRequest(title, tag, hashtags, description, startDateTime4, dueDateTime4, location);
+
+        eventService.save(user, saveEventRequest1);
+        eventService.save(user, saveEventRequest2);
+        eventService.save(user, saveEventRequest3);
+        eventService.save(user, saveEventRequest4);
+
+//        Act
+        List<EventSummary> eventSummaryList = eventService.findAllMonthlyEvents(user, date);
+
+//        Assert
+        assertEquals(4, eventSummaryList.size());
     }
 }

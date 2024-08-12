@@ -1,6 +1,7 @@
 package codeartist99.taskflower.event;
 
 import codeartist99.taskflower.event.payload.EventResponse;
+import codeartist99.taskflower.event.payload.EventSummary;
 import codeartist99.taskflower.event.payload.SaveEventRequest;
 import codeartist99.taskflower.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EventService {
@@ -29,6 +32,9 @@ public class EventService {
      * @return EventResponse
      */
     public EventResponse save(User user, SaveEventRequest saveEventRequest) {
+        if (saveEventRequest.getTitle().isBlank()) {
+            throw new IllegalArgumentException("Title cannot be blank");
+        }
         Event event = new Event(user, saveEventRequest);
 
         eventRepository.save(event);
@@ -62,6 +68,7 @@ public class EventService {
     }
 
     /**
+     * @Deprecated
      * Find all events in period
      * @param user User information
      * @param startDate start date in period
@@ -78,6 +85,23 @@ public class EventService {
             eventResponseList.add(new EventResponse(event));
         }
         return eventResponseList;
+    }
+
+    /**
+     * find monthly events
+     * @param user User information
+     * @param date date for getting monthly events
+     * @return EventSummary list
+     */
+    public List<EventSummary> findAllMonthlyEvents(User user, LocalDate date) {
+        LocalDateTime firstDateTime = LocalDateTime.of(date.getYear(), date.getMonth(), 1, 0, 0, 0);
+        LocalDateTime lastDateTime = YearMonth.from(date).atEndOfMonth().atTime(23, 59, 59);
+
+        List<Event> events = eventRepository.findAllByUserInPeriod(user, firstDateTime, lastDateTime);
+
+        return events.stream()
+                .map(EventSummary::new)
+                .toList();
     }
 
     /**

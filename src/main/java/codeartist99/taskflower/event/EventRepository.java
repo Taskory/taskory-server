@@ -15,6 +15,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     void deleteAllByUser(User user);
 
-    @Query("SELECT e FROM Event e WHERE e.startDateTime <= :dueDateTime AND e.dueDateTime >= :startDateTime AND e.user = :user")
-    List<Event> findAllByUserInPeriod(@Param("user") User user, @Param("startDateTime") LocalDateTime startDateTime, @Param("dueDateTime") LocalDateTime dueDateTime);
+    @Query("SELECT e FROM Event e WHERE e.startDateTime <= :endDateTime AND e.dueDateTime >= :startDateTime AND e.user = :user")
+    List<Event> findAllByUserInPeriod(@Param("user") User user, @Param("startDateTime") LocalDateTime startDateTime, @Param("endDateTime") LocalDateTime endDateTime);
 }
