@@ -7,7 +7,6 @@ import codeartist99.taskflower.security.model.UserPrincipal;
 import codeartist99.taskflower.user.CurrentUser;
 import codeartist99.taskflower.user.UserRepository;
 import codeartist99.taskflower.user.model.User;
-import com.sun.jdi.request.EventRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,27 +30,10 @@ public class EventController {
     }
 
     /**
+     * Get all events in a specific month.
      * @param userPrincipal Authenticated user
-     * @param startDate     LocalDate type
-     * @param dueDate       LocalDate type
-     * @return ResponseEntity - List<EventResponse>
-     */
-//    need to update parameter -> not period but each month
-    @GetMapping
-    public ResponseEntity<?> findAllEventsInPeriod(@CurrentUser UserPrincipal userPrincipal, @RequestParam LocalDate startDate, @RequestParam LocalDate dueDate) {
-        try {
-            User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new UsernameNotFoundException("user not found"));
-            List<EventResponse> events = eventService.findAllInPeriod(user, startDate, dueDate);
-            return ResponseEntity.ok().body(events);
-        } catch (UsernameNotFoundException exception) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(exception.getMessage());
-        }
-    }
-
-    /**
-     * @param userPrincipal Authenticated user
-     * @param date          LocalDate for getting monthly events
-     * @return ResponseEntity - EventSummary list
+     * @param date Date within the month to fetch events
+     * @return List of EventSummary
      */
     @GetMapping("/month")
     public ResponseEntity<?> findAllMonthlyEvents(@CurrentUser UserPrincipal userPrincipal, @RequestParam LocalDate date) {
@@ -65,11 +47,10 @@ public class EventController {
     }
 
     /**
-     * get monthly events
-     *
-     * @param userPrincipal    Authenticated user
-     * @param saveEventRequest Event info for save event
-     * @return EventResponse
+     * Create a new event.
+     * @param userPrincipal Authenticated user
+     * @param saveEventRequest Event data to be saved
+     * @return The saved EventResponse
      */
     @PostMapping("/create")
     public ResponseEntity<?> create(@CurrentUser UserPrincipal userPrincipal, @RequestBody SaveEventRequest saveEventRequest) {
@@ -83,14 +64,14 @@ public class EventController {
     }
 
     /**
-     * put request for update event
-     *
-     * @param eventId          event id for update event
-     * @param saveEventRequest event info for update
-     * @return EventResponse
+     * Update an existing event.
+     * @param userPrincipal Authenticated user
+     * @param eventId ID of the event to be updated
+     * @param saveEventRequest Updated event data
+     * @return The updated EventResponse
      */
     @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestParam Long eventId, @RequestBody SaveEventRequest saveEventRequest) {
+    public ResponseEntity<?> update(@CurrentUser UserPrincipal userPrincipal, @RequestParam Long eventId, @RequestBody SaveEventRequest saveEventRequest) {
         try {
             EventResponse response = eventService.updateEvent(eventId, saveEventRequest);
             return ResponseEntity.ok().body(response);
@@ -100,17 +81,48 @@ public class EventController {
     }
 
     /**
-     * delete events
-     * @param eventId event id for delete event
-     * @return ResponseEntity.status 200
+     * Delete an event by ID.
+     * @param eventId ID of the event to be deleted
+     * @return ResponseEntity with HTTP status
      */
     @DeleteMapping("/delete")
-    public ResponseEntity<?> delete(@RequestParam Long eventId) {
+    public ResponseEntity<?> delete(@CurrentUser UserPrincipal userPrincipal, @RequestParam Long eventId) {
         try {
             eventService.deleteById(eventId);
             return ResponseEntity.ok().build();
         } catch (EventNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    /**
+     * Get an event by its ID.
+     * @param eventId ID of the event
+     * @return The EventResponse
+     */
+    @GetMapping("/{eventId}")
+    public ResponseEntity<?> getById(@PathVariable Long eventId) {
+        try {
+            EventResponse event = eventService.getById(eventId);
+            return ResponseEntity.ok().body(event);
+        } catch (UsernameNotFoundException | EventNotFoundException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
+
+    /**
+     * Get all events for the authenticated user.
+     * @param userPrincipal Authenticated user
+     * @return List of EventResponse
+     */
+    @GetMapping("/all")
+    public ResponseEntity<?> findAll(@CurrentUser UserPrincipal userPrincipal) {
+        try {
+            User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new UsernameNotFoundException("user not found"));
+            List<EventResponse> events = eventService.findAll(user);
+            return ResponseEntity.ok().body(events);
+        } catch (UsernameNotFoundException exception) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(exception.getMessage());
         }
     }
 }
