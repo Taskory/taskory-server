@@ -101,12 +101,12 @@ public class EventController {
      * @return The EventResponse
      */
     @GetMapping("/{eventId}")
-    public ResponseEntity<?> getById(@PathVariable Long eventId) {
+    public ResponseEntity<EventResponse> getById(@PathVariable Long eventId) {
         try {
             EventResponse event = eventService.getById(eventId);
-            return ResponseEntity.ok().body(event);
+            return ResponseEntity.ok(event);
         } catch (UsernameNotFoundException | EventNotFoundException exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -116,13 +116,13 @@ public class EventController {
      * @return List of EventResponse
      */
     @GetMapping("/all")
-    public ResponseEntity<?> findAll(@CurrentUser UserPrincipal userPrincipal) {
+    public ResponseEntity<List<EventResponse>> findAll(@CurrentUser UserPrincipal userPrincipal) {
         try {
             User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new UsernameNotFoundException("user not found"));
             List<EventResponse> events = eventService.findAll(user);
-            return ResponseEntity.ok().body(events);
+            return ResponseEntity.ok(events);
         } catch (UsernameNotFoundException exception) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(exception.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 }
