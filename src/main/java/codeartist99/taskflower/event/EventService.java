@@ -3,26 +3,31 @@ package codeartist99.taskflower.event;
 import codeartist99.taskflower.event.payload.EventResponse;
 import codeartist99.taskflower.event.payload.EventSummary;
 import codeartist99.taskflower.event.payload.SaveEventRequest;
+import codeartist99.taskflower.hashtag.HashtagRepository;
+import codeartist99.taskflower.tag.TagRepository;
 import codeartist99.taskflower.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class EventService {
 
     private final EventRepository eventRepository;
+    private final TagRepository tagRepository;
+    private final HashtagRepository hashtagRepository;
 
     @Autowired
-    public EventService(EventRepository eventRepository) {
+    public EventService(EventRepository eventRepository, TagRepository tagRepository, HashtagRepository hashtagRepository) {
         this.eventRepository = eventRepository;
+        this.tagRepository = tagRepository;
+        this.hashtagRepository = hashtagRepository;
     }
 
     /**
@@ -35,7 +40,26 @@ public class EventService {
         if (saveEventRequest.getTitle().isBlank()) {
             throw new IllegalArgumentException("Title cannot be blank");
         }
-        Event event = new Event(user, saveEventRequest);
+
+        Event event = Event.builder()
+                .title(saveEventRequest.getTitle())
+                .description(saveEventRequest.getDescription())
+                .startDateTime(saveEventRequest.getStartDateTime())
+                .dueDateTime(saveEventRequest.getDueDateTime())
+                .location(saveEventRequest.getLocation())
+                .user(user)
+                .build();
+
+        if (saveEventRequest.getTagId() != null) {
+            event.setTag(tagRepository.findById(saveEventRequest.getTagId()).orElse(null));
+        } else {
+            event.setTag(null);
+        }
+        if (saveEventRequest.getHashtagIds() != null) {
+            event.setHashtags(hashtagRepository.findAllById(saveEventRequest.getHashtagIds()));
+        } else {
+            event.setHashtags(null);
+        }
 
         eventRepository.save(event);
 
@@ -68,26 +92,6 @@ public class EventService {
     }
 
     /**
-     * @Deprecated
-     * Find all events in period
-     * @param user User information
-     * @param startDate start date in period
-     * @param dueDate due date in period
-     * @return EventResponse list
-     */
-    public List<EventResponse> findAllInPeriod(User user, LocalDate startDate, LocalDate dueDate) {
-        LocalDateTime startDateTime = LocalDateTime.of(startDate, LocalTime.MIN);
-        LocalDateTime dueDateTime = LocalDateTime.of(dueDate, LocalTime.MAX);
-        List<Event> events = eventRepository.findAllByUserInPeriod(user, startDateTime, dueDateTime);
-
-        List<EventResponse> eventResponseList = new ArrayList<>();
-        for (Event event : events) {
-            eventResponseList.add(new EventResponse(event));
-        }
-        return eventResponseList;
-    }
-
-    /**
      * find monthly events
      * @param user User information
      * @param date date for getting monthly events
@@ -110,12 +114,28 @@ public class EventService {
      * @param saveEventRequest Information to update event
      * @return EventResponse
      */
+    @Transactional
     public EventResponse updateEvent(Long eventId, SaveEventRequest saveEventRequest) throws EventNotFoundException {
-        Event event = eventRepository.findById(eventId).orElseThrow(EventNotFoundException::new);
-        event.update(saveEventRequest);
+        Event foundEvent = eventRepository.findById(eventId).orElseThrow(EventNotFoundException::new);
 
-        Event updateEvent = eventRepository.save(event);
-        return new EventResponse(updateEvent);
+        foundEvent.setTitle(saveEventRequest.getTitle());
+        if (saveEventRequest.getTagId() != null) {
+            foundEvent.setTag(tagRepository.findById(saveEventRequest.getTagId()).orElse(null));
+        } else {
+            foundEvent.setTag(null);
+        }
+        if (saveEventRequest.getHashtagIds() != null) {
+            foundEvent.setHashtags(hashtagRepository.findAllById(saveEventRequest.getHashtagIds()));
+        } else {
+            foundEvent.setHashtags(null);
+        }
+        foundEvent.setDescription(saveEventRequest.getDescription());
+        foundEvent.setStartDateTime(saveEventRequest.getStartDateTime());
+        foundEvent.setDueDateTime(saveEventRequest.getDueDateTime());
+        foundEvent.setLocation(saveEventRequest.getLocation());
+
+        Event result = eventRepository.save(foundEvent);
+        return new EventResponse(result);
     }
 
     /**

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -18,8 +19,9 @@ import java.util.List;
 public class SaveEventRequest {
     @NotNull(message = "Title cannot be null.")
     private String title;
-    private Tag tag;
-    private List<Hashtag> hashtags;
+    private Long tagId;
+    @NotNull(message = "Must not be null. use an empty list if applicable.")
+    private List<Long> hashtagIds = new ArrayList<>();
     private String description;
     private LocalDateTime startDateTime;
     private LocalDateTime dueDateTime;

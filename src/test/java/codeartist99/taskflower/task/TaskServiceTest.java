@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -88,7 +89,7 @@ class TaskServiceTest {
         Flow flow = null;
         Event event = null;
         Tag tag = null;
-        List<Hashtag> hashtags = null;
+        List<Hashtag> hashtags = Collections.emptyList();
         String description = "test description";
         SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, flow, event, tag, hashtags, description, Status.TODO);
 
@@ -111,7 +112,7 @@ class TaskServiceTest {
         Flow flow = null;
         Event event = null;
         Tag tag = null;
-        List<Hashtag> hashtags = null;
+        List<Hashtag> hashtags = Collections.emptyList();
         String description = "test description";
         SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, flow, event, tag, hashtags, description, Status.TODO);
 
@@ -120,7 +121,7 @@ class TaskServiceTest {
         Flow flow2 = null;
         Event event2 = null;
         Tag tag2 = null;
-        List<Hashtag> hashTags2 = null;
+        List<Hashtag> hashTags2 = Collections.emptyList();
         String description2 = "test description2";
         SaveTaskRequest saveTaskRequest2 = new SaveTaskRequest(title2, flow2, event2, tag2, hashTags2, description2, Status.IN_PROGRESS);
 
@@ -176,7 +177,7 @@ class TaskServiceTest {
         Flow flow = null;
         Event event = null;
         Tag tag = null;
-        List<Hashtag> hashtags = null;
+        List<Hashtag> hashtags = Collections.emptyList();
         String description = "test description";
         SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, flow, event, tag, hashtags, description, Status.TODO);
 
@@ -187,7 +188,7 @@ class TaskServiceTest {
         Flow updateFlow = null;
         Event updateEvent = null;
         Tag updateTag = null;
-        List<Hashtag> updateHashtags = null;
+        List<Hashtag> updateHashtags = Collections.emptyList();
         String updateDescription = "test description2";
         SaveTaskRequest updateTaskRequest = new SaveTaskRequest(updateTitle, updateFlow, updateEvent, updateTag, updateHashtags, updateDescription, Status.IN_PROGRESS);
 

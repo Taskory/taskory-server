@@ -1,8 +1,6 @@
 package codeartist99.taskflower.event;
 
 import codeartist99.taskflower.common.BaseTimeEntity;
-import codeartist99.taskflower.common.EntityUtil;
-import codeartist99.taskflower.event.payload.SaveEventRequest;
 import codeartist99.taskflower.hashtag.Hashtag;
 import codeartist99.taskflower.tag.model.Tag;
 import codeartist99.taskflower.user.model.User;
@@ -20,6 +18,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@Builder
 public class Event extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,29 +51,9 @@ public class Event extends BaseTimeEntity {
     @Column(name = "location")
     private String location;
 
-    public Event(User user, SaveEventRequest saveEventRequest) {
-        this.user = user;
-        this.title = saveEventRequest.getTitle();
-        this.tag = saveEventRequest.getTag();
-        this.hashtags = EntityUtil.setListElements(saveEventRequest.getHashtags());
-        this.description = saveEventRequest.getDescription();
-        this.startDateTime = saveEventRequest.getStartDateTime();
-        this.dueDateTime = saveEventRequest.getDueDateTime();
-        this.location = saveEventRequest.getLocation();
-    }
-
     @Override
     public ZoneId getUserZoneId() {
         return ZoneId.of(user.getZoneId());
     }
 
-    public void update(SaveEventRequest saveEventRequest) {
-        this.title = saveEventRequest.getTitle();
-        this.tag = saveEventRequest.getTag();
-        this.hashtags = EntityUtil.setListElements(saveEventRequest.getHashtags());
-        this.description = saveEventRequest.getDescription();
-        this.startDateTime = saveEventRequest.getStartDateTime();
-        this.dueDateTime = saveEventRequest.getDueDateTime();
-        this.location = saveEventRequest.getLocation();
-    }
 }

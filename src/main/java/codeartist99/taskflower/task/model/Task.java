@@ -67,7 +67,7 @@ public class Task extends BaseTimeEntity {
         this.flow = saveTaskRequest.getFlow();
         this.event = saveTaskRequest.getEvent();
         this.tag = saveTaskRequest.getTag();
-        this.hashtags = EntityUtil.setListElements(saveTaskRequest.getHashtags());
+        this.hashtags = saveTaskRequest.getHashtags();
         this.description = saveTaskRequest.getDescription();
         this.status = saveTaskRequest.getStatus();
     }
@@ -82,7 +82,7 @@ public class Task extends BaseTimeEntity {
         this.flow = saveTaskRequest.getFlow();
         this.event = saveTaskRequest.getEvent();
         this.tag = saveTaskRequest.getTag();
-        this.hashtags = EntityUtil.setListElements(saveTaskRequest.getHashtags());
+        this.hashtags = saveTaskRequest.getHashtags();
         this.description = saveTaskRequest.getDescription();
         this.status = saveTaskRequest.getStatus();
     }

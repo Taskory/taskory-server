@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -67,7 +68,7 @@ class FlowServiceTest {
     void save() throws FlowNotFoundException {
 //        Arrange
         String title = "test tile";
-        List<Hashtag> hashtags = null;
+        List<Hashtag> hashtags = Collections.emptyList();
         String description = "test description";
         SaveFlowRequest saveFlowRequest = new SaveFlowRequest(title, hashtags, description);
 
@@ -87,13 +88,13 @@ class FlowServiceTest {
 //        Arrange
 //        the first flow
         String title = "test tile";
-        List<Hashtag> hashtags = null;
+        List<Hashtag> hashtags = Collections.emptyList();
         String description = "test description";
         SaveFlowRequest saveFlowRequest = new SaveFlowRequest(title, hashtags, description);
 
 //        the second flow
         String title2 = "test tile2";
-        List<Hashtag> hashtags2 = null;
+        List<Hashtag> hashtags2 = Collections.emptyList();
         String description2 = "test description2";
         SaveFlowRequest saveFlowRequest2 = new SaveFlowRequest(title2, hashtags2, description2);
 
@@ -125,7 +126,7 @@ class FlowServiceTest {
 //        Arrange
 //        to save a flow
         String title = "test tile";
-        List<Hashtag> hashtags = null;
+        List<Hashtag> hashtags = Collections.emptyList();
         String description = "test description";
         SaveFlowRequest saveFlowRequest = new SaveFlowRequest(title, hashtags, description);;
 
@@ -133,7 +134,7 @@ class FlowServiceTest {
 
 //        update a flow
         String updateTitle = "update title";
-        List<Hashtag> updateHashtags = null;
+        List<Hashtag> updateHashtags = Collections.emptyList();
         String updateDescription = "test description";
         SaveFlowRequest updateFlowRequest = new SaveFlowRequest(updateTitle, updateHashtags, updateDescription);
 

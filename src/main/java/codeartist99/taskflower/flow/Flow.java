@@ -40,7 +40,7 @@ public class Flow extends BaseTimeEntity {
     public Flow(User user, SaveFlowRequest saveFlowRequest) {
         this.user = user;
         this.title = saveFlowRequest.getTitle();
-        this.hashtags = EntityUtil.setListElements(saveFlowRequest.getHashtags());
+        this.hashtags = saveFlowRequest.getHashtags();
         this.description = saveFlowRequest.getDescription();
     }
 
@@ -51,7 +51,7 @@ public class Flow extends BaseTimeEntity {
 
     public void update(SaveFlowRequest saveFlowRequest) {
         this.title = saveFlowRequest.getTitle();
-        this.hashtags = EntityUtil.setListElements(saveFlowRequest.getHashtags());
+        this.hashtags = saveFlowRequest.getHashtags();
         this.description = saveFlowRequest.getDescription();
     }
 }

@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -71,8 +72,8 @@ class EventServiceTest {
     void save() throws EventNotFoundException {
 //        Arrange
         String title = "test title";
-        Tag tag = null;
-        List<Hashtag> hashtags = null;
+        Long tag = null;
+        List<Long> hashtags = Collections.emptyList();
         String description = "test description";
         LocalDateTime startDateTime = LocalDateTime.now().minusDays(10);
         LocalDateTime dueDateTime = LocalDateTime.now().plusDays(10);
@@ -95,8 +96,8 @@ class EventServiceTest {
 //        Arrange
 //        the first event
         String title = "test title";
-        Tag tag = null;
-        List<Hashtag> hashtags = null;
+        Long tag = null;
+        List<Long> hashtags = Collections.emptyList();
         String description = "test description";
         LocalDateTime startDateTime = LocalDateTime.now().minusDays(10);
         LocalDateTime dueDateTime = LocalDateTime.now().plusDays(10);
@@ -105,8 +106,8 @@ class EventServiceTest {
 
 //        the second event
         String title2 = "test title";
-        Tag tag2 = null;
-        List<Hashtag> hashtags2 = null;
+        Long tag2 = null;
+        List<Long> hashtags2 = Collections.emptyList();
         String description2 = "test description";
         LocalDateTime startDateTime2 = LocalDateTime.now().minusDays(5);
         LocalDateTime dueDateTime2 = LocalDateTime.now().plusDays(5);
@@ -145,7 +146,7 @@ class EventServiceTest {
         LocalDateTime startDateTime = LocalDateTime.now().minusMonths(1);
         LocalDateTime dueDateTime = LocalDateTime.now();
         String location = "test location";
-        SaveEventRequest saveEventRequest = new SaveEventRequest(title, null, null, description, startDateTime, dueDateTime, location);
+        SaveEventRequest saveEventRequest = new SaveEventRequest(title, null, Collections.emptyList(), description, startDateTime, dueDateTime, location);
 
 //        the second event - event happens through multiple months
         String title2 = "test title";
@@ -153,7 +154,7 @@ class EventServiceTest {
         LocalDateTime startDateTime2 = LocalDateTime.now().minusMonths(1);
         LocalDateTime dueDateTime2 = LocalDateTime.now().plusMonths(1);
         String location2 = "test location";
-        SaveEventRequest saveEventRequest2 = new SaveEventRequest(title2, null, null, description2, startDateTime2, dueDateTime2, location2);
+        SaveEventRequest saveEventRequest2 = new SaveEventRequest(title2, null, Collections.emptyList(), description2, startDateTime2, dueDateTime2, location2);
 
         //        the third event - event for a single day
         String title3 = "test title";
@@ -161,7 +162,7 @@ class EventServiceTest {
         LocalDateTime startDateTime3 = LocalDateTime.now();
         LocalDateTime dueDateTime3 = LocalDateTime.now();
         String location3 = "test location";
-        SaveEventRequest saveEventRequest3 = new SaveEventRequest(title3, null, null, description3, startDateTime3, dueDateTime3, location3);
+        SaveEventRequest saveEventRequest3 = new SaveEventRequest(title3, null, Collections.emptyList(), description3, startDateTime3, dueDateTime3, location3);
 
 //        save a first event
         EventResponse eventResponse = eventService.save(user, saveEventRequest);
@@ -198,8 +199,8 @@ class EventServiceTest {
 //        Arrange
 //        to save an event
         String title = "test title";
-        Tag tag = null;
-        List<Hashtag> hashtags = null;
+        Long tag = null;
+        List<Long> hashtags = Collections.emptyList();
         String description = "test description";
         LocalDateTime startDateTime = LocalDateTime.now().minusDays(10);
         LocalDateTime dueDateTime = LocalDateTime.now().plusDays(10);
@@ -210,8 +211,8 @@ class EventServiceTest {
 
 //        update an event
         String updateTitle = "update title";
-        Tag updateTag = null;
-        List<Hashtag> updateHashtags = null;
+        Long updateTag = null;
+        List<Long> updateHashtags = Collections.emptyList();
         String updateDescription = "test description";
         LocalDateTime updateStartDateTime = LocalDateTime.now().minusDays(5);
         LocalDateTime updateDueDateTime = LocalDateTime.now().plusDays(5);
@@ -234,8 +235,8 @@ class EventServiceTest {
 //        Arrange
 //        save a task
         String title = "test title";
-        Tag tag = null;
-        List<Hashtag> hashtags = null;
+        Long tag = null;
+        List<Long> hashtags = Collections.emptyList();
         String description = "test description";
         LocalDateTime startDateTime = LocalDateTime.now().minusDays(10);
         LocalDateTime dueDateTime = LocalDateTime.now().plusDays(10);
@@ -265,8 +266,8 @@ class EventServiceTest {
         LocalDate lastDayOfMonth = firstDayOfMonth.withDayOfMonth(firstDayOfMonth.lengthOfMonth());
 
         String title = "test title";
-        Tag tag = null;
-        List<Hashtag> hashtags = null;
+        Long tag = null;
+        List<Long> hashtags = Collections.emptyList();
         String description = "test description";
 
         // Event 1 within the same month
