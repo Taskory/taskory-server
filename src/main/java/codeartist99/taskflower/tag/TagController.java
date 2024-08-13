@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("${app.url-base}/api/tags")
+@RequestMapping("${app.url-base}/tags")
 public class TagController {
 
     private final TagService tagService;
