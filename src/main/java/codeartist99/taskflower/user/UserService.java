@@ -2,6 +2,7 @@ package codeartist99.taskflower.user;
 
 import codeartist99.taskflower.event.EventRepository;
 import codeartist99.taskflower.flow.FlowRepository;
+import codeartist99.taskflower.hashtag.HashtagRepository;
 import codeartist99.taskflower.routine.repository.RoutineHistoryRepository;
 import codeartist99.taskflower.routine.repository.RoutineRepository;
 import codeartist99.taskflower.security.model.OAuth2UserInfo;
@@ -38,9 +39,10 @@ public class UserService {
     private final RoutineRepository routineRepository;
     private final RoutineHistoryRepository routineHistoryRepository;
     private final SocialAccountRepository socialAccountRepository;
+    private final HashtagRepository hashtagRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, EventRepository eventRepository, FlowRepository flowRepository, TagRepository tagRepository, TaskService taskService, RoutineRepository routineRepository, RoutineHistoryRepository routineHistoryRepository, SocialAccountRepository socialAccountRepository) {
+    public UserService(UserRepository userRepository, EventRepository eventRepository, FlowRepository flowRepository, TagRepository tagRepository, TaskService taskService, RoutineRepository routineRepository, RoutineHistoryRepository routineHistoryRepository, SocialAccountRepository socialAccountRepository, HashtagRepository hashtagRepository) {
         this.userRepository = userRepository;
         this.taskService = taskService;
         this.eventRepository = eventRepository;
@@ -49,6 +51,7 @@ public class UserService {
         this.routineRepository = routineRepository;
         this.routineHistoryRepository = routineHistoryRepository;
         this.socialAccountRepository = socialAccountRepository;
+        this.hashtagRepository = hashtagRepository;
     }
 
     /**
@@ -107,7 +110,9 @@ public class UserService {
         routineHistoryRepository.deleteAllByUser(user.get());
         routineRepository.deleteAllByUser(user.get());
         socialAccountRepository.deleteByUser(user.get());
+        hashtagRepository.deleteByUser(user.get());
         userRepository.deleteById(id);
+
     }
 
     /**

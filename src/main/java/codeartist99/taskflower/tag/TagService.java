@@ -50,11 +50,11 @@ public class TagService {
      * @return TagResponse list
      */
     public List<TagResponse> findAll(User user) {
-        List<Optional<Tag>> tags = tagRepository.findAllByUser(user);
+        List<Tag> tags = tagRepository.findAllByUser(user);
 
         List<TagResponse> tagResponseList = new ArrayList<>();
-        for (Optional<Tag> tag : tags) {
-            tag.ifPresent(value -> tagResponseList.add(new TagResponse(value)));
+        for (Tag tag : tags) {
+            tagResponseList.add(new TagResponse(tag));
         }
         return tagResponseList;
     }
