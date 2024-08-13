@@ -30,7 +30,7 @@ public class HashtagController {
     public ResponseEntity<HashtagResponse> createHashtag(@AuthenticationPrincipal User user,
                                                          @RequestBody SaveHashtagRequest saveHashtagRequest) {
         HashtagResponse hashtagResponse = hashtagService.save(user, saveHashtagRequest);
-        return new ResponseEntity<>(hashtagResponse, HttpStatus.CREATED);
+        return ResponseEntity.ok(hashtagResponse);
     }
 
     /**
@@ -42,9 +42,9 @@ public class HashtagController {
     public ResponseEntity<HashtagResponse> getHashtagById(@PathVariable Long id) {
         try {
             HashtagResponse hashtagResponse = hashtagService.getById(id);
-            return new ResponseEntity<>(hashtagResponse, HttpStatus.OK);
+            return ResponseEntity.ok(hashtagResponse);
         } catch (HashtagNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -56,7 +56,7 @@ public class HashtagController {
     @GetMapping
     public ResponseEntity<List<HashtagResponse>> getAllHashtags(@AuthenticationPrincipal User user) {
         List<HashtagResponse> hashtagResponses = hashtagService.findAll(user);
-        return new ResponseEntity<>(hashtagResponses, HttpStatus.OK);
+        return ResponseEntity.ok(hashtagResponses);
     }
 
     /**
@@ -70,9 +70,9 @@ public class HashtagController {
                                                          @RequestBody SaveHashtagRequest saveHashtagRequest) {
         try {
             HashtagResponse hashtagResponse = hashtagService.updateHashtag(id, saveHashtagRequest);
-            return new ResponseEntity<>(hashtagResponse, HttpStatus.OK);
+            return ResponseEntity.ok(hashtagResponse);
         } catch (HashtagNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -85,9 +85,9 @@ public class HashtagController {
     public ResponseEntity<Void> deleteHashtag(@PathVariable Long id) {
         try {
             hashtagService.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return ResponseEntity.ok().build();
         } catch (HashtagNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 }

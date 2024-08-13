@@ -36,13 +36,13 @@ public class EventController {
      * @return List of EventSummary
      */
     @GetMapping("/month")
-    public ResponseEntity<?> findAllMonthlyEvents(@CurrentUser UserPrincipal userPrincipal, @RequestParam LocalDate date) {
+    public ResponseEntity<List<EventSummary>> findAllMonthlyEvents(@CurrentUser UserPrincipal userPrincipal, @RequestParam LocalDate date) {
         try {
             User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new UsernameNotFoundException("user not found"));
             List<EventSummary> events = eventService.findAllMonthlyEvents(user, date);
-            return ResponseEntity.ok().body(events);
+            return ResponseEntity.ok(events);
         } catch (UsernameNotFoundException exception) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(exception.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 
@@ -53,13 +53,13 @@ public class EventController {
      * @return The saved EventResponse
      */
     @PostMapping("/create")
-    public ResponseEntity<?> create(@CurrentUser UserPrincipal userPrincipal, @RequestBody SaveEventRequest saveEventRequest) {
+    public ResponseEntity<EventResponse> create(@CurrentUser UserPrincipal userPrincipal, @RequestBody SaveEventRequest saveEventRequest) {
         try {
             User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new UsernameNotFoundException("user not found"));
             EventResponse response = eventService.save(user, saveEventRequest);
-            return ResponseEntity.ok().body(response);
+            return ResponseEntity.ok(response);
         } catch (UsernameNotFoundException exception) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(exception.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 
@@ -71,12 +71,12 @@ public class EventController {
      * @return The updated EventResponse
      */
     @PutMapping("/update")
-    public ResponseEntity<?> update(@CurrentUser UserPrincipal userPrincipal, @RequestParam Long eventId, @RequestBody SaveEventRequest saveEventRequest) {
+    public ResponseEntity<EventResponse> update(@CurrentUser UserPrincipal userPrincipal, @RequestParam Long eventId, @RequestBody SaveEventRequest saveEventRequest) {
         try {
             EventResponse response = eventService.updateEvent(eventId, saveEventRequest);
-            return ResponseEntity.ok().body(response);
+            return ResponseEntity.ok(response);
         } catch (EventNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -86,12 +86,12 @@ public class EventController {
      * @return ResponseEntity with HTTP status
      */
     @DeleteMapping("/delete")
-    public ResponseEntity<?> delete(@CurrentUser UserPrincipal userPrincipal, @RequestParam Long eventId) {
+    public ResponseEntity<Void> delete(@CurrentUser UserPrincipal userPrincipal, @RequestParam Long eventId) {
         try {
             eventService.deleteById(eventId);
             return ResponseEntity.ok().build();
         } catch (EventNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.notFound().build();
         }
     }
 

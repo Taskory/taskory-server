@@ -93,7 +93,7 @@ public class TagController {
     public ResponseEntity<Void> deleteTagById(@PathVariable Long id) {
         try {
             tagService.deleteById(id);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok().build();
         } catch (TagNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
