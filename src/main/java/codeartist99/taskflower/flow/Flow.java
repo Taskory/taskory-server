@@ -1,7 +1,6 @@
 package codeartist99.taskflower.flow;
 
 import codeartist99.taskflower.common.BaseTimeEntity;
-import codeartist99.taskflower.common.EntityUtil;
 import codeartist99.taskflower.flow.payload.SaveFlowRequest;
 import codeartist99.taskflower.hashtag.Hashtag;
 import codeartist99.taskflower.user.model.User;

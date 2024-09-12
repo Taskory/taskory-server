@@ -1,16 +1,19 @@
 package codeartist99.taskflower.event.payload;
 
+import codeartist99.taskflower.common.util.TimeUtil;
 import codeartist99.taskflower.event.Event;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
+@NoArgsConstructor
+@Getter
 public class EventSummary {
     private Long id;
     private String title;
     private String tagTitle;
     private String tagColor;
-    private LocalDateTime startDateTime;
-    private LocalDateTime dueDateTime;
+    private String startDateTime;
+    private String dueDateTime;
 
     public EventSummary(Event event) {
         this.id = event.getId();
@@ -22,7 +25,7 @@ public class EventSummary {
             this.tagTitle = "";
             this.tagColor = "";
         }
-        this.startDateTime = event.getStartDateTime();
-        this.dueDateTime = event.getDueDateTime();
+        this.startDateTime = TimeUtil.localDateTimeToIsoString(event.getStartDateTime());
+        this.dueDateTime = TimeUtil.localDateTimeToIsoString(event.getDueDateTime());
     }
 }

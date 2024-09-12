@@ -21,9 +21,9 @@ import java.util.Date;
 @Service
 public class TokenServiceImpl implements TokenService{
 
-    @Value("${spring.security.token.expire-ms}")
+    @Value("${app.token.expire-ms}")
     private long expireMS;
-    @Value("${spring.security.token.secret-key}")
+    @Value("${app.token.secret-key}")
     private String key;
 
     private SecretKey secretKey;

@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @RestController
@@ -32,19 +32,26 @@ public class EventController {
     /**
      * Get all events in a specific month.
      * @param userPrincipal Authenticated user
-     * @param date Date within the month to fetch events
+     * @param dateString ISO 8601 date string within the month to fetch events (e.g., "2024-09-11")
      * @return List of EventSummary
      */
     @GetMapping("/month")
-    public ResponseEntity<List<EventSummary>> findAllMonthlyEvents(@CurrentUser UserPrincipal userPrincipal, @RequestParam LocalDate date) {
+    public ResponseEntity<List<EventSummary>> findAllMonthlyEvents(
+            @CurrentUser UserPrincipal userPrincipal,
+            @RequestParam("date") String dateString) {
         try {
-            User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new UsernameNotFoundException("user not found"));
-            List<EventSummary> events = eventService.findAllMonthlyEvents(user, date);
+            User user = userRepository.findById(userPrincipal.getId())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+
+            List<EventSummary> events = eventService.findAllMonthlyEvents(user, dateString);
             return ResponseEntity.ok(events);
         } catch (UsernameNotFoundException exception) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (DateTimeParseException exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
 
     /**
      * Create a new event.

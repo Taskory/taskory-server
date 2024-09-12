@@ -1,21 +1,23 @@
 package codeartist99.taskflower.event;
 
+import codeartist99.taskflower.common.util.TimeUtil;
 import codeartist99.taskflower.event.payload.EventResponse;
 import codeartist99.taskflower.event.payload.EventSummary;
 import codeartist99.taskflower.event.payload.SaveEventRequest;
 import codeartist99.taskflower.hashtag.HashtagRepository;
 import codeartist99.taskflower.tag.TagRepository;
 import codeartist99.taskflower.user.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class EventService {
 
@@ -44,8 +46,8 @@ public class EventService {
         Event event = Event.builder()
                 .title(saveEventRequest.getTitle())
                 .description(saveEventRequest.getDescription())
-                .startDateTime(saveEventRequest.getStartDateTime())
-                .dueDateTime(saveEventRequest.getDueDateTime())
+                .startDateTime(TimeUtil.isoStringToLocalDateTime(saveEventRequest.getStartDateTime()))
+                .dueDateTime(TimeUtil.isoStringToLocalDateTime(saveEventRequest.getDueDateTime()))
                 .location(saveEventRequest.getLocation())
                 .user(user)
                 .build();
@@ -94,12 +96,13 @@ public class EventService {
     /**
      * find monthly events
      * @param user User information
-     * @param date date for getting monthly events
+     * @param isoDateString isoDateString for getting monthly events
      * @return EventSummary list
      */
-    public List<EventSummary> findAllMonthlyEvents(User user, LocalDate date) {
-        LocalDateTime firstDateTime = LocalDateTime.of(date.getYear(), date.getMonth(), 1, 0, 0, 0);
-        LocalDateTime lastDateTime = YearMonth.from(date).atEndOfMonth().atTime(23, 59, 59);
+    public List<EventSummary> findAllMonthlyEvents(User user, String isoDateString) {
+        LocalDateTime dateTime = TimeUtil.isoStringToLocalDateTime(isoDateString);
+        LocalDateTime firstDateTime = LocalDateTime.of(dateTime.getYear(), dateTime.getMonth(), 1, 0, 0, 0);
+        LocalDateTime lastDateTime = YearMonth.from(dateTime).atEndOfMonth().atTime(23, 59, 59);
 
         List<Event> events = eventRepository.findAllByUserInPeriod(user, firstDateTime, lastDateTime);
 
@@ -130,8 +133,8 @@ public class EventService {
             foundEvent.setHashtags(null);
         }
         foundEvent.setDescription(saveEventRequest.getDescription());
-        foundEvent.setStartDateTime(saveEventRequest.getStartDateTime());
-        foundEvent.setDueDateTime(saveEventRequest.getDueDateTime());
+        foundEvent.setStartDateTime(TimeUtil.isoStringToLocalDateTime(saveEventRequest.getStartDateTime()));
+        foundEvent.setDueDateTime(TimeUtil.isoStringToLocalDateTime(saveEventRequest.getDueDateTime()));
         foundEvent.setLocation(saveEventRequest.getLocation());
 
         Event result = eventRepository.save(foundEvent);

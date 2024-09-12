@@ -5,11 +5,13 @@ import codeartist99.taskflower.user.exception.InvalidZoneIdException;
 import codeartist99.taskflower.user.exception.UsernameAlreadyExistsException;
 import codeartist99.taskflower.user.payload.ProfileUpdateRequest;
 import codeartist99.taskflower.user.payload.UserResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("${app.url-base}/user")
 public class UserController {
@@ -28,7 +30,8 @@ public class UserController {
     }
 
     @GetMapping("/check-username")
-    public ResponseEntity<Boolean> checkUsername(@RequestParam String username) {
+    public ResponseEntity<Boolean> checkUsername(@RequestParam("username") String username) {
+        log.info("[LOG - UserController.checkUsername] Checking username:  {}", username);
         boolean isAvailable = userService.isUsernameAvailable(username);
         return ResponseEntity.ok().body(isAvailable);
     }

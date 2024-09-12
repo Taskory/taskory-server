@@ -34,6 +34,7 @@ public class TokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("[LOG] TokenFilter.doFilterInternal()");
         String token = tokenService.getTokenFromRequest(request);
+        log.info("[LOG - TokenFilter.doFilterInternal()] token: {}", token);
         if (StringUtils.hasText(token) && tokenService.isValidatedToken(token)) {
             Long userId = tokenService.getUserIdFromToken(token);
 
@@ -42,7 +43,7 @@ public class TokenFilter extends OncePerRequestFilter {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     userPrincipal, userPrincipal.getPassword(), userPrincipal.getAuthorities()
             );
-            log.info("[LOG - TokenFilter.doFilterInternal()] token: {}", authenticationToken);
+            log.info("[LOG - TokenFilter.doFilterInternal()] authenticationToken: {}", authenticationToken);
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
