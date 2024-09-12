@@ -108,12 +108,12 @@ public class EventController {
      * @return The EventResponse
      */
     @GetMapping("/{eventId}")
-    public ResponseEntity<EventResponse> getById(@PathVariable Long eventId) {
+    public ResponseEntity<EventResponse> getById(@PathVariable("eventId") Long eventId) {
         try {
             EventResponse event = eventService.getById(eventId);
-            return ResponseEntity.ok(event);
+            return ResponseEntity.ok(event); // Responds with the event if found
         } catch (UsernameNotFoundException | EventNotFoundException exception) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build(); // Returns 404 if event is not found
         }
     }
 
