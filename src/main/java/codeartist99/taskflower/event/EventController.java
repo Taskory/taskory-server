@@ -78,7 +78,7 @@ public class EventController {
      * @return The updated EventResponse
      */
     @PutMapping("/update")
-    public ResponseEntity<EventResponse> update(@CurrentUser UserPrincipal userPrincipal, @RequestParam Long eventId, @RequestBody SaveEventRequest saveEventRequest) {
+    public ResponseEntity<EventResponse> update(@CurrentUser UserPrincipal userPrincipal, @RequestParam("eventId") Long eventId, @RequestBody SaveEventRequest saveEventRequest) {
         try {
             EventResponse response = eventService.updateEvent(eventId, saveEventRequest);
             return ResponseEntity.ok(response);
