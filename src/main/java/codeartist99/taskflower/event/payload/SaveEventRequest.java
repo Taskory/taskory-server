@@ -23,4 +23,5 @@ public class SaveEventRequest {
     private String startDateTime;
     private String dueDateTime;
     private String location;
+    private String timezone;
 }

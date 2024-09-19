@@ -25,7 +25,7 @@ public class Event extends BaseTimeEntity {
     @Column(name = "event_id")
     private Long id;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -50,6 +50,9 @@ public class Event extends BaseTimeEntity {
 
     @Column(name = "location")
     private String location;
+
+    @Column(name = "timezone")
+    private String timezone;
 
     @Override
     public ZoneId getUserZoneId() {

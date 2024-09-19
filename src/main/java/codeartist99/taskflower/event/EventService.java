@@ -14,6 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.ZoneId;
+import java.time.format.DateTimeParseException;
+import java.time.zone.ZoneRulesException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,8 +49,8 @@ public class EventService {
         Event event = Event.builder()
                 .title(saveEventRequest.getTitle())
                 .description(saveEventRequest.getDescription())
-                .startDateTime(TimeUtil.isoStringToLocalDateTime(saveEventRequest.getStartDateTime()))
-                .dueDateTime(TimeUtil.isoStringToLocalDateTime(saveEventRequest.getDueDateTime()))
+                .startDateTime(TimeUtil.isoStringToLocalDateTime(saveEventRequest.getStartDateTime(), ZoneId.of(user.getZoneId())))
+                .dueDateTime(TimeUtil.isoStringToLocalDateTime(saveEventRequest.getDueDateTime(), ZoneId.of(user.getZoneId())))
                 .location(saveEventRequest.getLocation())
                 .user(user)
                 .build();
@@ -100,15 +103,25 @@ public class EventService {
      * @return EventSummary list
      */
     public List<EventSummary> findAllMonthlyEvents(User user, String isoDateString) {
-        LocalDateTime dateTime = TimeUtil.isoStringToLocalDateTime(isoDateString);
-        LocalDateTime firstDateTime = LocalDateTime.of(dateTime.getYear(), dateTime.getMonth(), 1, 0, 0, 0);
-        LocalDateTime lastDateTime = YearMonth.from(dateTime).atEndOfMonth().atTime(23, 59, 59);
+        log.info("[LOG - EventService.findAllMonthlyEvent] isoDateString: {}", isoDateString);
+        try {
+            LocalDateTime dateTime = TimeUtil.isoStringToLocalDateTime(isoDateString, ZoneId.of(user.getZoneId()));
+            log.info("[LOG - EventService.findAllMonthlyEvent] dateTime: {}", dateTime);
 
-        List<Event> events = eventRepository.findAllByUserInPeriod(user, firstDateTime, lastDateTime);
-
-        return events.stream()
-                .map(EventSummary::new)
-                .toList();
+            LocalDateTime firstDateTime = LocalDateTime.of(dateTime.getYear(), dateTime.getMonth(), 1, 0, 0, 0);
+            log.info("[LOG - EventService.findAllMonthlyEvent] firstDateTime: {}", firstDateTime);
+            LocalDateTime lastDateTime = YearMonth.from(dateTime).atEndOfMonth().atTime(23, 59, 59);
+            log.info("[LOG - EventService.findAllMonthlyEvent] lastDateTime: {}", lastDateTime);
+            List<Event> events = eventRepository.findAllByUserInPeriod(user, firstDateTime, lastDateTime);
+            log.info("[LOG - EventService.findAllMonthlyEvent] events.size: {}", events.size());
+            return events.stream()
+                    .map(EventSummary::new)
+                    .toList();
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid ISO date string: " + isoDateString);
+        } catch (ZoneRulesException e) {
+            throw new IllegalArgumentException("Invalid time zone: " + user.getZoneId());
+        }
     }
 
     /**
@@ -133,8 +146,8 @@ public class EventService {
             foundEvent.setHashtags(null);
         }
         foundEvent.setDescription(saveEventRequest.getDescription());
-        foundEvent.setStartDateTime(TimeUtil.isoStringToLocalDateTime(saveEventRequest.getStartDateTime()));
-        foundEvent.setDueDateTime(TimeUtil.isoStringToLocalDateTime(saveEventRequest.getDueDateTime()));
+        foundEvent.setStartDateTime(TimeUtil.isoStringToLocalDateTime(saveEventRequest.getStartDateTime(), foundEvent.getUserZoneId()));
+        foundEvent.setDueDateTime(TimeUtil.isoStringToLocalDateTime(saveEventRequest.getDueDateTime(), foundEvent.getUserZoneId()));
         foundEvent.setLocation(saveEventRequest.getLocation());
 
         Event result = eventRepository.save(foundEvent);
