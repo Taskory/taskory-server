@@ -51,7 +51,7 @@ public class Event extends BaseTimeEntity {
     @Column(name = "location")
     private String location;
 
-    @Column(name = "timezone")
+    @Column(name = "timezone", nullable = false)
     private String timezone;
 
     @Override

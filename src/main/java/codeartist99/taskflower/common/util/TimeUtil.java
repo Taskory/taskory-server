@@ -18,7 +18,7 @@ public class TimeUtil {
      * @return the corresponding LocalDateTime
      * @throws DateTimeParseException if the string cannot be parsed
      */
-    public static LocalDateTime isoStringToLocalDateTime(String isoString, ZoneId zoneId) throws DateTimeParseException {
+    public static LocalDateTime isoStringToLocalDateTimeWithZoneId(String isoString, ZoneId zoneId) throws DateTimeParseException {
         ZonedDateTime zonedDateTime = ZonedDateTime.parse(isoString, ISO_DATE_TIME_FORMATTER.withZone(zoneId));
         return zonedDateTime.toLocalDateTime();
     }

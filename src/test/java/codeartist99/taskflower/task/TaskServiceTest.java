@@ -152,7 +152,7 @@ class TaskServiceTest {
     void findAllByFlowOrEvent() {
         Flow flow = new Flow(null, user, "flow title", null, "flow description");
         flowRepository.save(flow);
-        Event event = new Event(null, user, "event title", null, null, "event description", LocalDateTime.now(), LocalDateTime.now().plusDays(1), null);
+        Event event = new Event(null, user, "event title", null, null, "event description", LocalDateTime.now(), LocalDateTime.now().plusDays(1), null, "Asia/Seoul");
         eventRepository.save(event);
         Task task = new Task(null, user, "task title", flow, event, null, null, "task description", Status.TODO, null);
         taskRepository.save(task);

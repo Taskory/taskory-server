@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -76,7 +77,7 @@ class EventServiceTest {
         String startDateTime = TimeUtil.localDateTimeToIsoString(LocalDateTime.now().minusDays(10));
         String dueDateTime = TimeUtil.localDateTimeToIsoString(LocalDateTime.now().plusDays(10));
         String location = "test location";
-        SaveEventRequest saveEventRequest = new SaveEventRequest(title, tag, hashtags, description, startDateTime, dueDateTime, location);
+        SaveEventRequest saveEventRequest = new SaveEventRequest(title, tag, hashtags, description, startDateTime, dueDateTime, location, "Asia/Seoul");
 
 //        Act
         EventResponse eventResponse = eventService.save(user, saveEventRequest);
@@ -100,7 +101,7 @@ class EventServiceTest {
         String startDateTime = TimeUtil.localDateTimeToIsoString(LocalDateTime.now().minusDays(10)); // 변환
         String dueDateTime = TimeUtil.localDateTimeToIsoString(LocalDateTime.now().plusDays(10)); // 변환
         String location = "test location";
-        SaveEventRequest saveEventRequest = new SaveEventRequest(title, tag, hashtags, description, startDateTime, dueDateTime, location);
+        SaveEventRequest saveEventRequest = new SaveEventRequest(title, tag, hashtags, description, startDateTime, dueDateTime, location, "Asia/Seoul");
 
 //        the second event
         String title2 = "test title";
@@ -110,7 +111,7 @@ class EventServiceTest {
         String startDateTime2 = TimeUtil.localDateTimeToIsoString(LocalDateTime.now().minusDays(5)); // 변환
         String dueDateTime2 = TimeUtil.localDateTimeToIsoString(LocalDateTime.now().plusDays(5)); // 변환
         String location2 = "test location";
-        SaveEventRequest saveEventRequest2 = new SaveEventRequest(title2, tag2, hashtags2, description2, startDateTime2, dueDateTime2, location2);
+        SaveEventRequest saveEventRequest2 = new SaveEventRequest(title2, tag2, hashtags2, description2, startDateTime2, dueDateTime2, location2, "Asia/Seoul");
 
 //        save a first event
         EventResponse eventResponse = eventService.save(user, saveEventRequest);
@@ -145,7 +146,7 @@ class EventServiceTest {
         String startDateTime = TimeUtil.localDateTimeToIsoString(LocalDateTime.now().minusMonths(1)); // 변환
         String dueDateTime = TimeUtil.localDateTimeToIsoString(LocalDateTime.now()); // 변환
         String location = "test location";
-        SaveEventRequest saveEventRequest = new SaveEventRequest(title, null, Collections.emptyList(), description, startDateTime, dueDateTime, location);
+        SaveEventRequest saveEventRequest = new SaveEventRequest(title, null, Collections.emptyList(), description, startDateTime, dueDateTime, location, "Asia/Seoul");
 
 //        the second event - event happens through multiple months
         String title2 = "test title";
@@ -153,7 +154,7 @@ class EventServiceTest {
         String startDateTime2 = TimeUtil.localDateTimeToIsoString(LocalDateTime.now().minusMonths(1)); // 변환
         String dueDateTime2 = TimeUtil.localDateTimeToIsoString(LocalDateTime.now().plusMonths(1)); // 변환
         String location2 = "test location";
-        SaveEventRequest saveEventRequest2 = new SaveEventRequest(title2, null, Collections.emptyList(), description2, startDateTime2, dueDateTime2, location2);
+        SaveEventRequest saveEventRequest2 = new SaveEventRequest(title2, null, Collections.emptyList(), description2, startDateTime2, dueDateTime2, location2, "Asia/Seoul");
 
 //        the third event - event for a single day
         String title3 = "test title";
@@ -161,7 +162,7 @@ class EventServiceTest {
         String startDateTime3 = TimeUtil.localDateTimeToIsoString(LocalDateTime.now()); // 변환
         String dueDateTime3 = TimeUtil.localDateTimeToIsoString(LocalDateTime.now()); // 변환
         String location3 = "test location";
-        SaveEventRequest saveEventRequest3 = new SaveEventRequest(title3, null, Collections.emptyList(), description3, startDateTime3, dueDateTime3, location3);
+        SaveEventRequest saveEventRequest3 = new SaveEventRequest(title3, null, Collections.emptyList(), description3, startDateTime3, dueDateTime3, location3, "Asia/Seoul");
 
 //        save a first event
         EventResponse eventResponse = eventService.save(user, saveEventRequest);
@@ -204,7 +205,7 @@ class EventServiceTest {
         String startDateTime = TimeUtil.localDateTimeToIsoString(LocalDateTime.now().minusDays(10));
         String dueDateTime = TimeUtil.localDateTimeToIsoString(LocalDateTime.now().plusDays(10));
         String location = "test location";
-        SaveEventRequest saveEventRequest = new SaveEventRequest(title, tag, hashtags, description, startDateTime, dueDateTime, location);
+        SaveEventRequest saveEventRequest = new SaveEventRequest(title, tag, hashtags, description, startDateTime, dueDateTime, location, "Asia/Seoul");
 
         EventResponse eventResponse = eventService.save(user, saveEventRequest);
 
@@ -216,7 +217,7 @@ class EventServiceTest {
         String updateStartDateTime = TimeUtil.localDateTimeToIsoString(LocalDateTime.now().minusDays(5));
         String updateDueDateTime = TimeUtil.localDateTimeToIsoString(LocalDateTime.now().plusDays(5));
         String updateLocation = "update location";
-        SaveEventRequest updateEventRequest = new SaveEventRequest(updateTitle, updateTag, updateHashtags, updateDescription, updateStartDateTime, updateDueDateTime, updateLocation);
+        SaveEventRequest updateEventRequest = new SaveEventRequest(updateTitle, updateTag, updateHashtags, updateDescription, updateStartDateTime, updateDueDateTime, updateLocation, "Asia/Seoul");
 
 //        Act
         EventResponse updateEventResponse = eventService.updateEvent(eventResponse.getId(), updateEventRequest);
@@ -240,7 +241,7 @@ class EventServiceTest {
         String startDateTime = TimeUtil.localDateTimeToIsoString(LocalDateTime.now().minusDays(10));
         String dueDateTime = TimeUtil.localDateTimeToIsoString(LocalDateTime.now().plusDays(10));
         String location = "test location";
-        SaveEventRequest saveEventRequest = new SaveEventRequest(title, tag, hashtags, description, startDateTime, dueDateTime, location);
+        SaveEventRequest saveEventRequest = new SaveEventRequest(title, tag, hashtags, description, startDateTime, dueDateTime, location, "Asia/Seoul");
 
         EventResponse eventResponse = eventService.save(user, saveEventRequest);
 
@@ -271,25 +272,25 @@ class EventServiceTest {
         String description = "test description";
 
         // Event 1 within the same month
-        String startDateTime1 = TimeUtil.localDateTimeToIsoString(TimeUtil.isoStringToLocalDateTime(firstDayOfMonth));
-        String dueDateTime1 = TimeUtil.localDateTimeToIsoString(TimeUtil.isoStringToLocalDateTime(startDateTime1).plusDays(10));
+        String startDateTime1 = TimeUtil.localDateTimeToIsoString(TimeUtil.isoStringToLocalDateTimeWithZoneId(firstDayOfMonth, ZoneId.of("Asia/Seoul")));
+        String dueDateTime1 = TimeUtil.localDateTimeToIsoString(TimeUtil.isoStringToLocalDateTimeWithZoneId(startDateTime1, ZoneId.of("Asia/Seoul")).plusDays(10));
         String location = "test location";
-        SaveEventRequest saveEventRequest1 = new SaveEventRequest(title, tag, hashtags, description, startDateTime1, dueDateTime1, location);
+        SaveEventRequest saveEventRequest1 = new SaveEventRequest(title, tag, hashtags, description, startDateTime1, dueDateTime1, location, "Asia/Seoul");
 
         // Event 2 within the same month
-        String startDateTime2 = TimeUtil.localDateTimeToIsoString(TimeUtil.isoStringToLocalDateTime(startDateTime1).plusDays(15));
-        String dueDateTime2 = TimeUtil.localDateTimeToIsoString(TimeUtil.isoStringToLocalDateTime(startDateTime2).plusDays(5));
-        SaveEventRequest saveEventRequest2 = new SaveEventRequest(title, tag, hashtags, description, startDateTime2, dueDateTime2, location);
+        String startDateTime2 = TimeUtil.localDateTimeToIsoString(TimeUtil.isoStringToLocalDateTimeWithZoneId(startDateTime1, ZoneId.of("Asia/Seoul")).plusDays(15));
+        String dueDateTime2 = TimeUtil.localDateTimeToIsoString(TimeUtil.isoStringToLocalDateTimeWithZoneId(startDateTime2, ZoneId.of("Asia/Seoul")).plusDays(5));
+        SaveEventRequest saveEventRequest2 = new SaveEventRequest(title, tag, hashtags, description, startDateTime2, dueDateTime2, location, "Asia/Seoul");
 
         // Event 3 starting in the previous month and ending in the current month
-        String startDateTime3 = TimeUtil.localDateTimeToIsoString(TimeUtil.isoStringToLocalDateTime(startDateTime1).minusDays(5));
-        String dueDateTime3 = TimeUtil.localDateTimeToIsoString(TimeUtil.isoStringToLocalDateTime(startDateTime1).plusDays(5));
-        SaveEventRequest saveEventRequest3 = new SaveEventRequest(title, tag, hashtags, description, startDateTime3, dueDateTime3, location);
+        String startDateTime3 = TimeUtil.localDateTimeToIsoString(TimeUtil.isoStringToLocalDateTimeWithZoneId(startDateTime1, ZoneId.of("Asia/Seoul")).minusDays(5));
+        String dueDateTime3 = TimeUtil.localDateTimeToIsoString(TimeUtil.isoStringToLocalDateTimeWithZoneId(startDateTime1, ZoneId.of("Asia/Seoul")).plusDays(5));
+        SaveEventRequest saveEventRequest3 = new SaveEventRequest(title, tag, hashtags, description, startDateTime3, dueDateTime3, location, "Asia/Seoul");
 
         // Event 4 starting in the current month and ending in the next month
-        String startDateTime4 = TimeUtil.localDateTimeToIsoString(TimeUtil.isoStringToLocalDateTime(lastDayOfMonth).minusDays(5));
-        String dueDateTime4 = TimeUtil.localDateTimeToIsoString(TimeUtil.isoStringToLocalDateTime(lastDayOfMonth).plusDays(5));
-        SaveEventRequest saveEventRequest4 = new SaveEventRequest(title, tag, hashtags, description, startDateTime4, dueDateTime4, location);
+        String startDateTime4 = TimeUtil.localDateTimeToIsoString(TimeUtil.isoStringToLocalDateTimeWithZoneId(lastDayOfMonth, ZoneId.of("Asia/Seoul")).minusDays(5));
+        String dueDateTime4 = TimeUtil.localDateTimeToIsoString(TimeUtil.isoStringToLocalDateTimeWithZoneId(lastDayOfMonth, ZoneId.of("Asia/Seoul")).plusDays(5));
+        SaveEventRequest saveEventRequest4 = new SaveEventRequest(title, tag, hashtags, description, startDateTime4, dueDateTime4, location, "Asia/Seoul");
 
         eventService.save(user, saveEventRequest1);
         eventService.save(user, saveEventRequest2);

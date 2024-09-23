@@ -22,6 +22,8 @@ public class EventResponse {
     private String startDateTime;
     private String dueDateTime;
     private String location;
+    private String timezone;
+
 
     public EventResponse(Event event) {
         this.id = event.getId();
@@ -32,5 +34,6 @@ public class EventResponse {
         this.startDateTime = TimeUtil.localDateTimeToIsoString(event.getStartDateTime());
         this.dueDateTime = TimeUtil.localDateTimeToIsoString(event.getDueDateTime());
         this.location = event.getLocation();
+        this.timezone = event.getTimezone();
     }
 }

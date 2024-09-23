@@ -47,4 +47,10 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
+    @GetMapping("/zoneid")
+    public ResponseEntity<String> getZoneId(@CurrentUser UserPrincipal userPrincipal) {
+        String response = userService.getByUsername(userPrincipal.getUsername()).getZoneId();
+        return ResponseEntity.ok().body(response);
+    }
 }
