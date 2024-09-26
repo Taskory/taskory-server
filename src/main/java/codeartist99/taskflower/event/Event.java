@@ -1,6 +1,7 @@
 package codeartist99.taskflower.event;
 
 import codeartist99.taskflower.common.BaseTimeEntity;
+import codeartist99.taskflower.common.Timezone;
 import codeartist99.taskflower.hashtag.Hashtag;
 import codeartist99.taskflower.tag.model.Tag;
 import codeartist99.taskflower.user.model.User;
@@ -17,7 +18,6 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @Builder
 public class Event extends BaseTimeEntity {
     @Id
@@ -51,12 +51,17 @@ public class Event extends BaseTimeEntity {
     @Column(name = "location")
     private String location;
 
+    @Enumerated(EnumType.STRING)  // Use the Timezone enum as String in the database
     @Column(name = "timezone", nullable = false)
-    private String timezone;
+    private Timezone timezone;
+
+    // Retrieve the ZoneId from the Timezone enum
+    public ZoneId getEventZoneId() {
+        return timezone.getZoneId();
+    }
 
     @Override
     public ZoneId getUserZoneId() {
         return ZoneId.of(user.getZoneId());
     }
-
 }

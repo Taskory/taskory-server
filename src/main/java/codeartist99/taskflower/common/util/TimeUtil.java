@@ -34,5 +34,4 @@ public class TimeUtil {
         LocalDateTime localDateTime = LocalDateTime.parse(dateTimeString, formatter);
         return localDateTime.atZone(ZoneId.of("UTC")).toLocalDateTime();
     }
-
 }

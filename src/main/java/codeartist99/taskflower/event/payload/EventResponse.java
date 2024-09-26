@@ -34,6 +34,6 @@ public class EventResponse {
         this.startDateTime = TimeUtil.LocalDateTimeToString(event.getStartDateTime());
         this.dueDateTime = TimeUtil.LocalDateTimeToString(event.getDueDateTime());
         this.location = event.getLocation();
-        this.timezone = event.getTimezone();
+        this.timezone = event.getTimezone().toString();
     }
 }

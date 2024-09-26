@@ -1,5 +1,6 @@
 package codeartist99.taskflower.event;
 
+import codeartist99.taskflower.common.Timezone;
 import codeartist99.taskflower.common.util.TimeUtil;
 import codeartist99.taskflower.event.payload.EventResponse;
 import codeartist99.taskflower.event.payload.EventSummary;
@@ -51,7 +52,7 @@ public class EventService {
                 .startDateTime(TimeUtil.StringToLocalDateTime(saveEventRequest.getStartDateTime()))
                 .dueDateTime(TimeUtil.StringToLocalDateTime(saveEventRequest.getDueDateTime()))
                 .location(saveEventRequest.getLocation())
-                .timezone(saveEventRequest.getTimezone())
+                .timezone(Timezone.fromString(saveEventRequest.getTimezone()))
                 .user(user)
                 .build();
 
@@ -99,26 +100,20 @@ public class EventService {
     /**
      * find monthly events
      * @param user User information
-     * @param isoDateString isoDateString for getting monthly events
+     * @param dateString dateString for getting monthly events
      * @return EventSummary list
      */
-    public List<EventSummary> findAllMonthlyEvents(User user, String isoDateString) {
-        log.info("[LOG - EventService.findAllMonthlyEvent] isoDateString: {}", isoDateString);
+    public List<EventSummary> findAllMonthlyEvents(User user, String dateString) {
         try {
-            LocalDateTime dateTime = TimeUtil.StringToLocalDateTime(isoDateString);
-            log.info("[LOG - EventService.findAllMonthlyEvent] dateTime: {}", dateTime);
-
+            LocalDateTime dateTime = TimeUtil.StringToLocalDateTime(dateString);
             LocalDateTime firstDateTime = LocalDateTime.of(dateTime.getYear(), dateTime.getMonth(), 1, 0, 0, 0);
-            log.info("[LOG - EventService.findAllMonthlyEvent] firstDateTime: {}", firstDateTime);
             LocalDateTime lastDateTime = YearMonth.from(dateTime).atEndOfMonth().atTime(23, 59, 59);
-            log.info("[LOG - EventService.findAllMonthlyEvent] lastDateTime: {}", lastDateTime);
             List<Event> events = eventRepository.findAllByUserInPeriod(user, firstDateTime, lastDateTime);
-            log.info("[LOG - EventService.findAllMonthlyEvent] events.size: {}", events.size());
             return events.stream()
                     .map(EventSummary::new)
                     .toList();
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid ISO date string: " + isoDateString);
+            throw new IllegalArgumentException("Invalid ISO date string: " + dateString);
         } catch (ZoneRulesException e) {
             throw new IllegalArgumentException("Invalid time zone: " + user.getZoneId());
         }
