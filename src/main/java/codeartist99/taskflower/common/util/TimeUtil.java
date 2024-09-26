@@ -2,34 +2,47 @@ package codeartist99.taskflower.common.util;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.time.ZonedDateTime;
 
+/**
+ * Utility class for handling LocalDateTime to String conversions and vice versa in UTC timezone.
+ */
 public class TimeUtil {
 
-    private static final DateTimeFormatter ISO_DATE_TIME_FORMATTER = DateTimeFormatter.ISO_DATE_TIME;
+    // DateTimeFormatter for formatting and parsing the string
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
     /**
-     * Converts an ISO 8601 formatted string to LocalDateTime in the specified timezone.
+     * Converts a LocalDateTime object to a string formatted as "yyyy-MM-dd'T'HH:mm" in UTC.
      *
-     * @param isoString the ISO 8601 string to convert
-     * @param zoneId    the ZoneId to apply to the conversion
-     * @return the corresponding LocalDateTime
-     * @throws DateTimeParseException if the string cannot be parsed
+     * @param dateTime the LocalDateTime object to be converted (assumed to be in UTC).
+     * @return a formatted string representing the LocalDateTime in UTC.
      */
-    public static LocalDateTime isoStringToLocalDateTimeWithZoneId(String isoString, ZoneId zoneId) throws DateTimeParseException {
-        ZonedDateTime zonedDateTime = ZonedDateTime.parse(isoString, ISO_DATE_TIME_FORMATTER.withZone(zoneId));
-        return zonedDateTime.toLocalDateTime();
+    public static String LocalDateTimeToString(LocalDateTime dateTime) {
+        ZonedDateTime utcDateTime = dateTime.atZone(ZoneId.of("UTC"));
+        return utcDateTime.format(formatter);
     }
 
     /**
-     * Converts a LocalDateTime object to an ISO 8601 formatted string.
+     * Converts a string formatted as "yyyy-MM-dd'T'HH:mm" to a LocalDateTime object in UTC.
      *
-     * @param localDateTime the LocalDateTime to convert
-     * @return the corresponding ISO 8601 formatted string
+     * @param dateTimeString the string representing the date and time in "yyyy-MM-dd'T'HH:mm" format.
+     * @return a LocalDateTime object corresponding to the parsed string in UTC.
      */
-    public static String localDateTimeToIsoString(LocalDateTime localDateTime) {
-        return localDateTime.format(ISO_DATE_TIME_FORMATTER);
+    public static LocalDateTime StringToLocalDateTime(String dateTimeString) {
+        LocalDateTime localDateTime = LocalDateTime.parse(dateTimeString, formatter);
+        return localDateTime.atZone(ZoneId.of("UTC")).toLocalDateTime();
+    }
+
+    public static void main(String[] args) {
+        // Example usage:
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC"));
+        String formatted = LocalDateTimeToString(now);
+        System.out.println("Formatted LocalDateTime: " + formatted);
+
+        String dateTimeString = "2024-09-26T15:30";
+        LocalDateTime parsedDateTime = StringToLocalDateTime(dateTimeString);
+        System.out.println("Parsed LocalDateTime: " + parsedDateTime);
     }
 }
