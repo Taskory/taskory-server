@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
-import java.time.ZoneId;
 import java.time.format.DateTimeParseException;
 import java.time.zone.ZoneRulesException;
 import java.util.ArrayList;
@@ -49,9 +48,10 @@ public class EventService {
         Event event = Event.builder()
                 .title(saveEventRequest.getTitle())
                 .description(saveEventRequest.getDescription())
-                .startDateTime(TimeUtil.isoStringToLocalDateTimeWithZoneId(saveEventRequest.getStartDateTime(), ZoneId.of(user.getZoneId())))
-                .dueDateTime(TimeUtil.isoStringToLocalDateTimeWithZoneId(saveEventRequest.getDueDateTime(), ZoneId.of(user.getZoneId())))
+                .startDateTime(TimeUtil.StringToLocalDateTime(saveEventRequest.getStartDateTime()))
+                .dueDateTime(TimeUtil.StringToLocalDateTime(saveEventRequest.getDueDateTime()))
                 .location(saveEventRequest.getLocation())
+                .timezone(saveEventRequest.getTimezone())
                 .user(user)
                 .build();
 
@@ -105,7 +105,7 @@ public class EventService {
     public List<EventSummary> findAllMonthlyEvents(User user, String isoDateString) {
         log.info("[LOG - EventService.findAllMonthlyEvent] isoDateString: {}", isoDateString);
         try {
-            LocalDateTime dateTime = TimeUtil.isoStringToLocalDateTimeWithZoneId(isoDateString, ZoneId.of(user.getZoneId()));
+            LocalDateTime dateTime = TimeUtil.StringToLocalDateTime(isoDateString);
             log.info("[LOG - EventService.findAllMonthlyEvent] dateTime: {}", dateTime);
 
             LocalDateTime firstDateTime = LocalDateTime.of(dateTime.getYear(), dateTime.getMonth(), 1, 0, 0, 0);
@@ -146,8 +146,8 @@ public class EventService {
             foundEvent.setHashtags(null);
         }
         foundEvent.setDescription(saveEventRequest.getDescription());
-        foundEvent.setStartDateTime(TimeUtil.isoStringToLocalDateTimeWithZoneId(saveEventRequest.getStartDateTime(), foundEvent.getUserZoneId()));
-        foundEvent.setDueDateTime(TimeUtil.isoStringToLocalDateTimeWithZoneId(saveEventRequest.getDueDateTime(), foundEvent.getUserZoneId()));
+        foundEvent.setStartDateTime(TimeUtil.StringToLocalDateTime(saveEventRequest.getStartDateTime()));
+        foundEvent.setDueDateTime(TimeUtil.StringToLocalDateTime(saveEventRequest.getDueDateTime()));
         foundEvent.setLocation(saveEventRequest.getLocation());
 
         Event result = eventRepository.save(foundEvent);

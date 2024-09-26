@@ -25,7 +25,7 @@ public class EventSummary {
             this.tagTitle = "";
             this.tagColor = "";
         }
-        this.startDateTime = TimeUtil.localDateTimeToIsoString(event.getStartDateTime());
-        this.dueDateTime = TimeUtil.localDateTimeToIsoString(event.getDueDateTime());
+        this.startDateTime = TimeUtil.LocalDateTimeToString(event.getStartDateTime());
+        this.dueDateTime = TimeUtil.LocalDateTimeToString(event.getDueDateTime());
     }
 }

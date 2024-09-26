@@ -31,8 +31,8 @@ public class EventResponse {
         this.tag = event.getTag();
         this.hashtags = event.getHashtags();
         this.description = event.getDescription();
-        this.startDateTime = TimeUtil.localDateTimeToIsoString(event.getStartDateTime());
-        this.dueDateTime = TimeUtil.localDateTimeToIsoString(event.getDueDateTime());
+        this.startDateTime = TimeUtil.LocalDateTimeToString(event.getStartDateTime());
+        this.dueDateTime = TimeUtil.LocalDateTimeToString(event.getDueDateTime());
         this.location = event.getLocation();
         this.timezone = event.getTimezone();
     }

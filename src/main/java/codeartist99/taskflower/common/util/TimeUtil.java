@@ -35,14 +35,4 @@ public class TimeUtil {
         return localDateTime.atZone(ZoneId.of("UTC")).toLocalDateTime();
     }
 
-    public static void main(String[] args) {
-        // Example usage:
-        LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC"));
-        String formatted = LocalDateTimeToString(now);
-        System.out.println("Formatted LocalDateTime: " + formatted);
-
-        String dateTimeString = "2024-09-26T15:30";
-        LocalDateTime parsedDateTime = StringToLocalDateTime(dateTimeString);
-        System.out.println("Parsed LocalDateTime: " + parsedDateTime);
-    }
 }
