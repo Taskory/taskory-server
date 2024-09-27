@@ -98,12 +98,18 @@ public class EventService {
      *
      * @param user user information
      * @param startDateString start date string -> format: yyyy-mm-ddThh:mm
-     * @param endDateString start date string -> format: yyyy-mm-ddThh:mm
+     * @param endDateString end date string -> format: yyyy-mm-ddThh:mm
      * @return EventSummary list
+     * @throws IllegalArgumentException if the endDate is before the startDate
      */
     public List<EventSummary> findEventsInPeriod(User user, String startDateString, String endDateString) {
         LocalDateTime startDateTime = TimeUtil.stringToLocalDateTime(startDateString);
         LocalDateTime endDateTime = TimeUtil.stringToLocalDateTime(endDateString);
+
+        // Check if endDate is before startDate
+        if (endDateTime.isBefore(startDateTime)) {
+            throw new IllegalArgumentException("End date cannot be before start date.");
+        }
 
         List<Event> events = eventRepository.findAllByUserInPeriod(user, startDateTime, endDateTime);
 
@@ -113,6 +119,7 @@ public class EventService {
         }
         return eventSummaryList;
     }
+
 
     /**
      * Update event

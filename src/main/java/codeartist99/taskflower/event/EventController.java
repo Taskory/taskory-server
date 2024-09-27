@@ -37,8 +37,6 @@ public class EventController {
             @RequestParam("startDate") String startDateString,
             @RequestParam("endDate") String endDateString) {
 
-        log.info("[LOG - EventContoroller.findAllEventsInPeriod] startDate: {}, endDate: {}", startDateString, endDateString);
-
         try {
             User user = userRepository.findById(userPrincipal.getId())
                     .orElseThrow(() -> new UsernameNotFoundException("User not found."));
@@ -93,7 +91,7 @@ public class EventController {
      * @return ResponseEntity with HTTP status
      */
     @DeleteMapping("/delete")
-    public ResponseEntity<Void> delete(@CurrentUser UserPrincipal userPrincipal, @RequestParam Long eventId) {
+    public ResponseEntity<Void> delete(@CurrentUser UserPrincipal userPrincipal, @RequestParam("eventId") Long eventId) {
         try {
             eventService.deleteById(eventId);
             return ResponseEntity.ok().build();
