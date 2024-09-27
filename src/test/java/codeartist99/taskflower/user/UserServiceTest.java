@@ -1,6 +1,5 @@
 package codeartist99.taskflower.user;
 
-import codeartist99.taskflower.user.exception.InvalidZoneIdException;
 import codeartist99.taskflower.user.exception.UsernameAlreadyExistsException;
 import codeartist99.taskflower.user.model.User;
 import codeartist99.taskflower.user.payload.ProfileUpdateRequest;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.time.ZoneId;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,7 +37,6 @@ class UserServiceTest {
         String zoneId = "Asia/Seoul";
         user = User.builder()
                 .username(username)
-                .zoneId(zoneId)
                 .build();
         userRepository.save(user);
     }
@@ -71,15 +68,14 @@ class UserServiceTest {
      */
     @Test
     @DisplayName("Update user profile")
-    void updateProfile() throws UsernameAlreadyExistsException, InvalidZoneIdException {
+    void updateProfile() throws UsernameAlreadyExistsException {
 //        Arrange
         UserResponse savedUserResponse = new UserResponse(user);
 
 
 //        Act
         String updateUsername = getUsername();
-        String updatedZoneId = ZoneId.of("Asia/Tokyo").toString();
-        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(updateUsername, updatedZoneId);
+        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(updateUsername);
         UserResponse updatedUserResponse = userService.updateProfile(savedUserResponse.getId(), profileUpdateRequest);
 
 //        Assert
@@ -100,32 +96,16 @@ class UserServiceTest {
         String invalidUsername = getUsername();
         User duplicatedUser = User.builder()
                 .username(invalidUsername)
-                .zoneId("Asia/Seoul")
                 .build();
         userRepository.save(duplicatedUser);
         UserResponse duplicatedUserResponse = new UserResponse(duplicatedUser);
 
 //        Act and Assert
-        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(invalidUsername, "Asia/Seoul");
+        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(invalidUsername);
         assertThrows(UsernameAlreadyExistsException.class, () -> userService.updateProfile(savedUserResponse.getId(), profileUpdateRequest));
 
 //        duplicatedUser delete
         userService.deleteById(duplicatedUserResponse.getId());
-    }
-
-    /**
-     * Test for fail user profile update
-     * Invalid zone id
-     */
-    @Test
-    @DisplayName("Invalid zone id update user")
-    void updateUser_invalid_zoneId() {
-//        Arrange
-        UserResponse savedUserResponse = new UserResponse(user);
-
-//        Act and Assert
-        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(savedUserResponse.getUsername(), "Invalid zone id");
-        assertThrows(InvalidZoneIdException.class, () -> userService.updateProfile(savedUserResponse.getId(), profileUpdateRequest));
     }
 
     /**

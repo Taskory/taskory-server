@@ -1,6 +1,5 @@
 package codeartist99.taskflower.task;
 
-import codeartist99.taskflower.common.Timezone;
 import codeartist99.taskflower.event.Event;
 import codeartist99.taskflower.event.EventRepository;
 import codeartist99.taskflower.flow.Flow;
@@ -68,7 +67,6 @@ class TaskServiceTest {
         String zoneId = "Asia/Seoul";
         user = User.builder()
                 .username(username)
-                .zoneId(zoneId)
                 .build();
         userRepository.save(user);
     }
@@ -153,7 +151,7 @@ class TaskServiceTest {
     void findAllByFlowOrEvent() {
         Flow flow = new Flow(null, user, "flow title", null, "flow description");
         flowRepository.save(flow);
-        Event event = new Event(null, user, "event title", null, null, "event description", LocalDateTime.now(), LocalDateTime.now().plusDays(1), null, Timezone.SEOUL);
+        Event event = new Event(null, user, "event title", null, null, "event description", LocalDateTime.now(), LocalDateTime.now().plusDays(1), null);
         eventRepository.save(event);
         Task task = new Task(null, user, "task title", flow, event, null, null, "task description", Status.TODO, null);
         taskRepository.save(task);

@@ -41,10 +41,8 @@ class HashtagServiceTest {
             }
         } while (userRepository.existsByUsername(tempUsername.toString()));
         String username = tempUsername.toString();
-        String zoneId = "Asia/Seoul";
         user = User.builder()
                 .username(username)
-                .zoneId(zoneId)
                 .build();
         userRepository.save(user);
     }

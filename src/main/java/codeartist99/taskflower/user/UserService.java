@@ -1,6 +1,5 @@
 package codeartist99.taskflower.user;
 
-import codeartist99.taskflower.common.Timezone;
 import codeartist99.taskflower.event.EventRepository;
 import codeartist99.taskflower.flow.FlowRepository;
 import codeartist99.taskflower.hashtag.HashtagRepository;
@@ -9,7 +8,6 @@ import codeartist99.taskflower.routine.repository.RoutineRepository;
 import codeartist99.taskflower.security.model.OAuth2UserInfo;
 import codeartist99.taskflower.tag.TagRepository;
 import codeartist99.taskflower.task.service.TaskService;
-import codeartist99.taskflower.user.exception.InvalidZoneIdException;
 import codeartist99.taskflower.user.exception.UsernameAlreadyExistsException;
 import codeartist99.taskflower.user.model.Role;
 import codeartist99.taskflower.user.model.SocialAccount;
@@ -21,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.time.ZoneId;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
@@ -72,7 +69,7 @@ public class UserService {
      * @param profileUpdateRequest Information for profile update
      * @return UserResponse
      */
-    public UserResponse updateProfile(Long userId, ProfileUpdateRequest profileUpdateRequest) throws UsernameAlreadyExistsException, InvalidZoneIdException {
+    public UserResponse updateProfile(Long userId, ProfileUpdateRequest profileUpdateRequest) throws UsernameAlreadyExistsException {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
@@ -112,21 +109,8 @@ public class UserService {
 
     }
 
-    /**
-     * Validate zone id
-     * @param zoneId Zone id requested from user
-     * @return boolean
-     */
-    private boolean isInvalidateZoneId(String zoneId) {
-        for (String zone : ZoneId.getAvailableZoneIds()) {
-            if (Objects.equals(zone, zoneId)) return false;
-        }
-        return true;
-    }
-
     public User registerTempUser(OAuth2UserInfo oAuth2UserInfo, String socialProvider) {
         User user = User.builder()
-                .timezone(Timezone.UTC)
                 .username(oAuth2UserInfo.getEmail())
                 .roles(Collections.singletonList(Role.TEMP_USER))
                 .build();

@@ -1,6 +1,5 @@
 package codeartist99.taskflower.event;
 
-import codeartist99.taskflower.common.Timezone;
 import codeartist99.taskflower.common.util.TimeUtil;
 import codeartist99.taskflower.event.payload.EventResponse;
 import codeartist99.taskflower.event.payload.EventSummary;
@@ -13,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.*;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjusters;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +48,6 @@ public class EventService {
                 .startDateTime(TimeUtil.stringToLocalDateTime(saveEventRequest.getStartDateTime()))
                 .dueDateTime(TimeUtil.stringToLocalDateTime(saveEventRequest.getDueDateTime()))
                 .location(saveEventRequest.getLocation())
-                .timezone(Timezone.fromString(saveEventRequest.getTimezone()))
                 .user(user)
                 .build();
 
@@ -96,48 +92,26 @@ public class EventService {
         return eventResponseList;
     }
 
+
     /**
-     * find monthly events
-     * @param user User information
-     * @param dateString dateString for getting monthly events
+     * Find events in period
+     *
+     * @param user user information
+     * @param startDateString start date string -> format: yyyy-mm-ddThh:mm
+     * @param endDateString start date string -> format: yyyy-mm-ddThh:mm
      * @return EventSummary list
      */
-    public List<EventSummary> findAllMonthlyEvents(User user, String dateString) {
-        // 1. Parse the dateString into LocalDateTime (UTC)
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        LocalDateTime inputDateTimeUtc = LocalDateTime.parse(dateString, formatter);
+    public List<EventSummary> findEventsInPeriod(User user, String startDateString, String endDateString) {
+        LocalDateTime startDateTime = TimeUtil.stringToLocalDateTime(startDateString);
+        LocalDateTime endDateTime = TimeUtil.stringToLocalDateTime(endDateString);
 
-        // 2. Get the user's ZoneId
-        ZoneId userZoneId = user.getTimezone().getZoneId();
+        List<Event> events = eventRepository.findAllByUserInPeriod(user, startDateTime, endDateTime);
 
-        // 3. Convert input UTC date to the user's local time
-        ZonedDateTime userLocalDateTime = inputDateTimeUtc.atZone(ZoneOffset.UTC).withZoneSameInstant(userZoneId);
-
-        // 4. Find the first Sunday and the last Saturday of the month based on the user's local time
-        LocalDate firstDayOfMonth = userLocalDateTime.toLocalDate().withDayOfMonth(1);
-        LocalDate firstSunday = firstDayOfMonth.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
-        LocalDate lastDayOfMonth = firstDayOfMonth.with(TemporalAdjusters.lastDayOfMonth());
-        LocalDate lastSaturday = lastDayOfMonth.with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
-
-        // 5. Set time to 00:00:00 for start and end days
-        LocalDateTime firstSundayStart = firstSunday.atStartOfDay();
-        LocalDateTime lastSaturdayEnd = lastSaturday.atTime(LocalTime.MAX);
-
-        // 6. Convert these to UTC for database querying
-        ZonedDateTime firstSundayUtc = firstSundayStart.atZone(userZoneId).withZoneSameInstant(ZoneOffset.UTC);
-        ZonedDateTime lastSaturdayUtc = lastSaturdayEnd.atZone(userZoneId).withZoneSameInstant(ZoneOffset.UTC);
-
-        // 7. Query the events from the repository using the calculated start and end times
-        List<Event> events = eventRepository.findAllByUserInPeriod(
-                user,
-                firstSundayUtc.toLocalDateTime(),
-                lastSaturdayUtc.toLocalDateTime()
-        );
-
-        // 8. Convert the list of Event objects to EventSummary and return it
-        return events.stream()
-                .map(EventSummary::new)
-                .toList();
+        List<EventSummary> eventSummaryList = new ArrayList<>();
+        for (Event event : events) {
+            eventSummaryList.add(new EventSummary(event));
+        }
+        return eventSummaryList;
     }
 
     /**

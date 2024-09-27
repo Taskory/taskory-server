@@ -1,37 +1,44 @@
 package codeartist99.taskflower.common.util;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.ZonedDateTime;
+import java.time.format.DateTimeParseException;
 
 /**
- * Utility class for handling LocalDateTime to String conversions and vice versa in UTC timezone.
+ * Utility class for handling common date-time conversions between
+ * String and LocalDateTime objects using a predefined format.
+ * The format used is "yyyy-MM-dd'T'HH:mm".
  */
 public class TimeUtil {
 
-    // DateTimeFormatter for formatting and parsing the string
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+    // Define the common date-time pattern
+    private static final String PATTERN = "yyyy-MM-dd'T'HH:mm";
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(PATTERN);
 
     /**
-     * Converts a LocalDateTime object to a string formatted as "yyyy-MM-dd'T'HH:mm" in UTC.
+     * Converts a date-time string into a LocalDateTime object.
+     * The string must follow the format "yyyy-MM-dd'T'HH:mm".
      *
-     * @param dateTime the LocalDateTime object to be converted (assumed to be in UTC).
-     * @return a formatted string representing the LocalDateTime in UTC.
+     * @param dateTimeString the date-time string to be converted
+     * @return the corresponding LocalDateTime object
+     * @throws IllegalArgumentException if the string is not in the correct format
      */
-    public static String LocalDateTimeToString(LocalDateTime dateTime) {
-        ZonedDateTime utcDateTime = dateTime.atZone(ZoneId.of("UTC"));
-        return utcDateTime.format(formatter);
+    public static LocalDateTime stringToLocalDateTime(String dateTimeString) {
+        try {
+            return LocalDateTime.parse(dateTimeString, FORMATTER);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid dateTime format: " + dateTimeString);
+        }
     }
 
     /**
-     * Converts a string formatted as "yyyy-MM-dd'T'HH:mm" to a LocalDateTime object in UTC.
+     * Converts a LocalDateTime object into a formatted date-time string.
+     * The output format will be "yyyy-MM-dd'T'HH:mm".
      *
-     * @param dateTimeString the string representing the date and time in "yyyy-MM-dd'T'HH:mm" format.
-     * @return a LocalDateTime object corresponding to the parsed string in UTC.
+     * @param dateTime the LocalDateTime object to be converted
+     * @return the corresponding date-time string
      */
-    public static LocalDateTime stringToLocalDateTime(String dateTimeString) {
-        LocalDateTime localDateTime = LocalDateTime.parse(dateTimeString, formatter);
-        return localDateTime.atZone(ZoneId.of("UTC")).toLocalDateTime();
+    public static String localDateTimeToString(LocalDateTime dateTime) {
+        return dateTime.format(FORMATTER);
     }
 }

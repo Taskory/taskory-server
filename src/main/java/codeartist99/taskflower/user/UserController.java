@@ -1,7 +1,6 @@
 package codeartist99.taskflower.user;
 
 import codeartist99.taskflower.security.model.UserPrincipal;
-import codeartist99.taskflower.user.exception.InvalidZoneIdException;
 import codeartist99.taskflower.user.exception.UsernameAlreadyExistsException;
 import codeartist99.taskflower.user.payload.ProfileUpdateRequest;
 import codeartist99.taskflower.user.payload.UserResponse;
@@ -43,14 +42,6 @@ public class UserController {
             return ResponseEntity.ok().body(response);
         } catch (UsernameAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        } catch (InvalidZoneIdException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-    }
-
-    @GetMapping("/zoneid")
-    public ResponseEntity<String> getZoneId(@CurrentUser UserPrincipal userPrincipal) {
-        String response = userService.getByUsername(userPrincipal.getUsername()).getTimezone();
-        return ResponseEntity.ok().body(response);
     }
 }

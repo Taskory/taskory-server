@@ -52,7 +52,6 @@ class RoutineServiceTest {
         String zoneId = "Asia/Seoul";
         user = User.builder()
                 .username(username)
-                .zoneId(zoneId)
                 .build();
         userRepository.save(user);
     }

@@ -72,7 +72,7 @@ public class RoutineService {
      * @return RoutineResponse list
      */
     public List<RoutineResponse> findAllToday(User user) {
-        int today = LocalDateTime.now((user.getTimezone().getZoneId())).getDayOfWeek().getValue() - 1;
+        int today = LocalDateTime.now().getDayOfWeek().getValue() - 1;
 
         List<Optional<Routine>> routines = routineRepository.findAllByUser(user);
 

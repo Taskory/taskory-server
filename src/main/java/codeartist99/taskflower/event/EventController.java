@@ -29,21 +29,16 @@ public class EventController {
         this.eventService = eventService;
     }
 
-    /**
-     * Get all events in a specific month.
-     * @param userPrincipal Authenticated user
-     * @param dateString ISO 8601 date string within the month to fetch events (e.g., "2024-09-11")
-     * @return List of EventSummary
-     */
-    @GetMapping("/month")
-    public ResponseEntity<List<EventSummary>> findAllMonthlyEvents(
+    @GetMapping("/period")
+    public ResponseEntity<List<EventSummary>> findAllEventsInPeriod(
             @CurrentUser UserPrincipal userPrincipal,
-            @RequestParam("date") String dateString) {
+            @RequestParam("startDateString") String startDateString,
+            @RequestParam("startDateString") String endDateString) {
         try {
             User user = userRepository.findById(userPrincipal.getId())
                     .orElseThrow(() -> new UsernameNotFoundException("User not found."));
 
-            List<EventSummary> events = eventService.findAllMonthlyEvents(user, dateString);
+            List<EventSummary> events = eventService.findEventsInPeriod(user, startDateString, endDateString);
             return ResponseEntity.ok(events);
         } catch (UsernameNotFoundException exception) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

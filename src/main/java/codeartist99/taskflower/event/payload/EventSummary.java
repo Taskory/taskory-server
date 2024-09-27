@@ -1,6 +1,5 @@
 package codeartist99.taskflower.event.payload;
 
-import codeartist99.taskflower.common.util.TimeUtil;
 import codeartist99.taskflower.event.Event;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +24,7 @@ public class EventSummary {
             this.tagTitle = "";
             this.tagColor = "";
         }
-        this.startDateTime = TimeUtil.LocalDateTimeToString(event.getStartDateTime());
-        this.dueDateTime = TimeUtil.LocalDateTimeToString(event.getDueDateTime());
+        this.startDateTime = event.getStartDateTime().toString();
+        this.dueDateTime = event.getDueDateTime().toString();
     }
 }
