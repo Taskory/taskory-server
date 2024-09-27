@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 @Entity
 @NoArgsConstructor
@@ -34,6 +34,6 @@ public class RoutineHistory {
 
     @PrePersist
     public void prePersist() {
-        this.checkedAt = LocalDateTime.now(ZoneId.of(this.user.getZoneId()));
+        this.checkedAt = LocalDateTime.now(ZoneOffset.UTC);
     }
 }

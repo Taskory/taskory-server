@@ -1,5 +1,6 @@
 package codeartist99.taskflower.user;
 
+import codeartist99.taskflower.common.Timezone;
 import codeartist99.taskflower.event.EventRepository;
 import codeartist99.taskflower.flow.FlowRepository;
 import codeartist99.taskflower.hashtag.HashtagRepository;
@@ -79,10 +80,6 @@ public class UserService {
                 throw new UsernameAlreadyExistsException();
         }
 
-        if (isInvalidateZoneId(profileUpdateRequest.getZoneId())) {
-            throw new InvalidZoneIdException();
-        }
-
         user.updateProfile(profileUpdateRequest);
 
         for (Role role : user.getRoles()) {
@@ -129,7 +126,7 @@ public class UserService {
 
     public User registerTempUser(OAuth2UserInfo oAuth2UserInfo, String socialProvider) {
         User user = User.builder()
-                .zoneId("Asia/Seoul")
+                .timezone(Timezone.UTC)
                 .username(oAuth2UserInfo.getEmail())
                 .roles(Collections.singletonList(Role.TEMP_USER))
                 .build();

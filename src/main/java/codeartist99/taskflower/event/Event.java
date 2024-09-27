@@ -60,8 +60,4 @@ public class Event extends BaseTimeEntity {
         return timezone.getZoneId();
     }
 
-    @Override
-    public ZoneId getUserZoneId() {
-        return ZoneId.of(user.getZoneId());
-    }
 }

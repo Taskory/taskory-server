@@ -50,7 +50,7 @@ public class UserController {
 
     @GetMapping("/zoneid")
     public ResponseEntity<String> getZoneId(@CurrentUser UserPrincipal userPrincipal) {
-        String response = userService.getByUsername(userPrincipal.getUsername()).getZoneId();
+        String response = userService.getByUsername(userPrincipal.getUsername()).getTimezone();
         return ResponseEntity.ok().body(response);
     }
 }

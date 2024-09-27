@@ -7,7 +7,6 @@ import codeartist99.taskflower.user.model.User;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,10 +42,6 @@ public class Flow extends BaseTimeEntity {
         this.description = saveFlowRequest.getDescription();
     }
 
-    @Override
-    public ZoneId getUserZoneId() {
-        return ZoneId.of(this.user.getZoneId());
-    }
 
     public void update(SaveFlowRequest saveFlowRequest) {
         this.title = saveFlowRequest.getTitle();

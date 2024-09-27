@@ -271,24 +271,24 @@ class EventServiceTest {
         String description = "test description";
 
         // Event 1 within the same month
-        String startDateTime1 = TimeUtil.LocalDateTimeToString(TimeUtil.StringToLocalDateTime(firstDayOfMonth));
-        String dueDateTime1 = TimeUtil.LocalDateTimeToString(TimeUtil.StringToLocalDateTime(startDateTime1).plusDays(10));
+        String startDateTime1 = TimeUtil.LocalDateTimeToString(TimeUtil.stringToLocalDateTime(firstDayOfMonth));
+        String dueDateTime1 = TimeUtil.LocalDateTimeToString(TimeUtil.stringToLocalDateTime(startDateTime1).plusDays(10));
         String location = "test location";
         SaveEventRequest saveEventRequest1 = new SaveEventRequest(title, tag, hashtags, description, startDateTime1, dueDateTime1, location, "Asia/Seoul");
 
         // Event 2 within the same month
-        String startDateTime2 = TimeUtil.LocalDateTimeToString(TimeUtil.StringToLocalDateTime(startDateTime1).plusDays(15));
-        String dueDateTime2 = TimeUtil.LocalDateTimeToString(TimeUtil.StringToLocalDateTime(startDateTime2).plusDays(5));
+        String startDateTime2 = TimeUtil.LocalDateTimeToString(TimeUtil.stringToLocalDateTime(startDateTime1).plusDays(15));
+        String dueDateTime2 = TimeUtil.LocalDateTimeToString(TimeUtil.stringToLocalDateTime(startDateTime2).plusDays(5));
         SaveEventRequest saveEventRequest2 = new SaveEventRequest(title, tag, hashtags, description, startDateTime2, dueDateTime2, location, "Asia/Seoul");
 
         // Event 3 starting in the previous month and ending in the current month
-        String startDateTime3 = TimeUtil.LocalDateTimeToString(TimeUtil.StringToLocalDateTime(startDateTime1).minusDays(5));
-        String dueDateTime3 = TimeUtil.LocalDateTimeToString(TimeUtil.StringToLocalDateTime(startDateTime1).plusDays(5));
+        String startDateTime3 = TimeUtil.LocalDateTimeToString(TimeUtil.stringToLocalDateTime(startDateTime1).minusDays(5));
+        String dueDateTime3 = TimeUtil.LocalDateTimeToString(TimeUtil.stringToLocalDateTime(startDateTime1).plusDays(5));
         SaveEventRequest saveEventRequest3 = new SaveEventRequest(title, tag, hashtags, description, startDateTime3, dueDateTime3, location, "Asia/Seoul");
 
         // Event 4 starting in the current month and ending in the next month
-        String startDateTime4 = TimeUtil.LocalDateTimeToString(TimeUtil.StringToLocalDateTime(lastDayOfMonth).minusDays(5));
-        String dueDateTime4 = TimeUtil.LocalDateTimeToString(TimeUtil.StringToLocalDateTime(lastDayOfMonth).plusDays(5));
+        String startDateTime4 = TimeUtil.LocalDateTimeToString(TimeUtil.stringToLocalDateTime(lastDayOfMonth).minusDays(5));
+        String dueDateTime4 = TimeUtil.LocalDateTimeToString(TimeUtil.stringToLocalDateTime(lastDayOfMonth).plusDays(5));
         SaveEventRequest saveEventRequest4 = new SaveEventRequest(title, tag, hashtags, description, startDateTime4, dueDateTime4, location, "Asia/Seoul");
 
         eventService.save(user, saveEventRequest1);

@@ -11,10 +11,10 @@ import lombok.ToString;
 public class UserResponse {
     private Long id;
     private String username;
-    private String zoneId;
+    private String timezone;
     public UserResponse(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
-        this.zoneId = user.getZoneId();
+        this.timezone = user.getTimezone().getZoneId().toString();
     }
 }

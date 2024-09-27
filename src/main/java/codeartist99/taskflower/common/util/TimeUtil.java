@@ -30,7 +30,7 @@ public class TimeUtil {
      * @param dateTimeString the string representing the date and time in "yyyy-MM-dd'T'HH:mm" format.
      * @return a LocalDateTime object corresponding to the parsed string in UTC.
      */
-    public static LocalDateTime StringToLocalDateTime(String dateTimeString) {
+    public static LocalDateTime stringToLocalDateTime(String dateTimeString) {
         LocalDateTime localDateTime = LocalDateTime.parse(dateTimeString, formatter);
         return localDateTime.atZone(ZoneId.of("UTC")).toLocalDateTime();
     }

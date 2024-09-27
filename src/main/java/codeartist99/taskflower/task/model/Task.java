@@ -71,10 +71,6 @@ public class Task extends BaseTimeEntity {
         this.status = saveTaskRequest.getStatus();
     }
 
-    @Override
-    public ZoneId getUserZoneId() {
-        return ZoneId.of(this.user.getZoneId());
-    }
 
     public void update(SaveTaskRequest saveTaskRequest) {
         this.title = saveTaskRequest.getTitle();

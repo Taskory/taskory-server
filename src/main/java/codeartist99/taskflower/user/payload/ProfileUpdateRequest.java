@@ -11,5 +11,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ProfileUpdateRequest {
     private String username;
-    private String zoneId;
+    private String timezone;
 }

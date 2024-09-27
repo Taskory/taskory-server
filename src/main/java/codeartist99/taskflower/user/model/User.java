@@ -1,5 +1,6 @@
 package codeartist99.taskflower.user.model;
 
+import codeartist99.taskflower.common.Timezone;
 import codeartist99.taskflower.user.payload.ProfileUpdateRequest;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,8 +20,9 @@ public class User {
     private Long id;
     @Column(name = "username", nullable = false, unique = true)
     private String username;
-    @Column(name = "zone_id", nullable = false)
-    private String zoneId;
+    @Enumerated(EnumType.STRING)  // Use the Timezone enum as String in the database
+    @Column(name = "timezone", nullable = false)
+    private Timezone timezone;
     @OneToMany
     private Set<SocialAccount> socialAccounts;
     @Column(name = "roles", nullable = false)
@@ -31,7 +33,7 @@ public class User {
 
     public void updateProfile(ProfileUpdateRequest profileUpdateRequest) {
         this.username = profileUpdateRequest.getUsername();
-        this.zoneId = profileUpdateRequest.getZoneId();
+        this.timezone = Timezone.fromString(profileUpdateRequest.getTimezone());
     }
 
     public void upgradeToOfficial() {

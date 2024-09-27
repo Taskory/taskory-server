@@ -9,6 +9,7 @@ import java.util.Map;
  */
 public enum Timezone {
 
+    UTC("UTC"),
     LONDON("Europe/London"),
     BERLIN("Europe/Berlin"),
     HELSINKI("Europe/Helsinki"),
@@ -50,7 +51,7 @@ public enum Timezone {
 
     /**
      * Converts a string to the corresponding Timezone enum by matching the ZoneId.
-     *
+     S
      * @param timezoneString the input string representing a timezone (e.g., "Asia/Seoul").
      * @return the corresponding Timezone enum.
      * @throws IllegalArgumentException if the input string doesn't match any known timezone.

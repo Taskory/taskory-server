@@ -13,10 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.YearMonth;
-import java.time.format.DateTimeParseException;
-import java.time.zone.ZoneRulesException;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,8 +48,8 @@ public class EventService {
         Event event = Event.builder()
                 .title(saveEventRequest.getTitle())
                 .description(saveEventRequest.getDescription())
-                .startDateTime(TimeUtil.StringToLocalDateTime(saveEventRequest.getStartDateTime()))
-                .dueDateTime(TimeUtil.StringToLocalDateTime(saveEventRequest.getDueDateTime()))
+                .startDateTime(TimeUtil.stringToLocalDateTime(saveEventRequest.getStartDateTime()))
+                .dueDateTime(TimeUtil.stringToLocalDateTime(saveEventRequest.getDueDateTime()))
                 .location(saveEventRequest.getLocation())
                 .timezone(Timezone.fromString(saveEventRequest.getTimezone()))
                 .user(user)
@@ -104,19 +103,41 @@ public class EventService {
      * @return EventSummary list
      */
     public List<EventSummary> findAllMonthlyEvents(User user, String dateString) {
-        try {
-            LocalDateTime dateTime = TimeUtil.StringToLocalDateTime(dateString);
-            LocalDateTime firstDateTime = LocalDateTime.of(dateTime.getYear(), dateTime.getMonth(), 1, 0, 0, 0);
-            LocalDateTime lastDateTime = YearMonth.from(dateTime).atEndOfMonth().atTime(23, 59, 59);
-            List<Event> events = eventRepository.findAllByUserInPeriod(user, firstDateTime, lastDateTime);
-            return events.stream()
-                    .map(EventSummary::new)
-                    .toList();
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid ISO date string: " + dateString);
-        } catch (ZoneRulesException e) {
-            throw new IllegalArgumentException("Invalid time zone: " + user.getZoneId());
-        }
+        // 1. Parse the dateString into LocalDateTime (UTC)
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        LocalDateTime inputDateTimeUtc = LocalDateTime.parse(dateString, formatter);
+
+        // 2. Get the user's ZoneId
+        ZoneId userZoneId = user.getTimezone().getZoneId();
+
+        // 3. Convert input UTC date to the user's local time
+        ZonedDateTime userLocalDateTime = inputDateTimeUtc.atZone(ZoneOffset.UTC).withZoneSameInstant(userZoneId);
+
+        // 4. Find the first Sunday and the last Saturday of the month based on the user's local time
+        LocalDate firstDayOfMonth = userLocalDateTime.toLocalDate().withDayOfMonth(1);
+        LocalDate firstSunday = firstDayOfMonth.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
+        LocalDate lastDayOfMonth = firstDayOfMonth.with(TemporalAdjusters.lastDayOfMonth());
+        LocalDate lastSaturday = lastDayOfMonth.with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
+
+        // 5. Set time to 00:00:00 for start and end days
+        LocalDateTime firstSundayStart = firstSunday.atStartOfDay();
+        LocalDateTime lastSaturdayEnd = lastSaturday.atTime(LocalTime.MAX);
+
+        // 6. Convert these to UTC for database querying
+        ZonedDateTime firstSundayUtc = firstSundayStart.atZone(userZoneId).withZoneSameInstant(ZoneOffset.UTC);
+        ZonedDateTime lastSaturdayUtc = lastSaturdayEnd.atZone(userZoneId).withZoneSameInstant(ZoneOffset.UTC);
+
+        // 7. Query the events from the repository using the calculated start and end times
+        List<Event> events = eventRepository.findAllByUserInPeriod(
+                user,
+                firstSundayUtc.toLocalDateTime(),
+                lastSaturdayUtc.toLocalDateTime()
+        );
+
+        // 8. Convert the list of Event objects to EventSummary and return it
+        return events.stream()
+                .map(EventSummary::new)
+                .toList();
     }
 
     /**
@@ -141,8 +162,8 @@ public class EventService {
             foundEvent.setHashtags(null);
         }
         foundEvent.setDescription(saveEventRequest.getDescription());
-        foundEvent.setStartDateTime(TimeUtil.StringToLocalDateTime(saveEventRequest.getStartDateTime()));
-        foundEvent.setDueDateTime(TimeUtil.StringToLocalDateTime(saveEventRequest.getDueDateTime()));
+        foundEvent.setStartDateTime(TimeUtil.stringToLocalDateTime(saveEventRequest.getStartDateTime()));
+        foundEvent.setDueDateTime(TimeUtil.stringToLocalDateTime(saveEventRequest.getDueDateTime()));
         foundEvent.setLocation(saveEventRequest.getLocation());
 
         Event result = eventRepository.save(foundEvent);

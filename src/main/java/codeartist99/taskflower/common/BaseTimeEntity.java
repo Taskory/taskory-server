@@ -6,29 +6,26 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 @MappedSuperclass
 public abstract class BaseTimeEntity {
 
     @Column(name = "created_at")
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
 
     @PrePersist
     public void prePersist() {
-        ZoneId zoneId = getUserZoneId();
-        this.created_at = LocalDateTime.now(zoneId);
-        this.updated_at = LocalDateTime.now(zoneId);
+        LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
+        this.createdAt = now;
+        this.updatedAt = now;
     }
 
     @PreUpdate
     public void preUpdate() {
-        ZoneId zoneId = getUserZoneId();
-        this.updated_at = LocalDateTime.now(zoneId);
+        this.updatedAt = LocalDateTime.now(ZoneOffset.UTC);
     }
-
-    public abstract ZoneId getUserZoneId();
 }
