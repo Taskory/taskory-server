@@ -30,7 +30,6 @@ public class UserController {
 
     @GetMapping("/check-username")
     public ResponseEntity<Boolean> checkUsername(@RequestParam("username") String username) {
-        log.info("[LOG - UserController.checkUsername] Checking username:  {}", username);
         boolean isAvailable = userService.isUsernameAvailable(username);
         return ResponseEntity.ok().body(isAvailable);
     }

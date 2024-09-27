@@ -7,6 +7,7 @@ import codeartist99.taskflower.security.model.UserPrincipal;
 import codeartist99.taskflower.user.CurrentUser;
 import codeartist99.taskflower.user.UserRepository;
 import codeartist99.taskflower.user.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("${app.url-base}/event")
 public class EventController {
@@ -32,8 +34,11 @@ public class EventController {
     @GetMapping("/period")
     public ResponseEntity<List<EventSummary>> findAllEventsInPeriod(
             @CurrentUser UserPrincipal userPrincipal,
-            @RequestParam("startDateString") String startDateString,
-            @RequestParam("startDateString") String endDateString) {
+            @RequestParam("startDate") String startDateString,
+            @RequestParam("endDate") String endDateString) {
+
+        log.info("[LOG - EventContoroller.findAllEventsInPeriod] startDate: {}, endDate: {}", startDateString, endDateString);
+
         try {
             User user = userRepository.findById(userPrincipal.getId())
                     .orElseThrow(() -> new UsernameNotFoundException("User not found."));

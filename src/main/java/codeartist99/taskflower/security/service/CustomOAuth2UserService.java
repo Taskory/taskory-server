@@ -31,7 +31,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        log.info("[LOG - CustomOAuth2UserService] loadUser");
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
         String socialProvider = userRequest.getClientRegistration().getRegistrationId();
