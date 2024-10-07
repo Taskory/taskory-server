@@ -121,10 +121,10 @@ public class EventController {
      * @return List of EventResponse
      */
     @GetMapping("/all")
-    public ResponseEntity<List<EventResponse>> findAll(@CurrentUser UserPrincipal userPrincipal) {
+    public ResponseEntity<List<EventSummary>> findAll(@CurrentUser UserPrincipal userPrincipal) {
         try {
             User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new UsernameNotFoundException("user not found"));
-            List<EventResponse> events = eventService.findAll(user);
+            List<EventSummary> events = eventService.findAll(user);
             return ResponseEntity.ok(events);
         } catch (UsernameNotFoundException exception) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

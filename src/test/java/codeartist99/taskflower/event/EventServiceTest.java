@@ -123,16 +123,16 @@ class EventServiceTest {
 
 //        Act
 //        find all events
-        List<EventResponse> eventResponseList = eventService.findAll(user);
+        List<EventSummary> eventResponseList = eventService.findAll(user);
 
 //        Assert
 //        find a first event
-        EventResponse actualEventResponse = eventResponseList.get(0);
+        EventSummary actualEventResponse = eventResponseList.get(0);
 //        find a second event
-        EventResponse actualEventResponse2 = eventResponseList.get(1);
+        EventSummary actualEventResponse2 = eventResponseList.get(1);
 
-        assertEquals(eventResponse.toString(), actualEventResponse.toString());
-        assertEquals(eventResponse2.toString(), actualEventResponse2.toString());
+        assertEquals(eventResponse.getId(), actualEventResponse.getId());
+        assertEquals(eventResponse2.getId(), actualEventResponse2.getId());
     }
 
 
@@ -177,20 +177,20 @@ class EventServiceTest {
 
 //        Act
 //        find all events
-        List<EventResponse> eventResponseList = eventService.findAll(user);
+        List<EventSummary> eventSummaryList = eventService.findAll(user);
 
 //        Assert
 //        find a first event
-        EventResponse actualEventResponse = eventResponseList.get(0);
+        EventSummary actualEventResponse = eventSummaryList.get(0);
 //        find a second event
-        EventResponse actualEventResponse2 = eventResponseList.get(1);
+        EventSummary actualEventResponse2 = eventSummaryList.get(1);
 
 //        find a third event
-        EventResponse actualEventResponse3 = eventResponseList.get(2);
+        EventSummary actualEventResponse3 = eventSummaryList.get(2);
 
-        assertEquals(eventResponse.toString(), actualEventResponse.toString());
-        assertEquals(eventResponse2.toString(), actualEventResponse2.toString());
-        assertEquals(eventResponse3.toString(), actualEventResponse3.toString());
+        assertEquals(eventResponse.getId(), actualEventResponse.getId());
+        assertEquals(eventResponse2.getId(), actualEventResponse2.getId());
+        assertEquals(eventResponse3.getId(), actualEventResponse3.getId());
     }
 
     /**

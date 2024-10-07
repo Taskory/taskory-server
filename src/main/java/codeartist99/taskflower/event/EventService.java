@@ -82,12 +82,12 @@ public class EventService {
      * @param user User information
      * @return EventResponse list
      */
-    public List<EventResponse> findAll(User user) {
+    public List<EventSummary> findAll(User user) {
         List<Event> events = eventRepository.findAllByUser(user);
 
-        List<EventResponse> eventResponseList = new ArrayList<>();
+        List<EventSummary> eventResponseList = new ArrayList<>();
         for (Event event : events) {
-            eventResponseList.add(new EventResponse(event));
+            eventResponseList.add(new EventSummary(event));
         }
         return eventResponseList;
     }
