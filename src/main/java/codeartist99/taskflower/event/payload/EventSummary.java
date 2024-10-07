@@ -3,9 +3,11 @@ package codeartist99.taskflower.event.payload;
 import codeartist99.taskflower.event.Event;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @NoArgsConstructor
 @Getter
+@ToString
 public class EventSummary {
     private Long id;
     private String title;

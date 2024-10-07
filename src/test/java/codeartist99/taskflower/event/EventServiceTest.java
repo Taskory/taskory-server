@@ -11,20 +11,26 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class EventServiceTest {
 
+    private static final Logger log = LoggerFactory.getLogger(EventServiceTest.class);
     @Autowired
     private EventService eventService;
 
@@ -259,18 +265,20 @@ class EventServiceTest {
     void findEventsInPeriod() {
 //        Arrange
         LocalDateTime currentDateTime = LocalDateTime.now();
-        String firstDayOfMonth = TimeUtil.localDateTimeToString(LocalDateTime.of(currentDateTime.getYear(), currentDateTime.getMonth(),1, 0, 0, 0));
-        String lastDayOfMonth = TimeUtil.localDateTimeToString(LocalDateTime.of(currentDateTime.getYear(), currentDateTime.getMonth(), currentDateTime.getDayOfMonth(), 23, 59, 59));
+        LocalDateTime startTime = currentDateTime.with(firstDayOfMonth()).with(LocalTime.MIN); // 당월 1일 00:00:00
+        LocalDateTime endTime = currentDateTime.with(lastDayOfMonth()).with(LocalTime.MAX); // 당월 마지막날 23:59:59
+        String firstDayOfMonth = TimeUtil.localDateTimeToString(startTime);
+        String lastDayOfMonth = TimeUtil.localDateTimeToString(endTime);
 
         String title = "test title";
         Long tag = null;
         List<Long> hashtags = Collections.emptyList();
         String description = "test description";
+        String location = "test location";
 
         // Event 1 within the same month
         String startDateTime1 = TimeUtil.localDateTimeToString(TimeUtil.stringToLocalDateTime(firstDayOfMonth));
         String dueDateTime1 = TimeUtil.localDateTimeToString(TimeUtil.stringToLocalDateTime(startDateTime1).plusDays(10));
-        String location = "test location";
         SaveEventRequest saveEventRequest1 = new SaveEventRequest(title, tag, hashtags, description, startDateTime1, dueDateTime1, location);
 
         // Event 2 within the same month
