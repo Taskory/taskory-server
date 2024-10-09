@@ -62,7 +62,7 @@ public class TaskService {
         return taskRepository.findAllByUser(user)
                 .stream()
                 .map(TaskResponse::new)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
