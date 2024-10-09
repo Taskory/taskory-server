@@ -7,6 +7,7 @@ import codeartist99.taskflower.task.exception.TaskNotFoundException;
 import codeartist99.taskflower.task.model.Task;
 import codeartist99.taskflower.task.payload.SaveTaskRequest;
 import codeartist99.taskflower.task.payload.TaskResponse;
+import codeartist99.taskflower.task.payload.TaskSummary;
 import codeartist99.taskflower.task.repository.TaskItemRepository;
 import codeartist99.taskflower.task.repository.TaskRepository;
 import codeartist99.taskflower.user.model.User;
@@ -58,12 +59,12 @@ public class TaskService {
      * Finds all tasks associated with a given user.
      *
      * @param user the user whose tasks are to be retrieved
-     * @return a list of {@link TaskResponse} representing the user's tasks
+     * @return a list of {@link TaskSummary} representing the user's tasks
      */
-    public List<TaskResponse> findAll(User user) {
+    public List<TaskSummary> findAll(User user) {
         return taskRepository.findAllByUser(user)
                 .stream()
-                .map(TaskResponse::new)
+                .map(TaskSummary::new)
                 .toList();
     }
 
@@ -72,7 +73,7 @@ public class TaskService {
      * At least one of {@code flow} or {@code event} must be non-null.
      *
      * @param user the user whose tasks are to be retrieved
-     * @param event the event to filter tasks by (nullable)
+     * @param eventId the eventId to filter tasks by (nullable)
      * @return a list of {@link TaskResponse} representing the filtered tasks
      * @throws IllegalStateException if both {@code flow} and {@code event} are null
      */

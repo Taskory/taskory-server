@@ -10,6 +10,7 @@ import codeartist99.taskflower.task.model.Status;
 import codeartist99.taskflower.task.model.Task;
 import codeartist99.taskflower.task.payload.SaveTaskRequest;
 import codeartist99.taskflower.task.payload.TaskResponse;
+import codeartist99.taskflower.task.payload.TaskSummary;
 import codeartist99.taskflower.task.repository.TaskRepository;
 import codeartist99.taskflower.task.service.TaskService;
 import codeartist99.taskflower.user.UserRepository;
@@ -126,16 +127,16 @@ class TaskServiceTest {
 
 //        Act
 //        find all tasks
-        List<TaskResponse> taskResponseList = taskService.findAll(user);
+        List<TaskSummary> taskResponseList = taskService.findAll(user);
 
 //        Assert
 //        find a first task
-        TaskResponse actualTaskResponse = taskResponseList.get(0);
+        Long actualTaskResponseId = taskResponseList.get(0).getId();
 //        find a second task
-        TaskResponse actualTaskResponse2 = taskResponseList.get(1);
+        Long actualTaskResponse2Id = taskResponseList.get(1).getId();
 
-        assertEquals(taskResponse.toString(), actualTaskResponse.toString());
-        assertEquals(taskResponse2.toString(), actualTaskResponse2.toString());
+        assertEquals(taskResponse.getId(), actualTaskResponseId);
+        assertEquals(taskResponse2.getId(), actualTaskResponse2Id);
     }
 
     /**

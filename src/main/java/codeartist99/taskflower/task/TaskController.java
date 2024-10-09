@@ -6,10 +6,7 @@ import codeartist99.taskflower.event.payload.EventResponse;
 import codeartist99.taskflower.security.model.UserPrincipal;
 import codeartist99.taskflower.task.exception.TaskItemNotFoundException;
 import codeartist99.taskflower.task.exception.TaskNotFoundException;
-import codeartist99.taskflower.task.payload.SaveTaskItemRequest;
-import codeartist99.taskflower.task.payload.SaveTaskRequest;
-import codeartist99.taskflower.task.payload.TaskItemResponse;
-import codeartist99.taskflower.task.payload.TaskResponse;
+import codeartist99.taskflower.task.payload.*;
 import codeartist99.taskflower.task.service.TaskItemService;
 import codeartist99.taskflower.task.service.TaskService;
 import codeartist99.taskflower.user.CurrentUser;
@@ -82,9 +79,9 @@ public class TaskController {
      * @return the response containing a list of tasks
      */
     @GetMapping
-    public ResponseEntity<List<TaskResponse>> getAllTasks(@CurrentUser UserPrincipal userPrincipal) {
+    public ResponseEntity<List<TaskSummary>> getAllTasks(@CurrentUser UserPrincipal userPrincipal) {
         User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        List<TaskResponse> responses = taskService.findAll(user);
+        List<TaskSummary> responses = taskService.findAll(user);
         return ResponseEntity.ok(responses);
     }
 
