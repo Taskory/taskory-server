@@ -21,7 +21,7 @@ public class EventSummary {
         this.title = event.getTitle();
         if (event.getTag() != null) {
             this.tagTitle = event.getTag().getTitle();
-            this.tagColor = event.getTag().getColor().toString();
+            this.tagColor = event.getTag().getColor().name();
         } else {
             this.tagTitle = "";
             this.tagColor = "";
