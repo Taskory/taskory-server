@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TaskService {
@@ -57,11 +56,11 @@ public class TaskService {
      * @return TaskResponse list
      */
     public List<TaskResponse> findAll(User user) {
-        List<Optional<Task>> tasks = taskRepository.findAllByUser(user);
+        List<Task> tasks = taskRepository.findAllByUser(user);
 
         List<TaskResponse> taskResponseList = new ArrayList<>();
-        for (Optional<Task> task : tasks) {
-            task.ifPresent(value -> taskResponseList.add(new TaskResponse(value)));
+        for (Task task : tasks) {
+            taskResponseList.add(new TaskResponse(task));
         }
 
         return taskResponseList;
@@ -77,7 +76,7 @@ public class TaskService {
      * @return TaskResponse list
      */
     public List<TaskResponse> findAllByFlowOrEvent(User user, Flow flow, Event event) {
-        List<Optional<Task>> tasks;
+        List<Task> tasks;
         if (flow == null && event == null) {
             throw new IllegalStateException("Invalid parameter - flow, event");
         } else if (flow == null) {
@@ -89,8 +88,8 @@ public class TaskService {
         }
 
         List<TaskResponse> taskResponseList = new ArrayList<>();
-        for (Optional<Task> task : tasks) {
-            task.ifPresent(value -> taskResponseList.add(new TaskResponse(value)));
+        for (Task task : tasks) {
+            taskResponseList.add(new TaskResponse(task));
         }
 
         return taskResponseList;
@@ -121,9 +120,9 @@ public class TaskService {
     }
 
     public void deleteAllByUser(User user) {
-        List<Optional<Task>> tasks = taskRepository.findAllByUser(user);
-        for (Optional<Task> task : tasks) {
-            task.ifPresent(taskitemRepository::deleteAllByTask);
+        List<Task> tasks = taskRepository.findAllByUser(user);
+        for (Task task : tasks) {
+            taskitemRepository.deleteAllByTask(task);
         }
         taskRepository.deleteAllByUser(user);
     }
