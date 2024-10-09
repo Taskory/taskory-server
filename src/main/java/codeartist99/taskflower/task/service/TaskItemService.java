@@ -12,7 +12,6 @@ import codeartist99.taskflower.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,10 +27,12 @@ public class TaskItemService {
     }
 
     /**
-     * Save task item
-     * @param user User information
-     * @param saveTaskItemRequest Information to save task item
-     * @return TaskItemResponse
+     * Saves a new task item for the specified user and task.
+     *
+     * @param user the user who owns the task item
+     * @param saveTaskItemRequest the request containing task item details
+     * @return the saved task item response
+     * @throws TaskNotFoundException if the task with the specified ID is not found
      */
     public TaskItemResponse save(User user, SaveTaskItemRequest saveTaskItemRequest) throws TaskNotFoundException {
         Task task = taskRepository.findById(saveTaskItemRequest.getTaskId()).orElseThrow(TaskNotFoundException::new);
@@ -43,9 +44,11 @@ public class TaskItemService {
     }
 
     /**
-     * Get task item by task item id
-     * @param itemId Task item id
-     * @return TaskItemResponse
+     * Retrieves a task item by its ID.
+     *
+     * @param itemId the ID of the task item to retrieve
+     * @return the task item response
+     * @throws TaskItemNotFoundException if no task item is found with the given ID
      */
     public TaskItemResponse getById(Long itemId) throws TaskItemNotFoundException {
         TaskItem taskItem = taskItemRepository.findById(itemId).orElseThrow(TaskItemNotFoundException::new);
@@ -53,55 +56,60 @@ public class TaskItemService {
     }
 
     /**
-     * Find all task items by task info
-     * @param taskId Task id
-     * @return TaskItemResponse list
+     * Retrieves all task items associated with a given task ID.
+     *
+     * @param taskId the ID of the task
+     * @return a list of task item responses
+     * @throws TaskNotFoundException if no task is found with the given ID
      */
     public List<TaskItemResponse> findAllByTaskId(Long taskId) throws TaskNotFoundException {
         Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
         List<TaskItem> items = taskItemRepository.findAllByTask(task);
 
-        List<TaskItemResponse> taskItemList = new ArrayList<>();
-        for (TaskItem item : items) {
-            taskItemList.add(new TaskItemResponse(item));
-        }
-        return taskItemList;
+        return items.stream()
+                .map(TaskItemResponse::new)
+                .toList();
     }
 
     /**
-     * Update task item title
-     * @param id Task item id
-     * @param updateTitle Title for update title of task item
-     * @return TaskItemResponse
+     * Updates the title of an existing task item.
+     *
+     * @param id the ID of the task item to update
+     * @param updateTitle the new title for the task item
+     * @return the updated task item response
+     * @throws TaskItemNotFoundException if no task item is found with the given ID
      */
     public TaskItemResponse updateTitle(Long id, String updateTitle) throws TaskItemNotFoundException {
         TaskItem taskItem = taskItemRepository.findById(id).orElseThrow(TaskItemNotFoundException::new);
         taskItem.setTitle(updateTitle);
-        TaskItem updatedTaskItem = taskItemRepository.save(taskItem);
-        return new TaskItemResponse(updatedTaskItem);
+        return new TaskItemResponse(taskItemRepository.save(taskItem));
     }
 
     /**
-     * Update 'completed' of task item
-     * @param id Task item id
-     * @param completed boolean
-     * @return TaskItemResponse
+     * Updates the completion status of an existing task item.
+     *
+     * @param id the ID of the task item to update
+     * @param completed the new completion status (true if completed, false if not)
+     * @return the updated task item response
+     * @throws TaskItemNotFoundException if no task item is found with the given ID
      */
     public TaskItemResponse setCompleted(Long id, boolean completed) throws TaskItemNotFoundException {
         TaskItem taskItem = taskItemRepository.findById(id).orElseThrow(TaskItemNotFoundException::new);
         taskItem.setCompleted(completed);
-        TaskItem updatedTaskItem = taskItemRepository.save(taskItem);
-        return new TaskItemResponse(updatedTaskItem);
+        return new TaskItemResponse(taskItemRepository.save(taskItem));
     }
 
     /**
-     * Delete task item by task item id
-     * @param id Task item id for delete
+     * Deletes a task item by its ID.
+     *
+     * @param id the ID of the task item to delete
+     * @throws TaskItemNotFoundException if no task item is found with the given ID
      */
     public void deleteById(Long id) throws TaskItemNotFoundException {
         if (taskItemRepository.existsById(id)) {
             taskItemRepository.deleteById(id);
-        } else throw new TaskItemNotFoundException();
+        } else {
+            throw new TaskItemNotFoundException();
+        }
     }
-
 }

@@ -11,5 +11,5 @@ import java.util.List;
 public interface TaskItemRepository extends JpaRepository<TaskItem, Long> {
     List<TaskItem> findAllByTask(Task task);
 
-    void deleteAllByTask(Task task);
+    void deleteAllByTaskIn(List<Task> tasks);
 }
