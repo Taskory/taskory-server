@@ -1,7 +1,6 @@
 package codeartist99.taskflower.task.payload;
 
 import codeartist99.taskflower.event.Event;
-import codeartist99.taskflower.flow.Flow;
 import codeartist99.taskflower.hashtag.Hashtag;
 import codeartist99.taskflower.tag.model.Tag;
 import codeartist99.taskflower.task.model.Status;
@@ -20,7 +19,6 @@ import java.util.List;
 public class TaskResponse {
     private Long id;
     private String title;
-    private Flow flow;
     private Event event;
     private Tag tag;
     private List<Hashtag> hashtags;
@@ -31,7 +29,6 @@ public class TaskResponse {
     public TaskResponse(Task task) {
         this.id = task.getId();
         this.title = task.getTitle();
-        this.flow = task.getFlow();
         this.event = task.getEvent();
         this.tag = task.getTag();
         this.hashtags = task.getHashtags();

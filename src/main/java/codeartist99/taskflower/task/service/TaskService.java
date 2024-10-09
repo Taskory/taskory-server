@@ -1,7 +1,6 @@
 package codeartist99.taskflower.task.service;
 
 import codeartist99.taskflower.event.Event;
-import codeartist99.taskflower.flow.Flow;
 import codeartist99.taskflower.task.exception.TaskNotFoundException;
 import codeartist99.taskflower.task.model.Task;
 import codeartist99.taskflower.task.payload.SaveTaskRequest;
@@ -70,22 +69,17 @@ public class TaskService {
      * At least one of {@code flow} or {@code event} must be non-null.
      *
      * @param user the user whose tasks are to be retrieved
-     * @param flow the flow to filter tasks by (nullable)
      * @param event the event to filter tasks by (nullable)
      * @return a list of {@link TaskResponse} representing the filtered tasks
      * @throws IllegalStateException if both {@code flow} and {@code event} are null
      */
-    public List<TaskResponse> findAllByFlowOrEvent(User user, Flow flow, Event event) {
+    public List<TaskResponse> findAllByEvent(User user, Event event) {
         List<Task> tasks;
 
-        if (flow == null && event == null) {
+        if (event == null) {
             throw new IllegalStateException("Both flow and event cannot be null.");
-        } else if (flow == null) {
-            tasks = taskRepository.findAllByUserAndEvent(user, event);
-        } else if (event == null) {
-            tasks = taskRepository.findAllByUserAndFlow(user, flow);
         } else {
-            tasks = taskRepository.findAllByUserAndFlowAndEvent(user, flow, event);
+            tasks = taskRepository.findAllByUserAndEvent(user, event);
         }
 
         return tasks.stream()

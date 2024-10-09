@@ -66,7 +66,7 @@ public class TaskAndTaskItemTest {
     @DisplayName("is correct task item in correct task")
     void saveTaskAndTaskItem() throws TaskNotFoundException {
 //        Arrange, Act
-        SaveTaskRequest saveTaskRequest = new SaveTaskRequest("test task title", null, null, null, null, null, Status.TODO);
+        SaveTaskRequest saveTaskRequest = new SaveTaskRequest("test task title",  null, null, null, null, Status.TODO);
         TaskResponse taskResponse = taskService.save(user, saveTaskRequest);
 
         SaveTaskItemRequest saveTaskItemRequest = new SaveTaskItemRequest(taskResponse.getId(), "test task item title");

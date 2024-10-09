@@ -1,7 +1,6 @@
 package codeartist99.taskflower.user;
 
 import codeartist99.taskflower.event.EventRepository;
-import codeartist99.taskflower.flow.FlowRepository;
 import codeartist99.taskflower.hashtag.HashtagRepository;
 import codeartist99.taskflower.routine.repository.RoutineHistoryRepository;
 import codeartist99.taskflower.routine.repository.RoutineRepository;
@@ -31,7 +30,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
-    private final FlowRepository flowRepository;
     private final TagRepository tagRepository;
     private final TaskService taskService;
     private final RoutineRepository routineRepository;
@@ -40,11 +38,10 @@ public class UserService {
     private final HashtagRepository hashtagRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, EventRepository eventRepository, FlowRepository flowRepository, TagRepository tagRepository, TaskService taskService, RoutineRepository routineRepository, RoutineHistoryRepository routineHistoryRepository, SocialAccountRepository socialAccountRepository, HashtagRepository hashtagRepository) {
+    public UserService(UserRepository userRepository, EventRepository eventRepository, TagRepository tagRepository, TaskService taskService, RoutineRepository routineRepository, RoutineHistoryRepository routineHistoryRepository, SocialAccountRepository socialAccountRepository, HashtagRepository hashtagRepository) {
         this.userRepository = userRepository;
         this.taskService = taskService;
         this.eventRepository = eventRepository;
-        this.flowRepository = flowRepository;
         this.tagRepository = tagRepository;
         this.routineRepository = routineRepository;
         this.routineHistoryRepository = routineHistoryRepository;
@@ -98,7 +95,6 @@ public class UserService {
             throw new UsernameNotFoundException("User not found");
         }
         tagRepository.deleteAllByUser(user.get());
-        flowRepository.deleteAllByUser(user.get());
         taskService.deleteAllByUser(user.get());
         eventRepository.deleteAllByUser(user.get());
         routineHistoryRepository.deleteAllByUser(user.get());

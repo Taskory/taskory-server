@@ -1,7 +1,6 @@
 package codeartist99.taskflower.task;
 
 import codeartist99.taskflower.event.Event;
-import codeartist99.taskflower.flow.Flow;
 import codeartist99.taskflower.hashtag.Hashtag;
 import codeartist99.taskflower.tag.model.Tag;
 import codeartist99.taskflower.task.exception.TaskItemNotFoundException;
@@ -63,12 +62,11 @@ class TaskItemServiceTest {
         userRepository.save(user);
 
         String title = "test title";
-        Flow flow = null;
         Event event = null;
         Tag tag = null;
         List<Hashtag> hashtags = null;
         String description = "test description";
-        task = new Task(null, user, title, flow, event, tag, hashtags, description, Status.TODO, null);
+        task = new Task(null, user, title, event, tag, hashtags, description, Status.TODO, null);
         taskRepository.save(task);
 
     }

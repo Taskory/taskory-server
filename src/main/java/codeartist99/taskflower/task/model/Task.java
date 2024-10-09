@@ -2,7 +2,6 @@ package codeartist99.taskflower.task.model;
 
 import codeartist99.taskflower.common.BaseTimeEntity;
 import codeartist99.taskflower.event.Event;
-import codeartist99.taskflower.flow.Flow;
 import codeartist99.taskflower.hashtag.Hashtag;
 import codeartist99.taskflower.tag.model.Tag;
 import codeartist99.taskflower.task.payload.SaveTaskRequest;
@@ -13,7 +12,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,10 +32,6 @@ public class Task extends BaseTimeEntity {
 
     @Column(name = "title")
     private String title;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "flow_id")
-    private Flow flow;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "event_id")
@@ -63,7 +57,6 @@ public class Task extends BaseTimeEntity {
     public Task(User user, SaveTaskRequest saveTaskRequest) {
         this.user = user;
         this.title = saveTaskRequest.getTitle();
-        this.flow = saveTaskRequest.getFlow();
         this.event = saveTaskRequest.getEvent();
         this.tag = saveTaskRequest.getTag();
         this.hashtags = saveTaskRequest.getHashtags();
@@ -74,7 +67,6 @@ public class Task extends BaseTimeEntity {
 
     public void update(SaveTaskRequest saveTaskRequest) {
         this.title = saveTaskRequest.getTitle();
-        this.flow = saveTaskRequest.getFlow();
         this.event = saveTaskRequest.getEvent();
         this.tag = saveTaskRequest.getTag();
         this.hashtags = saveTaskRequest.getHashtags();
