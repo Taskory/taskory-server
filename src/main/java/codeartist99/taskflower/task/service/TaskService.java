@@ -3,7 +3,13 @@ package codeartist99.taskflower.task.service;
 import codeartist99.taskflower.event.Event;
 import codeartist99.taskflower.event.EventNotFoundException;
 import codeartist99.taskflower.event.EventRepository;
+import codeartist99.taskflower.hashtag.HashtagRepository;
+import codeartist99.taskflower.tag.TagNotFoundException;
+import codeartist99.taskflower.tag.TagRepository;
+import codeartist99.taskflower.tag.model.Tag;
+import codeartist99.taskflower.task.exception.InvalidStatusNameException;
 import codeartist99.taskflower.task.exception.TaskNotFoundException;
+import codeartist99.taskflower.task.model.Status;
 import codeartist99.taskflower.task.model.Task;
 import codeartist99.taskflower.task.payload.SaveTaskRequest;
 import codeartist99.taskflower.task.payload.TaskResponse;
@@ -12,9 +18,12 @@ import codeartist99.taskflower.task.repository.TaskItemRepository;
 import codeartist99.taskflower.task.repository.TaskRepository;
 import codeartist99.taskflower.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 @Service
 public class TaskService {
@@ -22,12 +31,16 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final TaskItemRepository taskitemRepository;
     private final EventRepository eventRepository;
+    private final TagRepository tagRepository;
+    private final HashtagRepository hashtagRepository;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository, TaskItemRepository taskitemRepository, EventRepository eventRepository) {
+    public TaskService(TaskRepository taskRepository, TaskItemRepository taskitemRepository, EventRepository eventRepository, TagRepository tagRepository, HashtagRepository hashtagRepository) {
         this.taskRepository = taskRepository;
         this.taskitemRepository = taskitemRepository;
         this.eventRepository = eventRepository;
+        this.tagRepository = tagRepository;
+        this.hashtagRepository = hashtagRepository;
     }
 
     /**
@@ -37,11 +50,75 @@ public class TaskService {
      * @param saveTaskRequest the task details to be saved
      * @return a {@link TaskResponse} representing the saved task
      */
-    public TaskResponse save(User user, SaveTaskRequest saveTaskRequest) {
-        Task task = new Task(user, saveTaskRequest);
+    public TaskResponse save(User user, SaveTaskRequest saveTaskRequest)
+            throws InvalidStatusNameException, EventNotFoundException, TagNotFoundException {
+
+        Status status = validateAndGetStatus(saveTaskRequest.getStatus());
+
+        Event event = validateAndGetEntityById(
+                saveTaskRequest.getEventId(),
+                eventRepository,
+                () -> new EventNotFoundException("Event not found for ID: " + saveTaskRequest.getEventId())
+        );
+
+        Tag tag = validateAndGetEntityById(
+                saveTaskRequest.getTagId(),
+                tagRepository,
+                () -> new TagNotFoundException("Tag not found for ID: " + saveTaskRequest.getTagId())
+        );
+
+        Task task = Task.builder()
+                .user(user)
+                .title(saveTaskRequest.getTitle())
+                .event(event)
+                .tag(tag)
+                .hashtags(saveTaskRequest.getHashtagIds() != null ?
+                        hashtagRepository.findAllById(saveTaskRequest.getHashtagIds())
+                        :null)
+                .description(saveTaskRequest.getDescription())
+                .status(status)
+                .build();
+
         taskRepository.save(task);
+
         return new TaskResponse(task);
     }
+
+    /**
+     * Validates and retrieves the corresponding Status enum from the provided status string.
+     *
+     * @param statusString the string representation of the status
+     * @return the corresponding Status enum, or null if statusString is null
+     * @throws InvalidStatusNameException if the statusString does not match any valid Status
+     */
+    private static Status validateAndGetStatus(String statusString) throws InvalidStatusNameException {
+        Status status = null;
+        if (statusString != null) {
+            try {
+                status = Status.valueOf(statusString);
+            } catch (IllegalArgumentException e) {
+                throw new InvalidStatusNameException("Invalid status value: " + statusString +
+                        ". Valid values are: " + Arrays.toString(Status.values()));
+            }
+        }
+        return status;
+    }
+
+    /**
+     * Validates and retrieves an entity by its ID from the given repository.
+     *
+     * @param id the ID of the entity to retrieve
+     * @param repository the repository to search for the entity
+     * @param exceptionSupplier the supplier that provides the exception if the entity is not found
+     * @param <T> the type of the entity
+     * @param <E> the type of exception to be thrown if the entity is not found
+     * @return the entity if found, or null if the ID is null
+     * @throws E if the entity is not found
+     */
+    private <T, E extends Exception> T validateAndGetEntityById(Long id, JpaRepository<T, Long> repository, Supplier<E> exceptionSupplier) throws E {
+        return id != null ? repository.findById(id).orElseThrow(exceptionSupplier) : null;
+    }
+
 
     /**
      * Retrieves a task by its ID.
@@ -99,14 +176,35 @@ public class TaskService {
      * @return a {@link TaskResponse} representing the updated task
      * @throws TaskNotFoundException if no task with the specified ID is found
      */
-    public TaskResponse updateTask(Long taskId, SaveTaskRequest saveTaskRequest) throws TaskNotFoundException {
-        Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new TaskNotFoundException("Task not found for id: " + taskId));
+    public TaskResponse updateTask(Long taskId, SaveTaskRequest saveTaskRequest) throws TaskNotFoundException, InvalidStatusNameException, EventNotFoundException, TagNotFoundException {
+        Status status = validateAndGetStatus(saveTaskRequest.getStatus());
 
-        task.update(saveTaskRequest);
-        Task updatedTask = taskRepository.save(task);
+        Event event = validateAndGetEntityById(
+                saveTaskRequest.getEventId(),
+                eventRepository,
+                () -> new EventNotFoundException("Event not found for ID: " + saveTaskRequest.getEventId())
+        );
 
-        return new TaskResponse(updatedTask);
+        Tag tag = validateAndGetEntityById(
+                saveTaskRequest.getTagId(),
+                tagRepository,
+                () -> new TagNotFoundException("Tag not found for ID: " + saveTaskRequest.getTagId())
+        );
+
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException("Task not found for ID: " + taskId));
+        Task updateTask = Task.builder()
+                .title(saveTaskRequest.getTitle())
+                .event(event)
+                .tag(tag)
+                .hashtags(hashtagRepository.findAllById(saveTaskRequest.getHashtagIds()))
+                .description(saveTaskRequest.getDescription())
+                .status(status)
+                .build();
+
+        task.update(updateTask);
+
+        taskRepository.save(task);
+        return new TaskResponse(task);
     }
 
     /**

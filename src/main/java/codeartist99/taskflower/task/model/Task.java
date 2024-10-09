@@ -4,13 +4,9 @@ import codeartist99.taskflower.common.BaseTimeEntity;
 import codeartist99.taskflower.event.Event;
 import codeartist99.taskflower.hashtag.Hashtag;
 import codeartist99.taskflower.tag.model.Tag;
-import codeartist99.taskflower.task.payload.SaveTaskRequest;
 import codeartist99.taskflower.user.model.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +16,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Task extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +24,7 @@ public class Task extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column(name = "title")
@@ -54,23 +51,12 @@ public class Task extends BaseTimeEntity {
     @OneToMany(mappedBy = "task", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TaskItem> items = new ArrayList<>();
 
-    public Task(User user, SaveTaskRequest saveTaskRequest) {
-        this.user = user;
-        this.title = saveTaskRequest.getTitle();
-        this.event = saveTaskRequest.getEvent();
-        this.tag = saveTaskRequest.getTag();
-        this.hashtags = saveTaskRequest.getHashtags();
-        this.description = saveTaskRequest.getDescription();
-        this.status = saveTaskRequest.getStatus();
-    }
-
-
-    public void update(SaveTaskRequest saveTaskRequest) {
-        this.title = saveTaskRequest.getTitle();
-        this.event = saveTaskRequest.getEvent();
-        this.tag = saveTaskRequest.getTag();
-        this.hashtags = saveTaskRequest.getHashtags();
-        this.description = saveTaskRequest.getDescription();
-        this.status = saveTaskRequest.getStatus();
+    public void update(Task updateTask) {
+        this.title = updateTask.getTitle();
+        this.event = updateTask.getEvent();
+        this.tag = updateTask.getTag();
+        this.hashtags = updateTask.getHashtags();
+        this.description = updateTask.getDescription();
+        this.status = updateTask.getStatus();
     }
 }

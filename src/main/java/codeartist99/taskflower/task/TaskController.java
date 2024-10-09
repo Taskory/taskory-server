@@ -4,6 +4,8 @@ import codeartist99.taskflower.event.EventNotFoundException;
 import codeartist99.taskflower.event.EventService;
 import codeartist99.taskflower.event.payload.EventResponse;
 import codeartist99.taskflower.security.model.UserPrincipal;
+import codeartist99.taskflower.tag.TagNotFoundException;
+import codeartist99.taskflower.task.exception.InvalidStatusNameException;
 import codeartist99.taskflower.task.exception.TaskItemNotFoundException;
 import codeartist99.taskflower.task.exception.TaskNotFoundException;
 import codeartist99.taskflower.task.payload.*;
@@ -51,8 +53,15 @@ public class TaskController {
     @PostMapping
     public ResponseEntity<TaskResponse> createTask(@CurrentUser UserPrincipal userPrincipal, @RequestBody SaveTaskRequest saveTaskRequest) {
         User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        TaskResponse response = taskService.save(user, saveTaskRequest);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        TaskResponse response = null;
+        try {
+            response = taskService.save(user, saveTaskRequest);
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } catch (InvalidStatusNameException e) {
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
+        } catch (EventNotFoundException | TagNotFoundException notFoundException) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     /**
@@ -116,8 +125,10 @@ public class TaskController {
         TaskResponse response;
         try {
             response = taskService.updateTask(id, saveTaskRequest);
-        } catch (TaskNotFoundException e) {
-            return ResponseEntity.notFound().build();
+        } catch (TagNotFoundException | EventNotFoundException | TaskNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (InvalidStatusNameException e) {
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }
         return ResponseEntity.ok(response);
     }

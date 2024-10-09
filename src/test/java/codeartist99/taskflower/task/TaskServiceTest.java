@@ -3,8 +3,8 @@ package codeartist99.taskflower.task;
 import codeartist99.taskflower.event.Event;
 import codeartist99.taskflower.event.EventNotFoundException;
 import codeartist99.taskflower.event.EventRepository;
-import codeartist99.taskflower.hashtag.Hashtag;
-import codeartist99.taskflower.tag.model.Tag;
+import codeartist99.taskflower.tag.TagNotFoundException;
+import codeartist99.taskflower.task.exception.InvalidStatusNameException;
 import codeartist99.taskflower.task.exception.TaskNotFoundException;
 import codeartist99.taskflower.task.model.Status;
 import codeartist99.taskflower.task.model.Task;
@@ -81,14 +81,12 @@ class TaskServiceTest {
      */
     @Test
     @DisplayName("save task and get task test")
-    void save() throws TaskNotFoundException {
+    void save() throws TaskNotFoundException, InvalidStatusNameException, TagNotFoundException, EventNotFoundException {
 //        Arrange
         String title = "test title";
-        Event event = null;
-        Tag tag = null;
-        List<Hashtag> hashtags = Collections.emptyList();
+        List<Long> hashtags = Collections.emptyList();
         String description = "test description";
-        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, event, tag, hashtags, description, Status.TODO);
+        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, null, null, hashtags, description, "TO_DO");
 
 //        Act
         TaskResponse taskResponse = taskService.save(user, saveTaskRequest);
@@ -102,23 +100,19 @@ class TaskServiceTest {
      */
     @Test
     @DisplayName("find all by user test")
-    void findAll() {
+    void findAll() throws InvalidStatusNameException, TagNotFoundException, EventNotFoundException {
 //        Arrange
 //        first task
         String title = "test title";
-        Event event = null;
-        Tag tag = null;
-        List<Hashtag> hashtags = Collections.emptyList();
+        List<Long> hashtags = Collections.emptyList();
         String description = "test description";
-        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, event, tag, hashtags, description, Status.TODO);
+        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, null, null, hashtags, description, "TO_DO");
 
 //        second task
         String title2 = "test title2";
-        Event event2 = null;
-        Tag tag2 = null;
-        List<Hashtag> hashTags2 = Collections.emptyList();
+        List<Long> hashTags2 = Collections.emptyList();
         String description2 = "test description2";
-        SaveTaskRequest saveTaskRequest2 = new SaveTaskRequest(title2, event2, tag2, hashTags2, description2, Status.IN_PROGRESS);
+        SaveTaskRequest saveTaskRequest2 = new SaveTaskRequest(title2, null, null, hashTags2, description2, "IN_PROGRESS");
 
 //        save a first task
         TaskResponse taskResponse = taskService.save(user, saveTaskRequest);
@@ -147,7 +141,7 @@ class TaskServiceTest {
     void findAllByEventId() throws EventNotFoundException {
         Event event = new Event(null, user, "event title", null, null, "event description", LocalDateTime.now(), LocalDateTime.now().plusDays(1), null);
         eventRepository.save(event);
-        Task task = new Task(null, user, "task title", event, null, null, "task description", Status.TODO, null);
+        Task task = new Task(null, user, "task title", event, null, null, "task description", Status.TO_DO, null);
         taskRepository.save(task);
 
         List<TaskResponse> taskResponseList = taskService.findAllByEventId(user, event.getId());
@@ -162,25 +156,21 @@ class TaskServiceTest {
      */
     @Test
     @DisplayName("update a task")
-    void updateTask() throws TaskNotFoundException {
+    void updateTask() throws TaskNotFoundException, InvalidStatusNameException, TagNotFoundException, EventNotFoundException {
 //        Arrange
 //        save a task
         String title = "test title";
-        Event event = null;
-        Tag tag = null;
-        List<Hashtag> hashtags = Collections.emptyList();
+        List<Long> hashtags = Collections.emptyList();
         String description = "test description";
-        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, event, tag, hashtags, description, Status.TODO);
+        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, null, null, hashtags, description, "TO_DO");
 
         TaskResponse taskResponse = taskService.save(user, saveTaskRequest);
 
 //        update a task
         String updateTitle = "test title2";
-        Event updateEvent = null;
-        Tag updateTag = null;
-        List<Hashtag> updateHashtags = Collections.emptyList();
+        List<Long> updateHashtags = Collections.emptyList();
         String updateDescription = "test description2";
-        SaveTaskRequest updateTaskRequest = new SaveTaskRequest(updateTitle, updateEvent, updateTag, updateHashtags, updateDescription, Status.IN_PROGRESS);
+        SaveTaskRequest updateTaskRequest = new SaveTaskRequest(updateTitle, null, null, updateHashtags, updateDescription, "IN_PROGRESS");
 
 //        Act
         TaskResponse updateTaskResponse = taskService.updateTask(taskResponse.getId(), updateTaskRequest);
@@ -194,15 +184,13 @@ class TaskServiceTest {
      */
     @Test
     @DisplayName("delete task")
-    void deleteById() throws TaskNotFoundException {
+    void deleteById() throws TaskNotFoundException, InvalidStatusNameException, TagNotFoundException, EventNotFoundException {
 //        Arrange
 //        save a task
         String title = "test title";
-        Event event = null;
-        Tag tag = null;
-        List<Hashtag> hashtags = null;
+        List<Long> hashtags = null;
         String description = "test description";
-        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, event, tag, hashtags, description, Status.TODO);
+        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, null, null, hashtags, description, "TO_DO");
 
         TaskResponse taskResponse = taskService.save(user, saveTaskRequest);
         Long taskId = taskResponse.getId();

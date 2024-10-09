@@ -1,7 +1,9 @@
 package codeartist99.taskflower.task;
 
+import codeartist99.taskflower.event.EventNotFoundException;
+import codeartist99.taskflower.tag.TagNotFoundException;
+import codeartist99.taskflower.task.exception.InvalidStatusNameException;
 import codeartist99.taskflower.task.exception.TaskNotFoundException;
-import codeartist99.taskflower.task.model.Status;
 import codeartist99.taskflower.task.payload.SaveTaskItemRequest;
 import codeartist99.taskflower.task.payload.SaveTaskRequest;
 import codeartist99.taskflower.task.payload.TaskItemResponse;
@@ -64,9 +66,9 @@ public class TaskAndTaskItemTest {
 
     @Test
     @DisplayName("is correct task item in correct task")
-    void saveTaskAndTaskItem() throws TaskNotFoundException {
+    void saveTaskAndTaskItem() throws TaskNotFoundException, InvalidStatusNameException, TagNotFoundException, EventNotFoundException {
 //        Arrange, Act
-        SaveTaskRequest saveTaskRequest = new SaveTaskRequest("test task title",  null, null, null, null, Status.TODO);
+        SaveTaskRequest saveTaskRequest = new SaveTaskRequest("test task title",  null, null, null, null, "TO_DO");
         TaskResponse taskResponse = taskService.save(user, saveTaskRequest);
 
         SaveTaskItemRequest saveTaskItemRequest = new SaveTaskItemRequest(taskResponse.getId(), "test task item title");

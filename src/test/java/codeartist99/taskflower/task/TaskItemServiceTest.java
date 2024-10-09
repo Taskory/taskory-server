@@ -66,7 +66,7 @@ class TaskItemServiceTest {
         Tag tag = null;
         List<Hashtag> hashtags = null;
         String description = "test description";
-        task = new Task(null, user, title, event, tag, hashtags, description, Status.TODO, null);
+        task = new Task(null, user, title, event, tag, hashtags, description, Status.TO_DO, null);
         taskRepository.save(task);
 
     }
