@@ -1,6 +1,7 @@
 package codeartist99.taskflower.task;
 
 import codeartist99.taskflower.event.Event;
+import codeartist99.taskflower.event.EventNotFoundException;
 import codeartist99.taskflower.event.EventRepository;
 import codeartist99.taskflower.hashtag.Hashtag;
 import codeartist99.taskflower.tag.model.Tag;
@@ -142,13 +143,13 @@ class TaskServiceTest {
      */
     @Test
     @DisplayName("find task filtered by flow or event")
-    void findAllByEvent() {
+    void findAllByEventId() throws EventNotFoundException {
         Event event = new Event(null, user, "event title", null, null, "event description", LocalDateTime.now(), LocalDateTime.now().plusDays(1), null);
         eventRepository.save(event);
         Task task = new Task(null, user, "task title", event, null, null, "task description", Status.TODO, null);
         taskRepository.save(task);
 
-        List<TaskResponse> taskResponseList = taskService.findAllByEvent(user, event);
+        List<TaskResponse> taskResponseList = taskService.findAllByEventId(user, event.getId());
         TaskResponse savedTask = taskResponseList.get(0);
 
         assertEquals(event.getId(), savedTask.getEvent().getId());

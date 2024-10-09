@@ -1,6 +1,8 @@
 package codeartist99.taskflower.task.service;
 
 import codeartist99.taskflower.event.Event;
+import codeartist99.taskflower.event.EventNotFoundException;
+import codeartist99.taskflower.event.EventRepository;
 import codeartist99.taskflower.task.exception.TaskNotFoundException;
 import codeartist99.taskflower.task.model.Task;
 import codeartist99.taskflower.task.payload.SaveTaskRequest;
@@ -12,18 +14,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
 
     private final TaskRepository taskRepository;
     private final TaskItemRepository taskitemRepository;
+    private final EventRepository eventRepository;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository, TaskItemRepository taskitemRepository) {
+    public TaskService(TaskRepository taskRepository, TaskItemRepository taskitemRepository, EventRepository eventRepository) {
         this.taskRepository = taskRepository;
         this.taskitemRepository = taskitemRepository;
+        this.eventRepository = eventRepository;
     }
 
     /**
@@ -73,9 +76,9 @@ public class TaskService {
      * @return a list of {@link TaskResponse} representing the filtered tasks
      * @throws IllegalStateException if both {@code flow} and {@code event} are null
      */
-    public List<TaskResponse> findAllByEvent(User user, Event event) {
+    public List<TaskResponse> findAllByEventId(User user, Long eventId) throws EventNotFoundException {
         List<Task> tasks;
-
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException("Event not found for id: " + eventId));
         if (event == null) {
             throw new IllegalStateException("Both flow and event cannot be null.");
         } else {
@@ -84,7 +87,7 @@ public class TaskService {
 
         return tasks.stream()
                 .map(TaskResponse::new)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
