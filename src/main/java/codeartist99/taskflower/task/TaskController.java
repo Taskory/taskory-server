@@ -27,7 +27,7 @@ import java.util.List;
  * Provides endpoints for creating, retrieving, updating, and deleting tasks and task items.
  */
 @RestController
-@RequestMapping("/${app.url-base}/task")
+@RequestMapping("${app.url-base}/task")
 public class TaskController {
 
     private final TaskService taskService;
