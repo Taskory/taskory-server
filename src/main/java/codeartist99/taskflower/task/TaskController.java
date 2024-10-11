@@ -71,7 +71,7 @@ public class TaskController {
      * @return the response containing the task details
      */
     @GetMapping("/{id}")
-    public ResponseEntity<TaskResponse> getTaskById(@PathVariable Long id) {
+    public ResponseEntity<TaskResponse> getTaskById(@PathVariable("id") Long id) {
         TaskResponse response;
         try {
             response = taskService.getById(id);
@@ -121,7 +121,7 @@ public class TaskController {
      * @return the response containing the updated task details
      */
     @PutMapping("/{id}")
-    public ResponseEntity<TaskResponse> updateTask(@PathVariable Long id, @RequestBody SaveTaskRequest saveTaskRequest) {
+    public ResponseEntity<TaskResponse> updateTask(@PathVariable("id") Long id, @RequestBody SaveTaskRequest saveTaskRequest) {
         TaskResponse response;
         try {
             response = taskService.updateTask(id, saveTaskRequest);
