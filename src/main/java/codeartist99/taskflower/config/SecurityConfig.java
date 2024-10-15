@@ -5,6 +5,7 @@ import codeartist99.taskflower.security.handler.OAuth2AuthenticationFailureHandl
 import codeartist99.taskflower.security.handler.OAuth2AuthenticationSuccessHandler;
 import codeartist99.taskflower.security.service.CustomOAuth2UserService;
 import codeartist99.taskflower.security.token.TokenFilter;
+import codeartist99.taskflower.user.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -46,6 +47,7 @@ public class SecurityConfig {
             HttpMethod.GET.name(),
             HttpMethod.POST.name(),
             HttpMethod.PUT.name(),
+            HttpMethod.PATCH.name(),
             HttpMethod.DELETE.name()
     );
     private final List<String> allowedHeaders = Arrays.asList(
@@ -110,9 +112,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/oauth2/**").permitAll()
                         .requestMatchers(urlBase + "/auth/**").permitAll()
-                        .requestMatchers(urlBase + "/user/**").hasAnyRole("USER", "TEMPORARY_USER", "ADMIN")
-                        .requestMatchers(urlBase + "/event/**").hasAnyRole("USER", "ADMIN")
-                        .anyRequest().authenticated()
+                        .requestMatchers(urlBase + "/user/**").hasAnyRole(Role.USER.name(), Role.TEMP_USER.name(), Role.ADMIN.name())
+                        .requestMatchers(urlBase + "/event/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
+                        .requestMatchers(urlBase + "/task/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
+                        .requestMatchers(urlBase + "/tags/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
+                        .anyRequest().denyAll()
                 );
 
 //        JWT Token filter

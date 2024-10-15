@@ -14,6 +14,7 @@ import codeartist99.taskflower.task.service.TaskService;
 import codeartist99.taskflower.user.CurrentUser;
 import codeartist99.taskflower.user.UserRepository;
 import codeartist99.taskflower.user.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ import java.util.List;
  * Controller for managing tasks and task items.
  * Provides endpoints for creating, retrieving, updating, and deleting tasks and task items.
  */
+@Slf4j
 @RestController
 @RequestMapping("${app.url-base}/task")
 public class TaskController {
@@ -132,6 +134,20 @@ public class TaskController {
         }
         return ResponseEntity.ok(response);
     }
+
+    @PatchMapping("/status/{taskId}")
+    public ResponseEntity<Void> updateTaskStatus(@PathVariable("taskId") Long taskId, @RequestParam("status") String status) {
+        try {
+            log.info("[LOG] status: {}", status);
+            taskService.updateTaskStatus(taskId, status);
+        } catch (TaskNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (InvalidStatusNameException e) {
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
 
     /**
      * Deletes a task by its ID.

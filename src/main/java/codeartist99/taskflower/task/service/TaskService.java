@@ -207,6 +207,16 @@ public class TaskService {
         return new TaskResponse(task);
     }
 
+    public void updateTaskStatus(Long taskId, String updateStatus) throws TaskNotFoundException, InvalidStatusNameException {
+        Status status = validateAndGetStatus(updateStatus);
+
+        Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
+
+        task.setStatus(status);
+
+        taskRepository.save(task);
+    }
+
     /**
      * Deletes a task by its ID.
      *
