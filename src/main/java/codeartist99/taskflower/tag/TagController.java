@@ -6,6 +6,7 @@ import codeartist99.taskflower.tag.payload.TagResponse;
 import codeartist99.taskflower.user.CurrentUser;
 import codeartist99.taskflower.user.UserRepository;
 import codeartist99.taskflower.user.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,8 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
-@RequestMapping("${app.url-base}/tags")
+@RequestMapping("${app.url-base}/tag")
 public class TagController {
 
     private final TagService tagService;
@@ -36,6 +38,8 @@ public class TagController {
     public ResponseEntity<TagResponse> saveTag(@CurrentUser UserPrincipal userPrincipal,
                                                @RequestBody SaveTagRequest saveTagRequest) {
         User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new UsernameNotFoundException("user not found"));
+        log.info("[LOG] saveTagRequest.title: {}", saveTagRequest.getTitle());
+        log.info("[LOG] saveTagRequest.color: {}", saveTagRequest.getColor());
         TagResponse tagResponse = tagService.save(user, saveTagRequest);
         return ResponseEntity.ok(tagResponse);
     }

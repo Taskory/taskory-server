@@ -1,16 +1,18 @@
 package codeartist99.taskflower.tag;
 
+import codeartist99.taskflower.tag.model.Color;
 import codeartist99.taskflower.tag.model.Tag;
 import codeartist99.taskflower.tag.payload.SaveTagRequest;
 import codeartist99.taskflower.tag.payload.TagResponse;
 import codeartist99.taskflower.user.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+@Slf4j
 @Service
 public class TagService {
     private final TagRepository tagRepository;
@@ -27,7 +29,17 @@ public class TagService {
      * @return TagResponse
      */
     public TagResponse save(User user, SaveTagRequest saveTagRequest) {
-        Tag tag = new Tag(user, saveTagRequest);
+        if (saveTagRequest.getTitle().isEmpty()) {
+            throw new IllegalArgumentException("Title cannot be empty");
+        }
+        if (!ColorValidator.isValidColor(saveTagRequest.getColor())) {
+            throw new IllegalArgumentException("Color cannot be empty");
+        }
+        Tag tag = Tag.builder()
+                .user(user)
+                .title(saveTagRequest.getTitle())
+                .color(Color.valueOf(saveTagRequest.getColor()))
+                .build();
 
         tagRepository.save(tag);
 

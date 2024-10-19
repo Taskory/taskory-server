@@ -115,7 +115,7 @@ public class SecurityConfig {
                         .requestMatchers(urlBase + "/user/**").hasAnyRole(Role.USER.name(), Role.TEMP_USER.name(), Role.ADMIN.name())
                         .requestMatchers(urlBase + "/event/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
                         .requestMatchers(urlBase + "/task/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
-                        .requestMatchers(urlBase + "/tags/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
+                        .requestMatchers(urlBase + "/tag/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
                         .anyRequest().denyAll()
                 );
 

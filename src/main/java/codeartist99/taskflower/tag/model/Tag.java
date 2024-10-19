@@ -3,16 +3,14 @@ package codeartist99.taskflower.tag.model;
 import codeartist99.taskflower.tag.payload.SaveTagRequest;
 import codeartist99.taskflower.user.model.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity(name = "Tag")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,14 +28,8 @@ public class Tag {
     @Enumerated(value = EnumType.STRING)
     private Color color;
 
-    public Tag(User user, SaveTagRequest saveTagRequest) {
-        this.user = user;
-        this.title = saveTagRequest.getTile();
-        this.color = saveTagRequest.getColor();
-    }
-
     public void update(SaveTagRequest saveTagRequest) {
-        this.title = saveTagRequest.getTile();
-        this.color = saveTagRequest.getColor();
+        this.title = saveTagRequest.getTitle();
+        this.color = Color.valueOf(saveTagRequest.getColor());
     }
 }

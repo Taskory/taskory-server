@@ -64,7 +64,7 @@ class TagServiceTest {
     void save() throws TagNotFoundException {
 //        Arrange
         String title = "test tile";
-        SaveTagRequest saveTagRequest = new SaveTagRequest(title, Color.BLUE);
+        SaveTagRequest saveTagRequest = new SaveTagRequest(title, Color.BLUE.name());
 
 //        Act
         TagResponse tagResponse = tagService.save(user, saveTagRequest);
@@ -82,11 +82,11 @@ class TagServiceTest {
 //        Arrange
 //        the first tag
         String title = "test tile";
-        SaveTagRequest saveTagRequest = new SaveTagRequest(title, Color.BLUE);
+        SaveTagRequest saveTagRequest = new SaveTagRequest(title, Color.BLUE.name());
 
 //        the second tag
         String title2 = "test tile2";
-        SaveTagRequest saveTagRequest2 = new SaveTagRequest(title, Color.PINK);
+        SaveTagRequest saveTagRequest2 = new SaveTagRequest(title, Color.BLUE.name());
 
 //        save a first tag
         TagResponse tagResponse = tagService.save(user, saveTagRequest);
@@ -116,13 +116,13 @@ class TagServiceTest {
 //        Arrange
 //        to save a tag
         String title = "test tile";
-        SaveTagRequest saveTagRequest = new SaveTagRequest(title, Color.BLUE);
+        SaveTagRequest saveTagRequest = new SaveTagRequest(title, Color.BLUE.name());
 
         TagResponse tagResponse = tagService.save(user, saveTagRequest);
 
 //        update a tag
         String updateTitle = "test tile2";
-        SaveTagRequest updateTagRequest = new SaveTagRequest(updateTitle, Color.CYAN);
+        SaveTagRequest updateTagRequest = new SaveTagRequest(updateTitle, Color.BLUE.name());
 
 //        Act
         TagResponse updateTagResponse = tagService.updateTag(tagResponse.getId(), updateTagRequest);
@@ -140,7 +140,7 @@ class TagServiceTest {
 //        Arrange
 //        save a tag
         String title = "test tile";
-        SaveTagRequest saveTagRequest = new SaveTagRequest(title, Color.BLUE);
+        SaveTagRequest saveTagRequest = new SaveTagRequest(title, Color.BLUE.name());
 
         TagResponse tagResponse = tagService.save(user, saveTagRequest);
 

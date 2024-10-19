@@ -1,6 +1,5 @@
 package codeartist99.taskflower.tag.payload;
 
-import codeartist99.taskflower.tag.model.Color;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SaveTagRequest {
-    private String tile;
+    private String title;
 
-    private Color color;
+    private String color;
 }

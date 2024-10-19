@@ -33,19 +33,25 @@ public class TokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = tokenService.getTokenFromRequest(request);
-        if (StringUtils.hasText(token) && tokenService.isValidatedToken(token)) {
-            Long userId = tokenService.getUserIdFromToken(token);
 
-            UserPrincipal userPrincipal = (UserPrincipal) userDetailsService.loadUserByUserId(userId);
+        if (StringUtils.hasText(token)) {
+            if (tokenService.isValidatedToken(token)) {
+                Long userId = tokenService.getUserIdFromToken(token);
+                UserPrincipal userPrincipal = (UserPrincipal) userDetailsService.loadUserByUserId(userId);
 
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    userPrincipal, userPrincipal.getPassword(), userPrincipal.getAuthorities()
-            );
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                        userPrincipal, null, userPrincipal.getAuthorities()
+                );
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
+                log.info("User with ID: {} successfully authenticated", userId);
+            } else {
+                log.warn("Invalid token: {}", token);
+            }
         }
+
         filterChain.doFilter(request, response);
     }
+
 }
