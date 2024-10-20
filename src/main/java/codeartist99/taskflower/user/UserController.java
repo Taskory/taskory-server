@@ -24,6 +24,7 @@ public class UserController {
 
     @GetMapping("/profile")
     public ResponseEntity<UserResponse> getProfile(@CurrentUser UserPrincipal userPrincipal) {
+        log.info("=====[LOG] UserController.getProfile()=====");
         UserResponse response = userService.getByUsername(userPrincipal.getUsername());
         return ResponseEntity.ok().body(response);
     }

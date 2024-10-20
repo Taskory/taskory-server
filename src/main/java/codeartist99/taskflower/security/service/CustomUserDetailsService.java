@@ -33,7 +33,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public UserDetails loadUserByUserId(Long userId) {
         Optional<User> user = userRepository.findById(userId);
-        log.info("[LOG] CustomUserDetailsService.loadUserByUserId [{}]", userId);
         if (user.isPresent()) {
             return new UserPrincipal(user.get());
         } else throw new UsernameNotFoundException("User not found.");

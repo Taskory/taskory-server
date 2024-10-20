@@ -44,8 +44,6 @@ public class TokenFilter extends OncePerRequestFilter {
                 );
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
-                log.info("User with ID: {} successfully authenticated", userId);
             } else {
                 log.warn("Invalid token: {}", token);
             }
