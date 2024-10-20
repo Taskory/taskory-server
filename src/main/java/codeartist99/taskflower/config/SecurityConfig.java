@@ -30,6 +30,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Security configuration class for the application.
+ * Configures authentication, authorization, CORS, session management, and OAuth2 settings.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(
@@ -38,8 +42,10 @@ import java.util.List;
         jsr250Enabled = true
 )
 public class SecurityConfig {
+
     @Value("${app.url-base}")
     private String urlBase;
+
     @Value("${app.cors.allowed-origins}")
     private List<String> allowedOrigins;
 
@@ -50,6 +56,7 @@ public class SecurityConfig {
             HttpMethod.PATCH.name(),
             HttpMethod.DELETE.name()
     );
+
     private final List<String> allowedHeaders = Arrays.asList(
             HttpHeaders.CONTENT_TYPE,
             HttpHeaders.AUTHORIZATION
@@ -61,8 +68,21 @@ public class SecurityConfig {
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
 
+    /**
+     * Constructor to inject security-related dependencies.
+     *
+     * @param tokenFilter the JWT token filter to validate tokens.
+     * @param httpCookieOAuth2AuthorizationRequestRepository the repository for managing OAuth2 authorization cookies.
+     * @param customOAuth2UserService the service to manage OAuth2 user information.
+     * @param oAuth2AuthenticationSuccessHandler handler for OAuth2 authentication success events.
+     * @param oAuth2AuthenticationFailureHandler handler for OAuth2 authentication failure events.
+     */
     @Autowired
-    public SecurityConfig(TokenFilter tokenFilter, HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository, CustomOAuth2UserService customOAuth2UserService, OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler, OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler) {
+    public SecurityConfig(TokenFilter tokenFilter,
+                          HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository,
+                          CustomOAuth2UserService customOAuth2UserService,
+                          OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler,
+                          OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler) {
         this.tokenFilter = tokenFilter;
         this.httpCookieOAuth2AuthorizationRequestRepository = httpCookieOAuth2AuthorizationRequestRepository;
         this.customOAuth2UserService = customOAuth2UserService;
@@ -70,73 +90,84 @@ public class SecurityConfig {
         this.oAuth2AuthenticationFailureHandler = oAuth2AuthenticationFailureHandler;
     }
 
+    /**
+     * Creates and configures the authentication manager bean.
+     *
+     * @param authConfig the authentication configuration.
+     * @return the authentication manager.
+     * @throws Exception if there is an error during the configuration.
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
 
+    /**
+     * Configures the security filter chain for HTTP requests.
+     *
+     * @param httpSecurity the {@link HttpSecurity} object to configure security settings.
+     * @return the configured security filter chain.
+     * @throws Exception if there is an error during configuration.
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-//        Basin settings
+        // Basic security settings
         httpSecurity
-//                Not use HttpBasicAuth
-                .httpBasic(HttpBasicConfigurer::disable)
-//                Spring login form is not used.
-                .formLogin(FormLoginConfigurer::disable)
-//                Not use csrf config because this service is developed as a Rest API server.
-                .csrf(CsrfConfigurer::disable)
-//                Not session but token is used for this service.
-                .sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .httpBasic(HttpBasicConfigurer::disable) // Disable HTTP Basic authentication
+                .formLogin(FormLoginConfigurer::disable) // Disable form-based login
+                .csrf(CsrfConfigurer::disable) // Disable CSRF (as this is a stateless REST API)
+                .sessionManagement(sessionManagementConfigurer ->
+                        sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // Use stateless session management
 
-//        CORS config
-        httpSecurity
-                .cors(corsConfigurer -> corsConfigurer
-                        .configurationSource(corsConfigurationSource()));
+        // CORS configuration
+        httpSecurity.cors(corsConfigurer ->
+                corsConfigurer.configurationSource(corsConfigurationSource()));
 
-//        OAuth2
-        httpSecurity
-                .oauth2Login(httpSecurityOAuth2LoginConfigurer -> httpSecurityOAuth2LoginConfigurer
-                        .authorizationEndpoint(endpointConfig -> endpointConfig
-                                .baseUri("/oauth2/authorize")
-                                .authorizationRequestRepository(httpCookieOAuth2AuthorizationRequestRepository))
-                        .redirectionEndpoint(redirectionEndpointConfig -> redirectionEndpointConfig
-                                .baseUri("/oauth2/code/**"))
-                        .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
-                                .userService(customOAuth2UserService))
+        // OAuth2 login configuration
+        httpSecurity.oauth2Login(oauth2LoginConfigurer ->
+                oauth2LoginConfigurer
+                        .authorizationEndpoint(endpointConfig ->
+                                endpointConfig.baseUri("/oauth2/authorize")
+                                        .authorizationRequestRepository(httpCookieOAuth2AuthorizationRequestRepository))
+                        .redirectionEndpoint(redirectionEndpointConfig ->
+                                redirectionEndpointConfig.baseUri("/oauth2/code/**"))
+                        .userInfoEndpoint(userInfoEndpointConfig ->
+                                userInfoEndpointConfig.userService(customOAuth2UserService))
                         .successHandler(oAuth2AuthenticationSuccessHandler)
                         .failureHandler(oAuth2AuthenticationFailureHandler));
 
-//        Request matchers
-        httpSecurity
-                .authorizeHttpRequests(request -> request
-                        .requestMatchers("/oauth2/**").permitAll()
-                        .requestMatchers(urlBase + "/auth/**").permitAll()
-                        .requestMatchers(urlBase + "/user/**").hasAnyRole(Role.USER.name(), Role.TEMP_USER.name(), Role.ADMIN.name())
-                        .requestMatchers(urlBase + "/event/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
-                        .requestMatchers(urlBase + "/task/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
-                        .requestMatchers(urlBase + "/tag/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
-                        .anyRequest().denyAll()
-                );
+        // Request authorization settings
+        httpSecurity.authorizeHttpRequests(auth -> auth
+                .requestMatchers("/oauth2/**").permitAll() // Permit all OAuth2 requests
+                .requestMatchers(urlBase + "/auth/**").permitAll() // Permit all auth-related requests
+                .requestMatchers(urlBase + "/user/**").hasAnyRole(Role.USER.name(), Role.TEMP_USER.name(), Role.ADMIN.name()) // User roles access
+                .requestMatchers(urlBase + "/event/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name()) // Event access
+                .requestMatchers(urlBase + "/task/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name()) // Task access
+                .requestMatchers(urlBase + "/tag/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name()) // Tag access
+                .anyRequest().denyAll()); // Deny all other requests
 
-//        JWT Token filter
-        httpSecurity
-                .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
+        // Add the JWT token filter before UsernamePasswordAuthenticationFilter
+        httpSecurity.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
+
         return httpSecurity.build();
     }
 
+    /**
+     * Configures the CORS settings for the application.
+     *
+     * @return a {@link CorsConfigurationSource} with the configured CORS settings.
+     */
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(allowedOrigins);
         configuration.setAllowedMethods(allowedMethods);
         configuration.setAllowedHeaders(allowedHeaders);
-        configuration.setAllowCredentials(true);
+        configuration.setAllowCredentials(true); // Allow credentials for CORS requests
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration(urlBase + "/**", configuration);
+        source.registerCorsConfiguration(urlBase + "/**", configuration); // Apply CORS settings to all routes
 
         return source;
     }
-
 }
