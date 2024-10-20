@@ -137,6 +137,7 @@ public class SecurityConfig {
                         .failureHandler(oAuth2AuthenticationFailureHandler));
 
         // Request authorization settings
+        // TODO: The request is not working due to role management issues
         httpSecurity.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/oauth2/**").permitAll() // Permit all OAuth2 requests
                 .requestMatchers(urlBase + "/auth/**").permitAll() // Permit all auth-related requests
