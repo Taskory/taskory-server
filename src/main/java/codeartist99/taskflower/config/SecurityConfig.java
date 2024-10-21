@@ -141,10 +141,10 @@ public class SecurityConfig {
         httpSecurity.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/oauth2/**").permitAll() // Permit all OAuth2 requests
                 .requestMatchers(urlBase + "/auth/**").permitAll() // Permit all auth-related requests
-                .requestMatchers(urlBase + "/user/**").hasAnyRole(Role.USER.name(), Role.TEMP_USER.name(), Role.ADMIN.name()) // User roles access
-                .requestMatchers(urlBase + "/event/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name()) // Event access
-                .requestMatchers(urlBase + "/task/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name()) // Task access
-                .requestMatchers(urlBase + "/tag/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name()) // Tag access
+                .requestMatchers(urlBase + "/user/**").hasAnyAuthority(Role.USER.getName(), Role.TEMP_USER.getName(), Role.ADMIN.getName()) // User roles access
+                .requestMatchers(urlBase + "/event/**").hasAnyAuthority(Role.USER.getName(), Role.ADMIN.getName()) // Event access
+                .requestMatchers(urlBase + "/task/**").hasAnyAuthority(Role.USER.getName(), Role.ADMIN.getName()) // Task access
+                .requestMatchers(urlBase + "/tag/**").hasAnyAuthority(Role.USER.getName(), Role.ADMIN.getName()) // Tag access
                 .anyRequest().denyAll()); // Deny all other requests
 
         // Add the JWT token filter before UsernamePasswordAuthenticationFilter

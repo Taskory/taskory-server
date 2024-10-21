@@ -67,6 +67,7 @@ public class TokenFilter extends OncePerRequestFilter {
                 UserPrincipal userPrincipal =
                         (UserPrincipal) userDetailsService.loadUserByUserId(userId);
                 log.info("[LOG] Loaded user details: {}", userPrincipal.getUsername());
+                log.info("[LOG] Loaded user authority: {}", userPrincipal.getAuthorities());
 
                 UsernamePasswordAuthenticationToken authenticationToken =
                         new UsernamePasswordAuthenticationToken(
