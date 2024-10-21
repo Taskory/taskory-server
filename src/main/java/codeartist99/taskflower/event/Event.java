@@ -4,6 +4,7 @@ import codeartist99.taskflower.common.BaseTimeEntity;
 import codeartist99.taskflower.hashtag.Hashtag;
 import codeartist99.taskflower.tag.model.Tag;
 import codeartist99.taskflower.user.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,14 +24,15 @@ public class Event extends BaseTimeEntity {
     @Column(name = "event_id")
     private Long id;
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     @Column(name = "title")
     private String title;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tag_id")
     private Tag tag;
 

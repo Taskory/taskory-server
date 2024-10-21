@@ -1,6 +1,7 @@
 package codeartist99.taskflower.user.model;
 
 import codeartist99.taskflower.user.payload.ProfileUpdateRequest;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +24,7 @@ public class User {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
     @OneToMany
+    @JsonIgnore
     private Set<SocialAccount> socialAccounts;
     @Column(name = "roles", nullable = false)
     @ElementCollection(fetch = FetchType.EAGER)
