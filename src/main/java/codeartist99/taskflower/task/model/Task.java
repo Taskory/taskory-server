@@ -34,8 +34,8 @@ public class Task extends BaseTimeEntity {
     @JoinColumn(name = "event_id")
     private Event event;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "tag_id")
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "tag_id", nullable = false)
     private Tag tag;
 
     @ManyToMany(fetch = FetchType.EAGER)

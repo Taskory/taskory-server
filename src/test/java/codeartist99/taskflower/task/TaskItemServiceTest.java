@@ -1,80 +1,25 @@
 package codeartist99.taskflower.task;
 
-import codeartist99.taskflower.event.Event;
-import codeartist99.taskflower.hashtag.Hashtag;
-import codeartist99.taskflower.tag.model.Tag;
+import codeartist99.taskflower.setup.ArrangeTest;
 import codeartist99.taskflower.task.exception.TaskItemNotFoundException;
 import codeartist99.taskflower.task.exception.TaskNotFoundException;
-import codeartist99.taskflower.task.model.Status;
-import codeartist99.taskflower.task.model.Task;
 import codeartist99.taskflower.task.payload.SaveTaskItemRequest;
 import codeartist99.taskflower.task.payload.TaskItemResponse;
-import codeartist99.taskflower.task.repository.TaskRepository;
 import codeartist99.taskflower.task.service.TaskItemService;
-import codeartist99.taskflower.user.UserRepository;
-import codeartist99.taskflower.user.UserService;
-import codeartist99.taskflower.user.model.User;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-class TaskItemServiceTest {
+class TaskItemServiceTest extends ArrangeTest {
     @Autowired
     private TaskItemService taskItemService;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private TaskRepository taskRepository;
-
-    @Autowired
-    private UserService userService;
-    private User user;
-
-    private Task task;
-
-    @BeforeEach
-    void setUp() {
-        StringBuilder tempUsername;
-        do {
-            tempUsername = new StringBuilder();
-            Random random = new Random();
-            char[] charsForRandom = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
-            for (int i = 0; i < 10; i++) {
-                tempUsername.append(charsForRandom[random.nextInt(36)]);
-            }
-        } while (userRepository.existsByUsername(tempUsername.toString()));
-        String username = tempUsername.toString();
-        user = User.builder()
-                .username(username)
-                .build();
-        userRepository.save(user);
-
-        String title = "test title";
-        Event event = null;
-        Tag tag = null;
-        List<Hashtag> hashtags = null;
-        String description = "test description";
-        task = new Task(null, user, title, event, tag, hashtags, description, Status.TO_DO, null);
-        taskRepository.save(task);
-
-    }
-
-    @AfterEach
-    void end() {
-        userService.deleteById(user.getId());
-    }
 
     /**
      * Test for saving task item
@@ -84,10 +29,10 @@ class TaskItemServiceTest {
     void save() throws TaskNotFoundException, TaskItemNotFoundException {
 //        Arrange
         String title = "test tile";
-        SaveTaskItemRequest saveTaskItemRequest = new SaveTaskItemRequest(task.getId(), title);
+        SaveTaskItemRequest saveTaskItemRequest = new SaveTaskItemRequest(tempTask.getId(), title);
 
 //        Act
-        TaskItemResponse taskItemResponse = taskItemService.save(user, saveTaskItemRequest);
+        TaskItemResponse taskItemResponse = taskItemService.save(tempUser, saveTaskItemRequest);
 
 //        Assert
         assertEquals(taskItemResponse, taskItemService.getById(taskItemResponse.getId()));
@@ -101,16 +46,16 @@ class TaskItemServiceTest {
     void findAllByTaskId() throws TaskNotFoundException {
 //        Arrange
         String title = "test tile";
-        SaveTaskItemRequest saveTaskItemRequest = new SaveTaskItemRequest(task.getId(), title);
+        SaveTaskItemRequest saveTaskItemRequest = new SaveTaskItemRequest(tempTask.getId(), title);
 
         String title2 = "test title2";
-        SaveTaskItemRequest saveTaskItemRequest2 = new SaveTaskItemRequest(task.getId(), title2);
+        SaveTaskItemRequest saveTaskItemRequest2 = new SaveTaskItemRequest(tempTask.getId(), title2);
 
-        TaskItemResponse taskItemResponse = taskItemService.save(user, saveTaskItemRequest);
-        TaskItemResponse taskItemResponse2 = taskItemService.save(user, saveTaskItemRequest2);
+        TaskItemResponse taskItemResponse = taskItemService.save(tempUser, saveTaskItemRequest);
+        TaskItemResponse taskItemResponse2 = taskItemService.save(tempUser, saveTaskItemRequest2);
 
 //        Act
-        List<TaskItemResponse> items = taskItemService.findAllByTaskId(task.getId());
+        List<TaskItemResponse> items = taskItemService.findAllByTaskId(tempTask.getId());
 
 //        Assert
         assertEquals(taskItemResponse, items.get(0));
@@ -126,8 +71,8 @@ class TaskItemServiceTest {
     void updateTitle() throws TaskNotFoundException, TaskItemNotFoundException {
 //        Arrange
         String title = "test title";
-        SaveTaskItemRequest saveTaskItemRequest = new SaveTaskItemRequest(task.getId(), title);
-        TaskItemResponse item = taskItemService.save(user, saveTaskItemRequest);
+        SaveTaskItemRequest saveTaskItemRequest = new SaveTaskItemRequest(tempTask.getId(), title);
+        TaskItemResponse item = taskItemService.save(tempUser, saveTaskItemRequest);
 
 //        Act
         String updateTitle = "update title";
@@ -145,8 +90,8 @@ class TaskItemServiceTest {
     void setCompleted() throws TaskNotFoundException, TaskItemNotFoundException {
 //        Arrange
         String title = "test title";
-        SaveTaskItemRequest saveTaskItemRequest = new SaveTaskItemRequest(task.getId(), title);
-        TaskItemResponse item = taskItemService.save(user, saveTaskItemRequest);
+        SaveTaskItemRequest saveTaskItemRequest = new SaveTaskItemRequest(tempTask.getId(), title);
+        TaskItemResponse item = taskItemService.save(tempUser, saveTaskItemRequest);
 
 //        Act
 //        default completed status of task item is false, so set True
@@ -165,9 +110,9 @@ class TaskItemServiceTest {
 //        Arrange
 //        save a task item
         String title = "test title";
-        SaveTaskItemRequest saveTaskItemRequest = new SaveTaskItemRequest(task.getId(), title);
+        SaveTaskItemRequest saveTaskItemRequest = new SaveTaskItemRequest(tempTask.getId(), title);
 
-        TaskItemResponse itemResponse = taskItemService.save(user, saveTaskItemRequest);
+        TaskItemResponse itemResponse = taskItemService.save(tempUser, saveTaskItemRequest);
 
         Long itemId = itemResponse.getId();
 

@@ -3,6 +3,7 @@ package codeartist99.taskflower.task;
 import codeartist99.taskflower.event.Event;
 import codeartist99.taskflower.event.EventNotFoundException;
 import codeartist99.taskflower.event.EventRepository;
+import codeartist99.taskflower.setup.ArrangeTest;
 import codeartist99.taskflower.tag.TagNotFoundException;
 import codeartist99.taskflower.task.exception.InvalidStatusNameException;
 import codeartist99.taskflower.task.exception.TaskNotFoundException;
@@ -13,11 +14,6 @@ import codeartist99.taskflower.task.payload.TaskResponse;
 import codeartist99.taskflower.task.payload.TaskSummary;
 import codeartist99.taskflower.task.repository.TaskRepository;
 import codeartist99.taskflower.task.service.TaskService;
-import codeartist99.taskflower.user.UserRepository;
-import codeartist99.taskflower.user.UserService;
-import codeartist99.taskflower.user.model.User;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,54 +22,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class TaskServiceTest {
+class TaskServiceTest extends ArrangeTest {
 
     @Autowired
     private TaskService taskService;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private UserService userService;
-
-
-    private User user;
-
-    @Autowired
     private EventRepository eventRepository;
     @Autowired
     private TaskRepository taskRepository;
-
-    @BeforeEach
-    void setUp() {
-        StringBuilder tempUsername;
-        do {
-            tempUsername = new StringBuilder();
-            Random random = new Random();
-            char[] charsForRandom = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
-            for (int i = 0; i < 10; i++) {
-                tempUsername.append(charsForRandom[random.nextInt(36)]);
-            }
-        } while (userRepository.existsByUsername(tempUsername.toString()));
-        String username = tempUsername.toString();
-        String zoneId = "Asia/Seoul";
-        user = User.builder()
-                .username(username)
-                .build();
-        userRepository.save(user);
-    }
-
-    @AfterEach
-    void end() {
-        userService.deleteById(user.getId());
-    }
 
     /**
      * Test for saving task
@@ -86,10 +47,10 @@ class TaskServiceTest {
         String title = "test title";
         List<Long> hashtags = Collections.emptyList();
         String description = "test description";
-        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, null, null, hashtags, description, "TO_DO");
+        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, null, tempTag.getId(), hashtags, description, "TO_DO");
 
 //        Act
-        TaskResponse taskResponse = taskService.save(user, saveTaskRequest);
+        TaskResponse taskResponse = taskService.save(tempUser, saveTaskRequest);
 
 //        Assert
         assertEquals(taskResponse.toString(), taskService.getById(taskResponse.getId()).toString());
@@ -101,37 +62,39 @@ class TaskServiceTest {
     @Test
     @DisplayName("find all by user test")
     void findAll() throws InvalidStatusNameException, TagNotFoundException, EventNotFoundException {
-//        Arrange
-//        first task
+        // Arrange
+        // First task
         String title = "test title";
         List<Long> hashtags = Collections.emptyList();
         String description = "test description";
-        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, null, null, hashtags, description, "TO_DO");
+        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, null, tempTag.getId(), hashtags, description, "TO_DO");
 
-//        second task
+        // Second task
         String title2 = "test title2";
         List<Long> hashTags2 = Collections.emptyList();
         String description2 = "test description2";
-        SaveTaskRequest saveTaskRequest2 = new SaveTaskRequest(title2, null, null, hashTags2, description2, "IN_PROGRESS");
+        SaveTaskRequest saveTaskRequest2 = new SaveTaskRequest(title2, null, tempTag.getId(), hashTags2, description2, "IN_PROGRESS");
 
-//        save a first task
-        TaskResponse taskResponse = taskService.save(user, saveTaskRequest);
-//        save a second task
-        TaskResponse taskResponse2 = taskService.save(user, saveTaskRequest2);
+        // Save tasks
+        TaskResponse taskResponse = taskService.save(tempUser, saveTaskRequest);
+        TaskResponse taskResponse2 = taskService.save(tempUser, saveTaskRequest2);
 
-//        Act
-//        find all tasks
-        List<TaskSummary> taskResponseList = taskService.findAll(user);
+        // Act
+        // Find all tasks
+        List<TaskSummary> taskResponseList = taskService.findAll(tempUser);
 
-//        Assert
-//        find a first task
-        Long actualTaskResponseId = taskResponseList.get(0).getId();
-//        find a second task
-        Long actualTaskResponse2Id = taskResponseList.get(1).getId();
+        // Assert
+        // Verify each task is in the list
+        boolean firstTaskFound = taskResponseList.stream()
+                .anyMatch(task -> task.getId().equals(taskResponse.getId()));
 
-        assertEquals(taskResponse.getId(), actualTaskResponseId);
-        assertEquals(taskResponse2.getId(), actualTaskResponse2Id);
+        boolean secondTaskFound = taskResponseList.stream()
+                .anyMatch(task -> task.getId().equals(taskResponse2.getId()));
+
+        assertTrue(firstTaskFound);
+        assertTrue(secondTaskFound);
     }
+
 
     /**
      * Test for get all tasks filtered by flow and event
@@ -139,12 +102,12 @@ class TaskServiceTest {
     @Test
     @DisplayName("find task filtered by flow or event")
     void findAllByEventId() throws EventNotFoundException {
-        Event event = new Event(null, user, "event title", null, null, "event description", LocalDateTime.now(), LocalDateTime.now().plusDays(1), null);
+        Event event = new Event(null, tempUser, "event title", tempTag, null, "event description", LocalDateTime.now(), LocalDateTime.now().plusDays(1), null);
         eventRepository.save(event);
-        Task task = new Task(null, user, "task title", event, null, null, "task description", Status.TO_DO, null);
+        Task task = new Task(null, tempUser, "task title", event, tempTag, null, "task description", Status.TO_DO, null);
         taskRepository.save(task);
 
-        List<TaskResponse> taskResponseList = taskService.findAllByEventId(user, event.getId());
+        List<TaskResponse> taskResponseList = taskService.findAllByEventId(tempUser, event.getId());
         TaskResponse savedTask = taskResponseList.get(0);
 
         assertEquals(event.getId(), savedTask.getEvent().getId());
@@ -162,15 +125,15 @@ class TaskServiceTest {
         String title = "test title";
         List<Long> hashtags = Collections.emptyList();
         String description = "test description";
-        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, null, null, hashtags, description, "TO_DO");
+        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, null, tempTag.getId(), hashtags, description, "TO_DO");
 
-        TaskResponse taskResponse = taskService.save(user, saveTaskRequest);
+        TaskResponse taskResponse = taskService.save(tempUser, saveTaskRequest);
 
 //        update a task
         String updateTitle = "test title2";
         List<Long> updateHashtags = Collections.emptyList();
         String updateDescription = "test description2";
-        SaveTaskRequest updateTaskRequest = new SaveTaskRequest(updateTitle, null, null, updateHashtags, updateDescription, "IN_PROGRESS");
+        SaveTaskRequest updateTaskRequest = new SaveTaskRequest(updateTitle, null, tempTag.getId(), updateHashtags, updateDescription, "IN_PROGRESS");
 
 //        Act
         TaskResponse updateTaskResponse = taskService.updateTask(taskResponse.getId(), updateTaskRequest);
@@ -190,9 +153,9 @@ class TaskServiceTest {
         String title = "test title";
         List<Long> hashtags = null;
         String description = "test description";
-        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, null, null, hashtags, description, "TO_DO");
+        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, null, tempTag.getId(), hashtags, description, "TO_DO");
 
-        TaskResponse taskResponse = taskService.save(user, saveTaskRequest);
+        TaskResponse taskResponse = taskService.save(tempUser, saveTaskRequest);
         Long taskId = taskResponse.getId();
 
 //        Act
