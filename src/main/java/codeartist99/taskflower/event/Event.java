@@ -7,6 +7,8 @@ import codeartist99.taskflower.user.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class Event extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)          // If a user is deleted, the mapped events are also deleted
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
     private User user;
@@ -32,11 +35,12 @@ public class Event extends BaseTimeEntity {
     @Column(name = "title")
     private String title;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "tag_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "tag_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))            // If an event is deleted, the mapped tag is not deleted
     private Tag tag;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable
     private List<Hashtag> hashtags = new ArrayList<>();
 
     @Column(name = "description")

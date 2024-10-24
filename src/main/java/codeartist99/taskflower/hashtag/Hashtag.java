@@ -4,6 +4,8 @@ import codeartist99.taskflower.user.model.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity(name = "Hashtag")
 @Getter
@@ -15,7 +17,8 @@ public class Hashtag {
     private Long id;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)          // If a user is deleted, the mapped hashtags are also deleted
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column(name = "title")

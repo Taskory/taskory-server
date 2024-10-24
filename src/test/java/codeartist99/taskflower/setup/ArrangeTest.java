@@ -9,10 +9,9 @@ import codeartist99.taskflower.task.model.Status;
 import codeartist99.taskflower.task.model.Task;
 import codeartist99.taskflower.task.repository.TaskRepository;
 import codeartist99.taskflower.user.UserRepository;
-import codeartist99.taskflower.user.UserService;
 import codeartist99.taskflower.user.model.User;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -22,38 +21,26 @@ import java.util.Random;
 @SpringBootTest
 public class ArrangeTest {
 
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private TagRepository tagRepository;
-    @Autowired
-    private TaskRepository taskRepository;
-    @Autowired
-    private EventRepository eventRepository;
+    protected static User tempUser;
+    protected static Tag tempTag;
+    protected static Event tempEvent;
+    protected static Task tempTask;
 
-    protected User tempUser;
-    protected Tag tempTag;
-    protected Event tempEvent;
-    protected Task tempTask;
+    @BeforeAll
+    static void setUp(
+            @Autowired UserRepository userRepository,
+            @Autowired TagRepository tagRepository,
+            @Autowired TaskRepository taskRepository,
+            @Autowired EventRepository eventRepository) {
 
-    @BeforeEach
-    void setUp() {
-        StringBuilder tempUsername;
-        do {
-            tempUsername = new StringBuilder();
-            Random random = new Random();
-            char[] charsForRandom = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
-            for (int i = 0; i < 10; i++) {
-                tempUsername.append(charsForRandom[random.nextInt(36)]);
-            }
-        } while (userRepository.existsByUsername(tempUsername.toString()));
-        String username = tempUsername.toString();
-        tempUser = User.builder()
-                .username(username)
-                .build();
-        userRepository.save(tempUser);
+        String username = getRandomUsername(userRepository);
+
+        tempUser = userRepository.save(
+                User.builder()
+                        .username(username)
+                        .build()
+        );
+
 
         tempTag = tagRepository.save(
                 Tag.builder()
@@ -82,10 +69,21 @@ public class ArrangeTest {
         );
     }
 
-    @AfterEach
-    void tearDown() {
-        if (tempUser != null) {
-            userService.deleteById(tempUser.getId());
-        }
+    private static String getRandomUsername(UserRepository userRepository) {
+        StringBuilder tempUsername;
+        do {
+            tempUsername = new StringBuilder();
+            Random random = new Random();
+            char[] charsForRandom = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
+            for (int i = 0; i < 10; i++) {
+                tempUsername.append(charsForRandom[random.nextInt(36)]);
+            }
+        } while (userRepository.existsByUsername(tempUsername.toString()));
+        return tempUsername.toString();
+    }
+
+    @AfterAll
+    static void tearDown(@Autowired UserRepository userRepository) {
+        userRepository.deleteById(tempUser.getId());
     }
 }

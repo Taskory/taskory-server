@@ -8,7 +8,7 @@ import codeartist99.taskflower.setup.ArrangeTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -19,7 +19,6 @@ import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
 class EventServiceTest extends ArrangeTest {
 
     @Autowired
@@ -30,6 +29,7 @@ class EventServiceTest extends ArrangeTest {
      */
     @Test
     @DisplayName("save event and get event test")
+    @Transactional
     void save() throws EventNotFoundException {
 //        Arrange
         String title = "test title";

@@ -21,11 +21,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
+
     @Column(name = "username", nullable = false, unique = true)
     private String username;
-    @OneToMany
+
+    @OneToMany(cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<SocialAccount> socialAccounts;
+
     @Column(name = "roles", nullable = false)
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "User_roles", joinColumns = @JoinColumn(name = "user_id"))

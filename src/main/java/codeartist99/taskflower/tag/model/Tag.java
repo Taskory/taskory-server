@@ -4,6 +4,8 @@ import codeartist99.taskflower.tag.payload.SaveTagRequest;
 import codeartist99.taskflower.user.model.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity(name = "Tag")
 @Getter
@@ -18,15 +20,16 @@ public class Tag {
     private Long id;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)          // If a user is deleted, the mapped tags are also deleted
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
 
     @Column(name = "color", nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private Color color;
+    private Color color = Color.NONE;
 
     public void update(SaveTagRequest saveTagRequest) {
         this.title = saveTagRequest.getTitle();

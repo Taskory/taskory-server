@@ -7,6 +7,8 @@ import codeartist99.taskflower.tag.model.Tag;
 import codeartist99.taskflower.user.model.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,18 +26,19 @@ public class Task extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)          // If a user is deleted, the mapped task are also deleted
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "event_id")
+    @JoinColumn(name = "event_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))      // If a task is deleted, the mapped event is not deleted
     private Event event;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "tag_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "tag_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))            // If a task is deleted, the mapped tag is not deleted
     private Tag tag;
 
     @ManyToMany(fetch = FetchType.EAGER)

@@ -6,6 +6,8 @@ import codeartist99.taskflower.routine.repository.RoutineHistoryRepository;
 import codeartist99.taskflower.routine.repository.RoutineRepository;
 import codeartist99.taskflower.security.model.OAuth2UserInfo;
 import codeartist99.taskflower.tag.TagRepository;
+import codeartist99.taskflower.tag.model.Color;
+import codeartist99.taskflower.tag.model.Tag;
 import codeartist99.taskflower.task.service.TaskService;
 import codeartist99.taskflower.user.exception.UsernameAlreadyExistsException;
 import codeartist99.taskflower.user.model.Role;
@@ -94,15 +96,7 @@ public class UserService {
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("User not found");
         }
-        tagRepository.deleteAllByUser(user.get());
-        taskService.deleteAllByUser(user.get());
-        eventRepository.deleteAllByUser(user.get());
-        routineHistoryRepository.deleteAllByUser(user.get());
-        routineRepository.deleteAllByUser(user.get());
-        socialAccountRepository.deleteByUser(user.get());
-        hashtagRepository.deleteByUser(user.get());
         userRepository.deleteById(id);
-
     }
 
     public User registerTempUser(OAuth2UserInfo oAuth2UserInfo, String socialProvider) {
@@ -119,6 +113,16 @@ public class UserService {
                 .provider(socialProvider)
                 .build();
         socialAccountRepository.save(socialAccount);
+
+
+        // create default tag
+        tagRepository.save(
+                Tag.builder()
+                        .title("Calendar")
+                        .color(Color.NONE)
+                        .build()
+        );
+
         return user;
     }
 
