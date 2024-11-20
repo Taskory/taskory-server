@@ -94,7 +94,7 @@ public class TagController {
      * @return A response indicating the result of the delete operation
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTagById(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTagById(@PathVariable("id") Long id) {
         try {
             tagService.deleteById(id);
             return ResponseEntity.ok().build();

@@ -39,7 +39,8 @@ public class Task extends BaseTimeEntity {
     private Event event;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "tag_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))            // If a task is deleted, the mapped tag is not deleted
+    @JoinColumn(name = "tag_id", foreignKey = @ForeignKey(name = "fk_task_tag"))            // If a task is deleted, the mapped tag is not deleted
+    @OnDelete(action = OnDeleteAction.SET_NULL)         // If a tag deleted, the mapped tag value is set null
     private Tag tag;
 
     @ManyToMany(fetch = FetchType.EAGER)
