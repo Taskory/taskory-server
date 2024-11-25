@@ -36,7 +36,8 @@ public class Event extends BaseTimeEntity {
     private String title;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "tag_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))            // If an event is deleted, the mapped tag is not deleted
+    @JoinColumn(name = "tag_id", foreignKey = @ForeignKey(name = "fk_event_tag"))            // If an event is deleted, the mapped tag is not deleted
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Tag tag;
 
     @ManyToMany(fetch = FetchType.EAGER)
