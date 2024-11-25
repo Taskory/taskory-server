@@ -78,7 +78,7 @@ public class TagController {
      * @return The updated TagResponse
      */
     @PutMapping("/{id}")
-    public ResponseEntity<TagResponse> updateTag(@PathVariable Long id,
+    public ResponseEntity<TagResponse> updateTag(@PathVariable("id") Long id,
                                                  @RequestBody SaveTagRequest saveTagRequest) {
         try {
             TagResponse tagResponse = tagService.updateTag(id, saveTagRequest);
