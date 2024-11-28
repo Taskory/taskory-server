@@ -45,7 +45,7 @@ public class ArrangeTest {
         tempTag = tagRepository.save(
                 Tag.builder()
                         .title("temporary tag")
-                        .color(Color.NONE)
+                        .color(Color.BLUE)
                         .user(tempUser)
                         .build());
 

@@ -99,6 +99,7 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    @Transactional
     public User registerTempUser(OAuth2UserInfo oAuth2UserInfo, String socialProvider) {
         User user = User.builder()
                 .username(oAuth2UserInfo.getEmail())
@@ -118,8 +119,9 @@ public class UserService {
         // create default tag
         tagRepository.save(
                 Tag.builder()
-                        .title("Calendar")
-                        .color(Color.NONE)
+                        .user(user)
+                        .title("Default")
+                        .color(Color.BLUE)
                         .build()
         );
 

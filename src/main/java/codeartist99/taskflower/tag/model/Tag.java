@@ -29,7 +29,7 @@ public class Tag {
 
     @Column(name = "color", nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private Color color = Color.NONE;
+    private Color color;
 
     public void update(SaveTagRequest saveTagRequest) {
         this.title = saveTagRequest.getTitle();
