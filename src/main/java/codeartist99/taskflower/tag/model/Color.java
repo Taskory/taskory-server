@@ -1,16 +1,13 @@
 package codeartist99.taskflower.tag.model;
 
 public enum Color {
-    BLACK,
     RED,
-    GREEN,
-    BLUE,
-    YELLOW,
     ORANGE,
-    PURPLE,
-    BROWN,
-    PINK,
+    YELLOW,
+    LIME,
+    GREEN,
     CYAN,
-    LINE,
-    NONE
+    BLUE,
+    PURPLE,
+    PINK
 }
