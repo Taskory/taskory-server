@@ -162,4 +162,8 @@ public class EventService {
     }
 
 
+    public List<EventSummary> findAllByTags(List<Long> tagIds) {
+        List<Event> events = eventRepository.findByTag_IdIn(tagIds);
+        return events.stream().map(EventSummary::new).toList();
+    }
 }

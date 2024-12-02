@@ -4,6 +4,7 @@ import codeartist99.taskflower.event.payload.EventResponse;
 import codeartist99.taskflower.event.payload.EventSummary;
 import codeartist99.taskflower.event.payload.SaveEventRequest;
 import codeartist99.taskflower.security.model.UserPrincipal;
+import codeartist99.taskflower.task.payload.TaskSummary;
 import codeartist99.taskflower.user.CurrentUser;
 import codeartist99.taskflower.user.UserRepository;
 import codeartist99.taskflower.user.model.User;
@@ -129,5 +130,11 @@ public class EventController {
         } catch (UsernameNotFoundException exception) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
+    }
+
+    @GetMapping("/tags")
+    public ResponseEntity<List<EventSummary>> getTasksByTags(@RequestParam("tag_ids") List<Long> tagIds) {
+        List<EventSummary> responses = eventService.findAllByTags(tagIds);
+        return ResponseEntity.ok(responses);
     }
 }

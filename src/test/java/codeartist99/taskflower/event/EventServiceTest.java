@@ -278,4 +278,57 @@ class EventServiceTest extends ArrangeTest {
         assertTrue(isFoundEvent3);
         assertTrue(isFoundEvent4);
     }
+
+    /**
+     * Test for finding events by tags
+     */
+    @Test
+    @DisplayName("find all events by tags test")
+    @Transactional
+    void findAllByTags() {
+//        Arrange
+        String title = "test title";
+        List<Long> hashtags = Collections.emptyList();
+        String description = "test description";
+        String startDateTime = TimeUtil.localDateTimeToString(LocalDateTime.now().minusDays(10));
+        String dueDateTime = TimeUtil.localDateTimeToString(LocalDateTime.now().plusDays(10));
+        String location = "test location";
+
+        // Creating two tags for testing
+        Long tagId1 = tempTag.getId();
+        Long tagId2 = tempTag2.getId();
+
+        // Event 1 with tagId1
+        SaveEventRequest saveEventRequest1 = new SaveEventRequest(title, tagId1, hashtags, description, startDateTime, dueDateTime, location);
+        EventResponse eventResponse1 = eventService.save(tempUser, saveEventRequest1);
+
+        // Event 2 with tagId2
+        SaveEventRequest saveEventRequest2 = new SaveEventRequest(title, tagId2, hashtags, description, startDateTime, dueDateTime, location);
+        EventResponse eventResponse2 = eventService.save(tempUser, saveEventRequest2);
+
+        // Event 3 with both tagId1 and tagId2
+        SaveEventRequest saveEventRequest3 = new SaveEventRequest(title, tagId1, hashtags, description, startDateTime, dueDateTime, location);
+        EventResponse eventResponse3 = eventService.save(tempUser, saveEventRequest3);
+
+//        Act
+//        Find all events by tagId1
+        List<EventSummary> eventSummaryList = eventService.findAllByTags(List.of(tagId1));
+
+//        Assert
+        boolean isFoundEvent1 = eventSummaryList.stream()
+                .anyMatch(event -> event.getId().equals(eventResponse1.getId()));
+
+        boolean isFoundEvent3 = eventSummaryList.stream()
+                .anyMatch(event -> event.getId().equals(eventResponse3.getId()));
+
+//        Events with tagId1 should be found
+        assertTrue(isFoundEvent1);
+        assertTrue(isFoundEvent3);
+
+//        Event with tagId2 should not be found when searching with only tagId1
+        boolean isFoundEvent2 = eventSummaryList.stream()
+                .anyMatch(event -> event.getId().equals(eventResponse2.getId()));
+
+        assertFalse(isFoundEvent2);
+    }
 }

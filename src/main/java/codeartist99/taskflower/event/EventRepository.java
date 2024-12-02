@@ -17,4 +17,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     @Query("SELECT e FROM Event e WHERE e.startDateTime < :endDateTime AND e.dueDateTime > :startDateTime AND e.user = :user")
     List<Event> findAllByUserInPeriod(@Param("user") User user, @Param("startDateTime") LocalDateTime startDateTime, @Param("endDateTime") LocalDateTime endDateTime);
+
+    List<Event> findByTag_IdIn(List<Long> tagIds);
 }

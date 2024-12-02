@@ -23,6 +23,7 @@ public class ArrangeTest {
 
     protected static User tempUser;
     protected static Tag tempTag;
+    protected static Tag tempTag2;
     protected static Event tempEvent;
     protected static Task tempTask;
 
@@ -46,6 +47,13 @@ public class ArrangeTest {
                 Tag.builder()
                         .title("temporary tag")
                         .color(Color.BLUE)
+                        .user(tempUser)
+                        .build());
+
+        tempTag2 = tagRepository.save(
+                Tag.builder()
+                        .title("temporary tag2")
+                        .color(Color.RED)
                         .user(tempUser)
                         .build());
 
