@@ -164,4 +164,36 @@ class TaskServiceTest extends ArrangeTest {
 //        Assert
         assertThrows(TaskNotFoundException.class, () -> taskService.getById(taskId));
     }
+
+    @Test
+    @DisplayName("Find all tasks by tag IDs")
+    void findAllByTags() throws InvalidStatusNameException, TagNotFoundException, EventNotFoundException {
+        // Arrange
+        // Create first task with a specific tag
+        String title1 = "Task 1";
+        String description1 = "Description 1";
+        SaveTaskRequest saveTaskRequest1 = new SaveTaskRequest(title1, null, tempTag.getId(), Collections.emptyList(), description1, "TO_DO");
+
+        TaskResponse taskResponse1 = taskService.save(tempUser, saveTaskRequest1);
+
+        // Create second task with the same tag
+        String title2 = "Task 2";
+        String description2 = "Description 2";
+        SaveTaskRequest saveTaskRequest2 = new SaveTaskRequest(title2, null, tempTag.getId(), Collections.emptyList(), description2, "IN_PROGRESS");
+
+        TaskResponse taskResponse2 = taskService.save(tempUser, saveTaskRequest2);
+
+        // Act
+        // Call findAllByTags with the tag ID of the created tasks
+        List<TaskSummary> taskSummaries = taskService.findAllByTags(List.of(tempTag.getId()));
+
+        // Assert
+        boolean task1Found = taskSummaries.stream()
+                .anyMatch(task -> task.getId().equals(taskResponse1.getId()) && task.getTitle().equals(title1));
+        boolean task2Found = taskSummaries.stream()
+                .anyMatch(task -> task.getId().equals(taskResponse2.getId()) && task.getTitle().equals(title2));
+
+        assertTrue(task1Found, "Task 1 should be retrieved");
+        assertTrue(task2Found, "Task 2 should be retrieved");
+    }
 }

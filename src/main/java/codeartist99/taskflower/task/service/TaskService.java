@@ -17,6 +17,7 @@ import codeartist99.taskflower.task.payload.TaskSummary;
 import codeartist99.taskflower.task.repository.TaskItemRepository;
 import codeartist99.taskflower.task.repository.TaskRepository;
 import codeartist99.taskflower.user.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
+@Slf4j
 @Service
 public class TaskService {
 
@@ -241,5 +243,12 @@ public class TaskService {
         // Batch deletion of task items and tasks
         taskitemRepository.deleteAllByTaskIn(tasks);
         taskRepository.deleteAllByUser(user);
+    }
+
+    public List<TaskSummary> findAllByTags(List<Long> tagIds) {
+        log.info("[LOG] tagids: {}", tagIds);
+        List<Task> tasks = taskRepository.findByTag_IdIn(tagIds);
+        log.info("[LOG] tasks: {}", tasks);
+        return tasks.stream().map(TaskSummary::new).toList();
     }
 }

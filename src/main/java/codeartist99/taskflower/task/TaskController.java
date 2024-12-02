@@ -96,6 +96,12 @@ public class TaskController {
         return ResponseEntity.ok(responses);
     }
 
+    @GetMapping("/tags")
+    public ResponseEntity<List<TaskSummary>> getTasksByTags(@RequestParam("tag_ids") List<Long> tagIds) {
+        List<TaskSummary> responses = taskService.findAllByTags(tagIds);
+        return ResponseEntity.ok(responses);
+    }
+
     /**
      * Retrieves tasks for the authenticated user, filtered by event ID if provided.
      *
