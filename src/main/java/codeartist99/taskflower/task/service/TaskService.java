@@ -99,7 +99,7 @@ public class TaskService {
 
             taskItemRepository.saveAll(itemList);
 
-            task.setItems(itemList);
+            task.setItems(new ArrayList<>(itemList));
             taskRepository.save(task);
         }
 
@@ -272,7 +272,7 @@ public class TaskService {
             taskItemRepository.saveAll(updatedItems);
 
             // Update Task with new items
-            task.setItems(updatedItems);
+            task.setItems(new ArrayList<>(updatedItems));
         }
 
         taskRepository.save(task);

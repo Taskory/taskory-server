@@ -10,6 +10,7 @@ import codeartist99.taskflower.task.exception.TaskNotFoundException;
 import codeartist99.taskflower.task.model.Status;
 import codeartist99.taskflower.task.model.Task;
 import codeartist99.taskflower.task.payload.SaveTaskRequest;
+import codeartist99.taskflower.task.payload.TaskItemDto;
 import codeartist99.taskflower.task.payload.TaskResponse;
 import codeartist99.taskflower.task.payload.TaskSummary;
 import codeartist99.taskflower.task.repository.TaskRepository;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -47,7 +49,10 @@ class TaskServiceTest extends ArrangeTest {
         String title = "test title";
         List<Long> hashtags = Collections.emptyList();
         String description = "test description";
-        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, null, tempTag.getId(), hashtags, description, "TO_DO", null);
+        List<TaskItemDto> items = new ArrayList<>();
+        TaskItemDto taskItemDto = new TaskItemDto(null, null, "test item title", false);
+        items.add(taskItemDto);
+        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, null, tempTag.getId(), hashtags, description, "TO_DO", items);
 
 //        Act
         TaskResponse taskResponse = taskService.save(tempUser, saveTaskRequest);
@@ -125,7 +130,14 @@ class TaskServiceTest extends ArrangeTest {
         String title = "test title";
         List<Long> hashtags = Collections.emptyList();
         String description = "test description";
-        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, null, tempTag.getId(), hashtags, description, "TO_DO", null);
+        TaskItemDto taskItemDto = new TaskItemDto(null, null, "saved item 1", false);
+        TaskItemDto taskItemDto2 = new TaskItemDto(null, null, "saved item 2", false);
+        TaskItemDto taskItemDto3 = new TaskItemDto(null, null, "saved item 3", true);
+        List<TaskItemDto> items = new ArrayList<>();
+        items.add(taskItemDto);
+        items.add(taskItemDto2);
+        items.add(taskItemDto3);
+        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, null, tempTag.getId(), hashtags, description, "TO_DO", items);
 
         TaskResponse taskResponse = taskService.save(tempUser, saveTaskRequest);
 
@@ -133,7 +145,12 @@ class TaskServiceTest extends ArrangeTest {
         String updateTitle = "test title2";
         List<Long> updateHashtags = Collections.emptyList();
         String updateDescription = "test description2";
-        SaveTaskRequest updateTaskRequest = new SaveTaskRequest(updateTitle, null, tempTag.getId(), updateHashtags, updateDescription, "IN_PROGRESS", null);
+        taskItemDto2.setTitle("saved item 2 to update");
+
+        List<TaskItemDto> updateItems = new ArrayList<>();
+        items.add(taskItemDto);
+        items.add(taskItemDto2);
+        SaveTaskRequest updateTaskRequest = new SaveTaskRequest(updateTitle, null, tempTag.getId(), updateHashtags, updateDescription, "IN_PROGRESS", updateItems);
 
 //        Act
         TaskResponse updateTaskResponse = taskService.updateTask(taskResponse.getId(), updateTaskRequest, tempUser);

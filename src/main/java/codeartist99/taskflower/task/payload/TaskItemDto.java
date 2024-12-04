@@ -2,18 +2,16 @@ package codeartist99.taskflower.task.payload;
 
 import codeartist99.taskflower.task.model.TaskItem;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class TaskItemDto {
     private Long id;
-    @NotNull private Long taskId;
+    private Long taskId;
     @NotNull private String title;
     @NotNull private boolean completed;
 
