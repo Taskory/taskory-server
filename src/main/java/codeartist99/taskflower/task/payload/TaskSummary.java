@@ -3,6 +3,8 @@ package codeartist99.taskflower.task.payload;
 import codeartist99.taskflower.event.payload.EventSummary;
 import codeartist99.taskflower.hashtag.HashtagResponse;
 import codeartist99.taskflower.task.model.Task;
+import codeartist99.taskflower.task.model.TaskItem;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,13 +15,14 @@ import java.util.List;
 @Setter
 @ToString
 public class TaskSummary {
-    private Long id;
-    private String title;
+    @NotNull private Long id;
+    @NotNull private String title;
     private EventSummary event;
-    private String tagTitle;
-    private String tagColor;
+    @NotNull private String tagTitle;
+    @NotNull private String tagColor;
     private List<HashtagResponse> hashtags;
-    private String status;
+    @NotNull private String status;
+    @NotNull private Integer progressRate;
 
     public TaskSummary(Task task) {
         this.id = task.getId();
@@ -31,5 +34,18 @@ public class TaskSummary {
         }
         this.hashtags = task.getHashtags().stream().map(HashtagResponse::new).toList();
         this.status = task.getStatus().name();
+        this.progressRate = calculateProgress(task.getItems());
+    }
+
+    private static Integer calculateProgress(List<TaskItem> items) {
+        if (items == null || items.isEmpty()) {
+            return 0;
+        }
+
+        long completedItems = items.stream()
+                .filter(TaskItem::isCompleted)
+                .count();
+
+        return Math.round((float) completedItems / items.size() * 100);
     }
 }

@@ -55,13 +55,4 @@ public class Task extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "task", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TaskItem> items = new ArrayList<>();
-
-    public void update(Task updateTask) {
-        this.title = updateTask.getTitle();
-        this.event = updateTask.getEvent();
-        this.tag = updateTask.getTag();
-        this.hashtags = updateTask.getHashtags();
-        this.description = updateTask.getDescription();
-        this.status = updateTask.getStatus();
-    }
 }

@@ -1,12 +1,9 @@
 package codeartist99.taskflower.task.model;
 
-import codeartist99.taskflower.task.payload.SaveTaskItemRequest;
+import codeartist99.taskflower.task.payload.TaskItemDto;
 import codeartist99.taskflower.user.model.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -15,6 +12,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class TaskItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,9 +34,9 @@ public class TaskItem {
     @Column(name = "completed")
     private boolean completed = false;
 
-    public TaskItem(User user, Task task, SaveTaskItemRequest saveTaskItemRequest) {
+    public TaskItem(User user, Task task, TaskItemDto taskItemDto) {
         this.user = user;
         this.task = task;
-        this.title = saveTaskItemRequest.getTitle();
+        this.title = taskItemDto.getTitle();
     }
 }

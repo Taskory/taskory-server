@@ -11,7 +11,9 @@ import codeartist99.taskflower.task.exception.InvalidStatusNameException;
 import codeartist99.taskflower.task.exception.TaskNotFoundException;
 import codeartist99.taskflower.task.model.Status;
 import codeartist99.taskflower.task.model.Task;
+import codeartist99.taskflower.task.model.TaskItem;
 import codeartist99.taskflower.task.payload.SaveTaskRequest;
+import codeartist99.taskflower.task.payload.TaskItemDto;
 import codeartist99.taskflower.task.payload.TaskResponse;
 import codeartist99.taskflower.task.payload.TaskSummary;
 import codeartist99.taskflower.task.repository.TaskItemRepository;
@@ -21,25 +23,26 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class TaskService {
 
     private final TaskRepository taskRepository;
-    private final TaskItemRepository taskitemRepository;
+    private final TaskItemRepository taskItemRepository;
     private final EventRepository eventRepository;
     private final TagRepository tagRepository;
     private final HashtagRepository hashtagRepository;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository, TaskItemRepository taskitemRepository, EventRepository eventRepository, TagRepository tagRepository, HashtagRepository hashtagRepository) {
+    public TaskService(TaskRepository taskRepository, TaskItemRepository taskitemRepository, EventRepository eventRepository, TagRepository tagRepository, HashtagRepository hashtagRepository, TaskItemRepository taskItemRepository) {
         this.taskRepository = taskRepository;
-        this.taskitemRepository = taskitemRepository;
+        this.taskItemRepository = taskitemRepository;
         this.eventRepository = eventRepository;
         this.tagRepository = tagRepository;
         this.hashtagRepository = hashtagRepository;
@@ -52,6 +55,7 @@ public class TaskService {
      * @param saveTaskRequest the task details to be saved
      * @return a {@link TaskResponse} representing the saved task
      */
+    @Transactional
     public TaskResponse save(User user, SaveTaskRequest saveTaskRequest)
             throws InvalidStatusNameException, EventNotFoundException, TagNotFoundException {
 
@@ -82,6 +86,22 @@ public class TaskService {
                 .build();
 
         taskRepository.save(task);
+
+        if (saveTaskRequest.getItems() != null && !saveTaskRequest.getItems().isEmpty()) {
+            List<TaskItem> itemList = saveTaskRequest.getItems().stream()
+                    .map(itemDto -> TaskItem.builder()
+                            .user(user)
+                            .task(task)
+                            .completed(itemDto.isCompleted())
+                            .title(itemDto.getTitle())
+                            .build())
+                    .toList();
+
+            taskItemRepository.saveAll(itemList);
+
+            task.setItems(itemList);
+            taskRepository.save(task);
+        }
 
         return new TaskResponse(task);
     }
@@ -171,14 +191,20 @@ public class TaskService {
     }
 
     /**
-     * Updates an existing task with new information.
+     * Updates an existing task with new information, including task details and task items.
      *
      * @param taskId the ID of the task to be updated
-     * @param saveTaskRequest the new task details
+     * @param saveTaskRequest the new task details, including task items
+     * @param user the user performing the update
      * @return a {@link TaskResponse} representing the updated task
      * @throws TaskNotFoundException if no task with the specified ID is found
+     * @throws InvalidStatusNameException if the provided status name is invalid
+     * @throws EventNotFoundException if no event with the specified ID is found
+     * @throws TagNotFoundException if no tag with the specified ID is found
      */
-    public TaskResponse updateTask(Long taskId, SaveTaskRequest saveTaskRequest) throws TaskNotFoundException, InvalidStatusNameException, EventNotFoundException, TagNotFoundException {
+    @Transactional
+    public TaskResponse updateTask(Long taskId, SaveTaskRequest saveTaskRequest, User user) throws TaskNotFoundException, InvalidStatusNameException, EventNotFoundException, TagNotFoundException {
+        // Validate and get Status, Event, and Tag
         Status status = validateAndGetStatus(saveTaskRequest.getStatus());
 
         Event event = validateAndGetEntityById(
@@ -193,21 +219,67 @@ public class TaskService {
                 () -> new TagNotFoundException("Tag not found for ID: " + saveTaskRequest.getTagId())
         );
 
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException("Task not found for ID: " + taskId));
-        Task updateTask = Task.builder()
-                .title(saveTaskRequest.getTitle())
-                .event(event)
-                .tag(tag)
-                .hashtags(hashtagRepository.findAllById(saveTaskRequest.getHashtagIds()))
-                .description(saveTaskRequest.getDescription())
-                .status(status)
-                .build();
+        // Get existing Task
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException("Task not found for ID: " + taskId));
 
-        task.update(updateTask);
+        // Update task fields
+        task.setTitle(saveTaskRequest.getTitle());
+        task.setEvent(event);
+        task.setTag(tag);
+        task.setHashtags(hashtagRepository.findAllById(saveTaskRequest.getHashtagIds()));
+        task.setDescription(saveTaskRequest.getDescription());
+        task.setStatus(status);
+
+        // Fetch existing TaskItems associated with the task
+        List<TaskItem> existingItems = taskItemRepository.findByTask(task);
+        Map<Long, TaskItem> existingItemsMap = existingItems.stream()
+                .collect(Collectors.toMap(TaskItem::getId, item -> item));
+
+        // Update or create TaskItems
+        if (saveTaskRequest.getItems() != null && !saveTaskRequest.getItems().isEmpty()) {
+            List<TaskItem> updatedItems = new ArrayList<>();
+            for (TaskItemDto itemDto : saveTaskRequest.getItems()) {
+                if (itemDto.getId() != null && existingItemsMap.containsKey(itemDto.getId())) {
+                    // Update existing item
+                    TaskItem existingItem = existingItemsMap.get(itemDto.getId());
+                    existingItem.setTitle(itemDto.getTitle());
+                    existingItem.setCompleted(itemDto.isCompleted());
+                    updatedItems.add(existingItem);
+                } else {
+                    // Add new item
+                    TaskItem newItem = TaskItem.builder()
+                            .user(user)
+                            .task(task)
+                            .completed(itemDto.isCompleted())
+                            .title(itemDto.getTitle())
+                            .build();
+                    updatedItems.add(newItem);
+                }
+            }
+
+            // Delete items that are not in the request
+            List<Long> requestItemIds = saveTaskRequest.getItems().stream()
+                    .map(TaskItemDto::getId)
+                    .filter(Objects::nonNull)
+                    .toList();
+            List<TaskItem> itemsToDelete = existingItems.stream()
+                    .filter(item -> !requestItemIds.contains(item.getId()))
+                    .toList();
+            taskItemRepository.deleteAll(itemsToDelete);
+
+            // Save updated and new items
+            taskItemRepository.saveAll(updatedItems);
+
+            // Update Task with new items
+            task.setItems(updatedItems);
+        }
 
         taskRepository.save(task);
+
         return new TaskResponse(task);
     }
+
 
     public void updateTaskStatus(Long taskId, String updateStatus) throws TaskNotFoundException, InvalidStatusNameException {
         Status status = validateAndGetStatus(updateStatus);
@@ -241,7 +313,7 @@ public class TaskService {
         List<Task> tasks = taskRepository.findAllByUser(user);
 
         // Batch deletion of task items and tasks
-        taskitemRepository.deleteAllByTaskIn(tasks);
+        taskItemRepository.deleteAllByTaskIn(tasks);
         taskRepository.deleteAllByUser(user);
     }
 

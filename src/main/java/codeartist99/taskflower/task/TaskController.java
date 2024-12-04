@@ -6,9 +6,10 @@ import codeartist99.taskflower.event.payload.EventResponse;
 import codeartist99.taskflower.security.model.UserPrincipal;
 import codeartist99.taskflower.tag.TagNotFoundException;
 import codeartist99.taskflower.task.exception.InvalidStatusNameException;
-import codeartist99.taskflower.task.exception.TaskItemNotFoundException;
 import codeartist99.taskflower.task.exception.TaskNotFoundException;
-import codeartist99.taskflower.task.payload.*;
+import codeartist99.taskflower.task.payload.SaveTaskRequest;
+import codeartist99.taskflower.task.payload.TaskResponse;
+import codeartist99.taskflower.task.payload.TaskSummary;
 import codeartist99.taskflower.task.service.TaskItemService;
 import codeartist99.taskflower.task.service.TaskService;
 import codeartist99.taskflower.user.CurrentUser;
@@ -131,8 +132,9 @@ public class TaskController {
     @PutMapping("/{id}")
     public ResponseEntity<TaskResponse> updateTask(@PathVariable("id") Long id, @RequestBody SaveTaskRequest saveTaskRequest) {
         TaskResponse response;
+        User user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         try {
-            response = taskService.updateTask(id, saveTaskRequest);
+            response = taskService.updateTask(id, saveTaskRequest, user);
         } catch (TagNotFoundException | EventNotFoundException | TaskNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (InvalidStatusNameException e) {
@@ -172,90 +174,95 @@ public class TaskController {
     }
 
     /**
+     * @deprecated
      * Adds a new task item to an existing task.
      *
      * @param userPrincipal the authenticated user details
-     * @param saveTaskItemRequest the request payload containing task item details
+     * @param taskItemDto the request payload containing task item details
      * @return the response containing the saved task item details
      */
-    @PostMapping("/items")
-    public ResponseEntity<TaskItemResponse> createTaskItem(@CurrentUser UserPrincipal userPrincipal, @RequestBody SaveTaskItemRequest saveTaskItemRequest) {
-        User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        TaskItemResponse response;
-        try {
-            response = taskItemService.save(user, saveTaskItemRequest);
-        } catch (TaskNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
-    }
+//    @PostMapping("/items")
+//    public ResponseEntity<TaskItemResponse> createTaskItem(@CurrentUser UserPrincipal userPrincipal, @RequestBody TaskItemDto taskItemDto) {
+//        User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+//        TaskItemResponse response;
+//        try {
+//            response = taskItemService.save(user, taskItemDto);
+//        } catch (TaskNotFoundException e) {
+//            return ResponseEntity.notFound().build();
+//        }
+//        return new ResponseEntity<>(response, HttpStatus.CREATED);
+//    }
 
     /**
+     * @deprecated
      * Retrieves a task item by its ID.
      *
      * @param id the ID of the task item to retrieve
      * @return the response containing the task item details
      */
-    @GetMapping("/items/{id}")
-    public ResponseEntity<TaskItemResponse> getTaskItemById(@PathVariable Long id) {
-        TaskItemResponse response;
-        try {
-            response = taskItemService.getById(id);
-        } catch (TaskItemNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(response);
-    }
+//    @GetMapping("/items/{id}")
+//    public ResponseEntity<TaskItemResponse> getTaskItemById(@PathVariable Long id) {
+//        TaskItemResponse response;
+//        try {
+//            response = taskItemService.getById(id);
+//        } catch (TaskItemNotFoundException e) {
+//            return ResponseEntity.notFound().build();
+//        }
+//        return ResponseEntity.ok(response);
+//    }
 
     /**
+     * @deprecated
      * Updates the title of an existing task item.
      *
      * @param id the ID of the task item to update
      * @param newTitle the new title for the task item
      * @return the response containing the updated task item details
      */
-    @PatchMapping("/items/{id}/title")
-    public ResponseEntity<TaskItemResponse> updateTaskItemTitle(@PathVariable Long id, @RequestParam String newTitle) {
-        TaskItemResponse response;
-        try {
-            response = taskItemService.updateTitle(id, newTitle);
-        } catch (TaskItemNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(response);
-    }
+//    @PatchMapping("/items/{id}/title")
+//    public ResponseEntity<TaskItemResponse> updateTaskItemTitle(@PathVariable Long id, @RequestParam String newTitle) {
+//        TaskItemResponse response;
+//        try {
+//            response = taskItemService.updateTitle(id, newTitle);
+//        } catch (TaskItemNotFoundException e) {
+//            return ResponseEntity.notFound().build();
+//        }
+//        return ResponseEntity.ok(response);
+//    }
 
     /**
+     * @deprecated
      * Updates the completion status of an existing task item.
      *
      * @param id the ID of the task item to update
      * @param completed the new completion status (true if completed, false otherwise)
      * @return the response containing the updated task item details
      */
-    @PatchMapping("/items/{id}/completed")
-    public ResponseEntity<TaskItemResponse> setTaskItemCompleted(@PathVariable Long id, @RequestParam boolean completed) {
-        TaskItemResponse response;
-        try {
-            response = taskItemService.setCompleted(id, completed);
-        } catch (TaskItemNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(response);
-    }
+//    @PatchMapping("/items/{id}/completed")
+//    public ResponseEntity<TaskItemResponse> setTaskItemCompleted(@PathVariable Long id, @RequestParam boolean completed) {
+//        TaskItemResponse response;
+//        try {
+//            response = taskItemService.setCompleted(id, completed);
+//        } catch (TaskItemNotFoundException e) {
+//            return ResponseEntity.notFound().build();
+//        }
+//        return ResponseEntity.ok(response);
+//    }
 
     /**
+     * @deprecated
      * Deletes a task item by its ID.
      *
      * @param id the ID of the task item to delete
      * @return a response indicating whether the deletion was successful
      */
-    @DeleteMapping("/items/{id}")
-    public ResponseEntity<Void> deleteTaskItemById(@PathVariable Long id) {
-        try {
-            taskItemService.deleteById(id);
-        } catch (TaskItemNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.noContent().build();
-    }
+//    @DeleteMapping("/items/{id}")
+//    public ResponseEntity<Void> deleteTaskItemById(@PathVariable Long id) {
+//        try {
+//            taskItemService.deleteById(id);
+//        } catch (TaskItemNotFoundException e) {
+//            return ResponseEntity.notFound().build();
+//        }
+//        return ResponseEntity.noContent().build();
+//    }
 }

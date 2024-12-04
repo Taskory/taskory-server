@@ -12,4 +12,6 @@ public interface TaskItemRepository extends JpaRepository<TaskItem, Long> {
     List<TaskItem> findAllByTask(Task task);
 
     void deleteAllByTaskIn(List<Task> tasks);
+
+    List<TaskItem> findByTask(Task task);
 }

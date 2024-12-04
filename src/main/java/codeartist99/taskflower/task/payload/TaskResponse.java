@@ -4,6 +4,7 @@ import codeartist99.taskflower.event.payload.EventSummary;
 import codeartist99.taskflower.hashtag.HashtagResponse;
 import codeartist99.taskflower.tag.payload.TagResponse;
 import codeartist99.taskflower.task.model.Task;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -15,14 +16,14 @@ import java.util.List;
 @Setter
 @ToString
 public class TaskResponse {
-    private Long id;
-    private String title;
+    @NotNull private Long id;
+    @NotNull private String title;
     private EventSummary event;
-    private TagResponse tag;
+    @NotNull private TagResponse tag;
     private List<HashtagResponse> hashtags = new ArrayList<>();
     private String description;
-    private String status;
-    private List<TaskItemResponse> items = new ArrayList<>();
+    @NotNull private String status;
+    private List<TaskItemDto> items = new ArrayList<>();
 
     public TaskResponse(Task task) {
         this.id = task.getId();
@@ -38,8 +39,9 @@ public class TaskResponse {
         }
         this.description = task.getDescription();
         this.status = task.getStatus().name();
+
         if (task.getItems() != null && !task.getItems().isEmpty()) {
-            this.items = task.getItems().stream().map(TaskItemResponse::new).toList();
+            this.items = task.getItems().stream().map(TaskItemDto::new).toList();
         }
     }
 }
