@@ -40,7 +40,7 @@ public class TaskService {
     private final HashtagRepository hashtagRepository;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository, TaskItemRepository taskitemRepository, EventRepository eventRepository, TagRepository tagRepository, HashtagRepository hashtagRepository, TaskItemRepository taskItemRepository) {
+    public TaskService(TaskRepository taskRepository, TaskItemRepository taskitemRepository, EventRepository eventRepository, TagRepository tagRepository, HashtagRepository hashtagRepository) {
         this.taskRepository = taskRepository;
         this.taskItemRepository = taskitemRepository;
         this.eventRepository = eventRepository;
