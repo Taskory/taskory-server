@@ -1,7 +1,8 @@
 package codeartist99.taskflower.task.model;
 
 public enum Status {
-    TO_DO,
-    IN_PROGRESS,
+    BACKLOG,
+    TODO,
+    PROGRESS,
     DONE
 }
