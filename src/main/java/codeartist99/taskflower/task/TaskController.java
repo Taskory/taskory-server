@@ -122,16 +122,17 @@ public class TaskController {
     /**
      * Updates an existing task with new details.
      *
-     * @param id the ID of the task to update
+     * @param taskId the ID of the task to update
      * @param saveTaskRequest the request payload containing new task details
      * @return the response containing the updated task details
      */
-    @PutMapping("/{id}")
-    public ResponseEntity<TaskResponse> updateTask(@PathVariable("id") Long id, @RequestBody SaveTaskRequest saveTaskRequest) {
+    @PutMapping("/{taskId}")
+    public ResponseEntity<TaskResponse> updateTask(@CurrentUser UserPrincipal userPrincipal, @PathVariable("taskId") Long taskId, @RequestBody SaveTaskRequest saveTaskRequest) {
+        log.info("==========[LOG] TaskController: updateTask");
         TaskResponse response;
-        User user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         try {
-            response = taskService.updateTask(id, saveTaskRequest, user);
+            response = taskService.updateTask(taskId, saveTaskRequest, user);
         } catch (TagNotFoundException | EventNotFoundException | TaskNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (InvalidStatusNameException e) {

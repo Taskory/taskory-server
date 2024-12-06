@@ -237,15 +237,19 @@ public class TaskService {
                 .collect(Collectors.toMap(TaskItem::getId, item -> item));
 
         // Update or create TaskItems
+        List<TaskItem> newItems = new ArrayList<>();
         if (saveTaskRequest.getItems() != null && !saveTaskRequest.getItems().isEmpty()) {
-            List<TaskItem> updatedItems = new ArrayList<>();
+            List<Long> requestItemIds = saveTaskRequest.getItems().stream()
+                    .map(TaskItemDto::getId)
+                    .filter(Objects::nonNull)
+                    .toList();
+
             for (TaskItemDto itemDto : saveTaskRequest.getItems()) {
                 if (itemDto.getId() != null && existingItemsMap.containsKey(itemDto.getId())) {
                     // Update existing item
                     TaskItem existingItem = existingItemsMap.get(itemDto.getId());
                     existingItem.setTitle(itemDto.getTitle());
                     existingItem.setCompleted(itemDto.isCompleted());
-                    updatedItems.add(existingItem);
                 } else {
                     // Add new item
                     TaskItem newItem = TaskItem.builder()
@@ -254,31 +258,30 @@ public class TaskService {
                             .completed(itemDto.isCompleted())
                             .title(itemDto.getTitle())
                             .build();
-                    updatedItems.add(newItem);
+                    newItems.add(newItem);
                 }
             }
 
             // Delete items that are not in the request
-            List<Long> requestItemIds = saveTaskRequest.getItems().stream()
-                    .map(TaskItemDto::getId)
-                    .filter(Objects::nonNull)
-                    .toList();
             List<TaskItem> itemsToDelete = existingItems.stream()
                     .filter(item -> !requestItemIds.contains(item.getId()))
                     .toList();
             taskItemRepository.deleteAll(itemsToDelete);
 
-            // Save updated and new items
-            taskItemRepository.saveAll(updatedItems);
-
-            // Update Task with new items
-            task.setItems(new ArrayList<>(updatedItems));
+            // Ensure the task's items collection references only the remaining and new items
+            existingItems.removeAll(itemsToDelete);
         }
+
+        // Add new items to the existing collection
+        task.getItems().clear(); // Clear to avoid stale references
+        task.getItems().addAll(existingItems); // Add remaining items
+        task.getItems().addAll(newItems); // Add new items
 
         taskRepository.save(task);
 
         return new TaskResponse(task);
     }
+
 
 
     public void updateTaskStatus(Long taskId, String updateStatus) throws TaskNotFoundException, InvalidStatusNameException {
