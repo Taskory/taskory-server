@@ -1,6 +1,5 @@
 package codeartist99.taskflower.task.model;
 
-import codeartist99.taskflower.task.payload.TaskItemDto;
 import codeartist99.taskflower.user.model.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -34,9 +33,4 @@ public class TaskItem {
     @Column(name = "completed")
     private boolean completed = false;
 
-    public TaskItem(User user, Task task, TaskItemDto taskItemDto) {
-        this.user = user;
-        this.task = task;
-        this.title = taskItemDto.getTitle();
-    }
 }

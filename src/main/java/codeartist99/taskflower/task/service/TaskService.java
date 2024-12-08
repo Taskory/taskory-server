@@ -284,7 +284,7 @@ public class TaskService {
 
 
 
-    public void updateTaskStatus(Long taskId, String updateStatus) throws TaskNotFoundException, InvalidStatusNameException {
+    public TaskSummary updateTaskStatus(Long taskId, String updateStatus) throws TaskNotFoundException, InvalidStatusNameException {
         Status status = validateAndGetStatus(updateStatus);
 
         Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
@@ -292,6 +292,8 @@ public class TaskService {
         task.setStatus(status);
 
         taskRepository.save(task);
+
+        return new TaskSummary(task);
     }
 
     /**

@@ -22,7 +22,8 @@ public class TaskSummary {
     @NotNull private String tagColor;
     private List<HashtagResponse> hashtags;
     @NotNull private String status;
-    @NotNull private Integer progressRate;
+    @NotNull private Integer itemsCount;
+    private Integer completedItemsCount;
 
     public TaskSummary(Task task) {
         this.id = task.getId();
@@ -34,18 +35,9 @@ public class TaskSummary {
         }
         this.hashtags = task.getHashtags().stream().map(HashtagResponse::new).toList();
         this.status = task.getStatus().name();
-        this.progressRate = calculateProgress(task.getItems());
-    }
-
-    private static Integer calculateProgress(List<TaskItem> items) {
-        if (items == null || items.isEmpty()) {
-            return 0;
-        }
-
-        long completedItems = items.stream()
+        this.itemsCount = task.getItems().size();
+        this.completedItemsCount = (int) task.getItems().stream()
                 .filter(TaskItem::isCompleted)
                 .count();
-
-        return Math.round((float) completedItems / items.size() * 100);
     }
 }

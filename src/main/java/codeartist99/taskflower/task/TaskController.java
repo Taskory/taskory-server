@@ -142,16 +142,16 @@ public class TaskController {
     }
 
     @PatchMapping("/status/{taskId}")
-    public ResponseEntity<Void> updateTaskStatus(@PathVariable("taskId") Long taskId, @RequestParam("status") String status) {
+    public ResponseEntity<TaskSummary> updateTaskStatus(@PathVariable("taskId") Long taskId, @RequestParam("status") String status) {
         try {
             log.info("[LOG] status: {}", status);
-            taskService.updateTaskStatus(taskId, status);
+            TaskSummary response = taskService.updateTaskStatus(taskId, status);
+            return ResponseEntity.ok(response);
         } catch (TaskNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (InvalidStatusNameException e) {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }
-        return ResponseEntity.ok().build();
     }
 
 
