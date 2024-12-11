@@ -60,7 +60,7 @@ public class ArrangeTest {
         tempTask = taskRepository.save(
                 Task.builder()
                         .title("temporary task title")
-                        .status(Status.TO_DO)
+                        .status(Status.TODO)
                         .tag(tempTag)
                         .user(tempUser)
                         .build()

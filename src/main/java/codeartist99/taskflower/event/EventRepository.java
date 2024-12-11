@@ -1,5 +1,6 @@
 package codeartist99.taskflower.event;
 
+import codeartist99.taskflower.tag.model.Tag;
 import codeartist99.taskflower.user.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,4 +27,5 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             "AND e.user = :user")
     List<Event> findOngoingAndUpcommingEvents(@Param("user") User user, @Param("currentDate") LocalDateTime currentDate);
 
+    List<Event> findByTag(Tag tag);
 }

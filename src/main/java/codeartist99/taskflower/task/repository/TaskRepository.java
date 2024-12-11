@@ -1,6 +1,7 @@
 package codeartist99.taskflower.task.repository;
 
 import codeartist99.taskflower.event.Event;
+import codeartist99.taskflower.tag.model.Tag;
 import codeartist99.taskflower.task.model.Task;
 import codeartist99.taskflower.user.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,4 +18,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     void deleteAllByUser(User user);
 
     List<Task> findByTag_IdIn(List<Long> tagIds);
+
+    List<Task> findByTag(Tag tag);
 }
