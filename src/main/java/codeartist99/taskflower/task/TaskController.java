@@ -162,7 +162,7 @@ public class TaskController {
      * @return a response indicating whether the deletion was successful
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTaskById(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTaskById(@PathVariable("id") Long id) {
         try {
             taskService.deleteById(id);
         } catch (TaskNotFoundException e) {
