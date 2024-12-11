@@ -166,4 +166,9 @@ public class EventService {
         List<Event> events = eventRepository.findByTag_IdIn(tagIds);
         return events.stream().map(EventSummary::new).toList();
     }
+
+    public List<EventSummary> findUpcomingEvents(User user, LocalDateTime localDateTime) {
+        List<Event> events = eventRepository.findOngoingAndUpcommingEvents(user, localDateTime);
+        return events.stream().map(EventSummary::new).toList();
+    }
 }

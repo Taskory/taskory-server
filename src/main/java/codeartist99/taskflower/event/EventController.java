@@ -1,10 +1,10 @@
 package codeartist99.taskflower.event;
 
+import codeartist99.taskflower.common.util.TimeUtil;
 import codeartist99.taskflower.event.payload.EventResponse;
 import codeartist99.taskflower.event.payload.EventSummary;
 import codeartist99.taskflower.event.payload.SaveEventRequest;
 import codeartist99.taskflower.security.model.UserPrincipal;
-import codeartist99.taskflower.task.payload.TaskSummary;
 import codeartist99.taskflower.user.CurrentUser;
 import codeartist99.taskflower.user.UserRepository;
 import codeartist99.taskflower.user.model.User;
@@ -133,8 +133,16 @@ public class EventController {
     }
 
     @GetMapping("/tags")
-    public ResponseEntity<List<EventSummary>> getTasksByTags(@RequestParam("tag_ids") List<Long> tagIds) {
+    public ResponseEntity<List<EventSummary>> getEventsByTags(@RequestParam("tag_ids") List<Long> tagIds) {
         List<EventSummary> responses = eventService.findAllByTags(tagIds);
         return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("/upcoming")
+    public ResponseEntity<List<EventSummary>> getUpcomingEvents(@CurrentUser UserPrincipal userPrincipal, @RequestParam("date") String date) {
+        User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new UsernameNotFoundException("user not found"));
+        List<EventSummary> response = eventService.findUpcomingEvents(user, TimeUtil.stringToLocalDateTime(date));
+        return ResponseEntity.ok(response);
+
     }
 }
