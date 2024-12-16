@@ -322,10 +322,13 @@ public class TaskService {
         taskRepository.deleteAllByUser(user);
     }
 
+    /**
+     * Find all tasks by tag ids
+     * @param tagIds tag ids for find
+     * @return TaskSummary list
+     */
     public List<TaskSummary> findAllByTags(List<Long> tagIds) {
-        log.info("[LOG] tagids: {}", tagIds);
         List<Task> tasks = taskRepository.findByTag_IdIn(tagIds);
-        log.info("[LOG] tasks: {}", tasks);
         return tasks.stream().map(TaskSummary::new).toList();
     }
 }
