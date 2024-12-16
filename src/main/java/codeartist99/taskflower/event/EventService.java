@@ -162,11 +162,22 @@ public class EventService {
     }
 
 
+    /**
+     * Find all events by tag ids
+     * @param tagIds tag ids for find
+     * @return EventSummary list
+     */
     public List<EventSummary> findAllByTags(List<Long> tagIds) {
         List<Event> events = eventRepository.findByTag_IdIn(tagIds);
         return events.stream().map(EventSummary::new).toList();
     }
 
+    /**
+     * Find all upcoming and ongoing events
+     * @param user user information
+     * @param localDateTime time point for getting and upcoming
+     * @return EventSummary list
+     */
     public List<EventSummary> findUpcomingEvents(User user, LocalDateTime localDateTime) {
         List<Event> events = eventRepository.findOngoingAndUpcommingEvents(user, localDateTime);
         return events.stream().map(EventSummary::new).toList();
