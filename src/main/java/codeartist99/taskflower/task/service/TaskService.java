@@ -310,19 +310,6 @@ public class TaskService {
     }
 
     /**
-     * Deletes all tasks and associated task items for the given user.
-     *
-     * @param user the user whose tasks and associated task items are to be deleted
-     */
-    public void deleteAllByUser(User user) {
-        List<Task> tasks = taskRepository.findAllByUser(user);
-
-        // Batch deletion of task items and tasks
-        taskItemRepository.deleteAllByTaskIn(tasks);
-        taskRepository.deleteAllByUser(user);
-    }
-
-    /**
      * Find all tasks by tag ids
      * @param tagIds tag ids for find
      * @return TaskSummary list
