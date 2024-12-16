@@ -108,11 +108,11 @@ public class TaskController {
      * @return the response containing a list of filtered tasks
      */
     @GetMapping("/filter")
-    public ResponseEntity<List<TaskResponse>> getTasksByEvent(@CurrentUser UserPrincipal userPrincipal, @RequestParam(required = false) Long eventId) {
+    public ResponseEntity<List<TaskSummary>> getTasksByEvent(@CurrentUser UserPrincipal userPrincipal, @RequestParam("eventId") Long eventId) {
         try {
             EventResponse eventResponse = eventService.getById(eventId);
             User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-            List<TaskResponse> responses = taskService.findAllByEventId(user, eventResponse.getId());
+            List<TaskSummary> responses = taskService.findAllByEventId(user, eventResponse.getId());
             return ResponseEntity.ok(responses);
         } catch (EventNotFoundException e) {
             return ResponseEntity.notFound().build();
@@ -128,7 +128,6 @@ public class TaskController {
      */
     @PutMapping("/{taskId}")
     public ResponseEntity<TaskResponse> updateTask(@CurrentUser UserPrincipal userPrincipal, @PathVariable("taskId") Long taskId, @RequestBody SaveTaskRequest saveTaskRequest) {
-        log.info("==========[LOG] TaskController: updateTask");
         TaskResponse response;
         User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         try {
@@ -144,7 +143,6 @@ public class TaskController {
     @PatchMapping("/status/{taskId}")
     public ResponseEntity<TaskSummary> updateTaskStatus(@PathVariable("taskId") Long taskId, @RequestParam("status") String status) {
         try {
-            log.info("[LOG] status: {}", status);
             TaskSummary response = taskService.updateTaskStatus(taskId, status);
             return ResponseEntity.ok(response);
         } catch (TaskNotFoundException e) {

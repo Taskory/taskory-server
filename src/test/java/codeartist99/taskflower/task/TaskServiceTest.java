@@ -112,8 +112,8 @@ class TaskServiceTest extends ArrangeTest {
         Task task = new Task(null, tempUser, "task title", event, tempTag, null, "task description", Status.TODO, null);
         taskRepository.save(task);
 
-        List<TaskResponse> taskResponseList = taskService.findAllByEventId(tempUser, event.getId());
-        TaskResponse savedTask = taskResponseList.get(0);
+        List<TaskSummary> taskResponseList = taskService.findAllByEventId(tempUser, event.getId());
+        TaskSummary savedTask = taskResponseList.get(0);
 
         assertEquals(event.getId(), savedTask.getEvent().getId());
         assertEquals(task.getId(), savedTask.getId());

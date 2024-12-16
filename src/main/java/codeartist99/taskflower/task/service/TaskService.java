@@ -176,7 +176,7 @@ public class TaskService {
      * @return a list of {@link TaskResponse} representing the filtered tasks
      * @throws IllegalStateException if both {@code flow} and {@code event} are null
      */
-    public List<TaskResponse> findAllByEventId(User user, Long eventId) throws EventNotFoundException {
+    public List<TaskSummary> findAllByEventId(User user, Long eventId) throws EventNotFoundException {
         List<Task> tasks;
         Event event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException("Event not found for id: " + eventId));
         if (event == null) {
@@ -186,7 +186,7 @@ public class TaskService {
         }
 
         return tasks.stream()
-                .map(TaskResponse::new)
+                .map(TaskSummary::new)
                 .toList();
     }
 
