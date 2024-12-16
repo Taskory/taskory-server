@@ -90,7 +90,6 @@ public class TaskService {
         if (saveTaskRequest.getItems() != null && !saveTaskRequest.getItems().isEmpty()) {
             List<TaskItem> itemList = saveTaskRequest.getItems().stream()
                     .map(itemDto -> TaskItem.builder()
-                            .user(user)
                             .task(task)
                             .completed(itemDto.isCompleted())
                             .title(itemDto.getTitle())
@@ -253,7 +252,6 @@ public class TaskService {
                 } else {
                     // Add new item
                     TaskItem newItem = TaskItem.builder()
-                            .user(user)
                             .task(task)
                             .completed(itemDto.isCompleted())
                             .title(itemDto.getTitle())

@@ -1,6 +1,5 @@
 package codeartist99.taskflower.task.model;
 
-import codeartist99.taskflower.user.model.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -19,12 +18,8 @@ public class TaskItem {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)          // If a user is deleted, the mapped task items are also deleted
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "task_id")
+    @JoinColumn(name = "task_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Task task;
 
     @Column(name = "title", nullable = false)
