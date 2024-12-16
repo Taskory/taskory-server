@@ -34,8 +34,8 @@ public class Task extends BaseTimeEntity {
     private String title;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.SET_NULL)         // If a task is deleted, the mapped event is set null
-    @JoinColumn(name = "event_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))      // If a task is deleted, the mapped event is not deleted
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "event_id")
     private Event event;
 
     @ManyToOne(fetch = FetchType.EAGER)
