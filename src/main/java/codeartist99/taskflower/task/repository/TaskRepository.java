@@ -20,4 +20,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByTag_IdIn(List<Long> tagIds);
 
     List<Task> findByTag(Tag tag);
+
+    List<Task> findByEvent(Event event);
 }

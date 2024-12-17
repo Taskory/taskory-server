@@ -4,8 +4,11 @@ import codeartist99.taskflower.common.util.TimeUtil;
 import codeartist99.taskflower.event.payload.EventResponse;
 import codeartist99.taskflower.event.payload.EventSummary;
 import codeartist99.taskflower.event.payload.SaveEventRequest;
+import codeartist99.taskflower.event.payload.TaskInEventDto;
 import codeartist99.taskflower.hashtag.HashtagRepository;
 import codeartist99.taskflower.tag.TagRepository;
+import codeartist99.taskflower.task.model.Task;
+import codeartist99.taskflower.task.repository.TaskRepository;
 import codeartist99.taskflower.user.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -23,12 +29,14 @@ public class EventService {
     private final EventRepository eventRepository;
     private final TagRepository tagRepository;
     private final HashtagRepository hashtagRepository;
+    private final TaskRepository taskRepository;
 
     @Autowired
-    public EventService(EventRepository eventRepository, TagRepository tagRepository, HashtagRepository hashtagRepository) {
+    public EventService(EventRepository eventRepository, TagRepository tagRepository, HashtagRepository hashtagRepository, TaskRepository taskRepository) {
         this.eventRepository = eventRepository;
         this.tagRepository = tagRepository;
         this.hashtagRepository = hashtagRepository;
+        this.taskRepository = taskRepository;
     }
 
     /**
@@ -37,6 +45,7 @@ public class EventService {
      * @param saveEventRequest Information to save event
      * @return EventResponse
      */
+    @Transactional
     public EventResponse save(User user, SaveEventRequest saveEventRequest) {
         if (saveEventRequest.getTitle().isBlank()) {
             throw new IllegalArgumentException("Title cannot be blank");
@@ -63,6 +72,24 @@ public class EventService {
         }
 
         eventRepository.save(event);
+
+        if (saveEventRequest.getTasks() != null && !saveEventRequest.getTasks().isEmpty()) {
+            List<Task> newTasks = saveEventRequest.getTasks().stream()
+                    .map(taskDto ->
+                            Task.builder()
+                                    .user(user)
+                                    .title(taskDto.getTitle())
+                                    .event(event)
+                                    .tag(event.getTag())
+                                    .description("")
+                                    .status(taskDto.getStatus())
+                                    .build())
+                    .toList();
+            taskRepository.saveAll(newTasks);
+            event.setTasks(new ArrayList<>(newTasks));
+            eventRepository.save(event);
+        }
+
 
         return new EventResponse(event);
     }
@@ -131,7 +158,51 @@ public class EventService {
     public EventResponse updateEvent(Long eventId, SaveEventRequest saveEventRequest) throws EventNotFoundException {
         Event foundEvent = eventRepository.findById(eventId).orElseThrow(EventNotFoundException::new);
 
-        foundEvent.setTitle(saveEventRequest.getTitle());
+        /* Find existing tasks */
+        List<Task> existingTasks = taskRepository.findByEvent(foundEvent);
+        Map<Long, Task> existingTasksMap = existingTasks.stream()
+                .collect(Collectors.toMap(Task::getId, task -> task));
+
+        /* Create and Update */
+        List<Task> newTaskList = new ArrayList<>();
+        if (saveEventRequest.getTasks() != null && !saveEventRequest.getTasks().isEmpty()) {
+            List<Long> requestExistingIdList = saveEventRequest.getTasks().stream()
+                    .map(TaskInEventDto::getId)
+                    .filter(Objects::nonNull)
+                    .toList();
+
+            for (TaskInEventDto task : saveEventRequest.getTasks()) {
+                if (task.getId() != null && existingTasksMap.containsKey(task.getId())) {
+                    Task updateTask = existingTasksMap.get(task.getId());
+                    updateTask.setTitle(task.getTitle());
+                    updateTask.setStatus(task.getStatus());
+
+                    taskRepository.save(updateTask);
+                } else {
+                    Task newTask = Task.builder()
+                            .user(foundEvent.getUser())
+                            .title(task.getTitle())
+                            .status(task.getStatus())
+                            .tag(foundEvent.getTag())
+                            .event(foundEvent)
+                            .build();
+                    newTaskList.add(newTask);
+                }
+            }
+
+            List<Task> taskListToDelete = existingTasks.stream()
+                    .filter(task -> !requestExistingIdList.contains(task.getId()))
+                    .toList();
+
+            taskRepository.deleteAll(taskListToDelete);
+
+            existingTasks.removeAll(taskListToDelete);
+        }
+
+        foundEvent.getTasks().clear();
+        foundEvent.getTasks().addAll(newTaskList);
+        foundEvent.getTasks().addAll(existingTasks);
+
         if (saveEventRequest.getTagId() != null) {
             foundEvent.setTag(tagRepository.findById(saveEventRequest.getTagId()).orElse(null));
         } else {
@@ -142,10 +213,13 @@ public class EventService {
         } else {
             foundEvent.setHashtags(null);
         }
+        foundEvent.setTitle(saveEventRequest.getTitle());
         foundEvent.setDescription(saveEventRequest.getDescription());
         foundEvent.setStartDateTime(TimeUtil.stringToLocalDateTime(saveEventRequest.getStartDateTime()));
         foundEvent.setDueDateTime(TimeUtil.stringToLocalDateTime(saveEventRequest.getDueDateTime()));
         foundEvent.setLocation(saveEventRequest.getLocation());
+
+
 
         Event result = eventRepository.save(foundEvent);
         return new EventResponse(result);

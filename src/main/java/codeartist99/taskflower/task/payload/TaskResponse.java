@@ -37,7 +37,9 @@ public class TaskResponse {
         if (task.getHashtags() != null && !task.getHashtags().isEmpty()) {
             this.hashtags = task.getHashtags().stream().map(HashtagResponse::new).toList();
         }
-        this.description = task.getDescription();
+        if (task.getDescription() != null) {
+            this.description = task.getDescription();
+        } else this.description = "";
         this.status = task.getStatus().name();
 
         if (task.getItems() != null && !task.getItems().isEmpty()) {
