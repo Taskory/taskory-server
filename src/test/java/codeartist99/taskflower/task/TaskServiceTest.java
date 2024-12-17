@@ -107,9 +107,32 @@ class TaskServiceTest extends ArrangeTest {
     @Test
     @DisplayName("find task filtered by flow or event")
     void findAllByEventId() throws EventNotFoundException {
-        Event event = new Event(null, tempUser, "event title", tempTag, null, "event description", LocalDateTime.now(), LocalDateTime.now().plusDays(1), null);
+        Event event = Event.builder()
+                .id(null)
+                .user(tempUser)
+                .title("event title")
+                .tag(tempTag)
+                .tasks(null)
+                .startDateTime(LocalDateTime.now())
+                .dueDateTime(LocalDateTime.now().plusDays(1))
+                .description("event description")
+                .location(null)
+                .hashtags(null)
+                .build();
         eventRepository.save(event);
-        Task task = new Task(null, tempUser, "task title", event, tempTag, null, "task description", Status.TODO, null);
+
+        Task task = Task.builder()
+                .id(null)
+                .user(tempUser)
+                .title("task title")
+                .event(event)
+                .tag(tempTag)
+                .hashtags(null)
+                .description("task description")
+                .status(Status.BACKLOG)
+                .items(null)
+                .build();
+
         taskRepository.save(task);
 
         List<TaskSummary> taskResponseList = taskService.findAllByEventId(tempUser, event.getId());

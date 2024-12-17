@@ -38,7 +38,16 @@ class EventServiceTest extends ArrangeTest {
         String startDateTime = TimeUtil.localDateTimeToString(LocalDateTime.now().minusDays(10));
         String dueDateTime = TimeUtil.localDateTimeToString(LocalDateTime.now().plusDays(10));
         String location = "test location";
-        SaveEventRequest saveEventRequest = new SaveEventRequest(title, tempTag.getId(), hashtags, description, startDateTime, dueDateTime, location);
+
+        SaveEventRequest saveEventRequest = SaveEventRequest.builder()
+                .title(title)
+                .tagId(tempTag.getId())
+                .hashtagIds(hashtags)
+                .description(description)
+                .startDateTime(startDateTime)
+                .dueDateTime(dueDateTime)
+                .location(location)
+                .build();
 
 //        Act
         EventResponse eventResponse = eventService.save(tempUser, saveEventRequest);
@@ -61,7 +70,15 @@ class EventServiceTest extends ArrangeTest {
         String startDateTime = TimeUtil.localDateTimeToString(LocalDateTime.now().minusDays(10)); // 변환
         String dueDateTime = TimeUtil.localDateTimeToString(LocalDateTime.now().plusDays(10)); // 변환
         String location = "test location";
-        SaveEventRequest saveEventRequest = new SaveEventRequest(title, tempTag.getId(), hashtags, description, startDateTime, dueDateTime, location);
+        SaveEventRequest saveEventRequest = SaveEventRequest.builder()
+                .title(title)
+                .tagId(tempTag.getId())
+                .hashtagIds(hashtags)
+                .description(description)
+                .startDateTime(startDateTime)
+                .dueDateTime(dueDateTime)
+                .location(location)
+                .build();
 
 //        the second event
         String title2 = "test title";
@@ -70,7 +87,15 @@ class EventServiceTest extends ArrangeTest {
         String startDateTime2 = TimeUtil.localDateTimeToString(LocalDateTime.now().minusDays(5)); // 변환
         String dueDateTime2 = TimeUtil.localDateTimeToString(LocalDateTime.now().plusDays(5)); // 변환
         String location2 = "test location";
-        SaveEventRequest saveEventRequest2 = new SaveEventRequest(title2, tempTag.getId(), hashtags2, description2, startDateTime2, dueDateTime2, location2);
+        SaveEventRequest saveEventRequest2 = SaveEventRequest.builder()
+                .title(title2)
+                .tagId(tempTag.getId())
+                .hashtagIds(hashtags2)
+                .description(description2)
+                .startDateTime(startDateTime2)
+                .dueDateTime(dueDateTime2)
+                .location(location2)
+                .build();
 
 //        save a first event
         EventResponse eventResponse = eventService.save(tempUser, saveEventRequest);
@@ -107,7 +132,16 @@ class EventServiceTest extends ArrangeTest {
         String startDateTime = TimeUtil.localDateTimeToString(LocalDateTime.now().minusMonths(1)); // 변환
         String dueDateTime = TimeUtil.localDateTimeToString(LocalDateTime.now()); // 변환
         String location = "test location";
-        SaveEventRequest saveEventRequest = new SaveEventRequest(title, tempTag.getId(), Collections.emptyList(), description, startDateTime, dueDateTime, location);
+
+        SaveEventRequest saveEventRequest = SaveEventRequest.builder()
+                .title(title)
+                .tagId(tempTag.getId())
+                .hashtagIds(Collections.emptyList())
+                .description(description)
+                .startDateTime(startDateTime)
+                .dueDateTime(dueDateTime)
+                .location(location)
+                .build();
 
 //        the second event - event happens through multiple months
         String title2 = "test title";
@@ -115,7 +149,15 @@ class EventServiceTest extends ArrangeTest {
         String startDateTime2 = TimeUtil.localDateTimeToString(LocalDateTime.now().minusMonths(1)); // 변환
         String dueDateTime2 = TimeUtil.localDateTimeToString(LocalDateTime.now().plusMonths(1)); // 변환
         String location2 = "test location";
-        SaveEventRequest saveEventRequest2 = new SaveEventRequest(title2, tempTag.getId(), Collections.emptyList(), description2, startDateTime2, dueDateTime2, location2);
+        SaveEventRequest saveEventRequest2 = SaveEventRequest.builder()
+                .title(title2)
+                .tagId(tempTag.getId())
+                .hashtagIds(Collections.emptyList())
+                .description(description2)
+                .startDateTime(startDateTime2)
+                .dueDateTime(dueDateTime2)
+                .location(location2)
+                .build();
 
 //        the third event - event for a single day
         String title3 = "test title";
@@ -123,7 +165,15 @@ class EventServiceTest extends ArrangeTest {
         String startDateTime3 = TimeUtil.localDateTimeToString(LocalDateTime.now()); // 변환
         String dueDateTime3 = TimeUtil.localDateTimeToString(LocalDateTime.now()); // 변환
         String location3 = "test location";
-        SaveEventRequest saveEventRequest3 = new SaveEventRequest(title3, tempTag.getId(), Collections.emptyList(), description3, startDateTime3, dueDateTime3, location3);
+        SaveEventRequest saveEventRequest3 = SaveEventRequest.builder()
+                .title(title3)
+                .tagId(tempTag.getId())
+                .hashtagIds(Collections.emptyList())
+                .description(description3)
+                .startDateTime(startDateTime3)
+                .dueDateTime(dueDateTime3)
+                .location(location3)
+                .build();
 
 //        save a first event
         EventResponse eventResponse = eventService.save(tempUser, saveEventRequest);
@@ -167,7 +217,15 @@ class EventServiceTest extends ArrangeTest {
         String startDateTime = TimeUtil.localDateTimeToString(LocalDateTime.now().minusDays(10));
         String dueDateTime = TimeUtil.localDateTimeToString(LocalDateTime.now().plusDays(10));
         String location = "test location";
-        SaveEventRequest saveEventRequest = new SaveEventRequest(title, tempTag.getId(), hashtags, description, startDateTime, dueDateTime, location);
+        SaveEventRequest saveEventRequest = SaveEventRequest.builder()
+                .title(title)
+                .tagId(tempTag.getId())
+                .hashtagIds(hashtags)
+                .description(description)
+                .startDateTime(startDateTime)
+                .dueDateTime(dueDateTime)
+                .location(location)
+                .build();
 
         EventResponse eventResponse = eventService.save(tempUser, saveEventRequest);
 
@@ -178,7 +236,15 @@ class EventServiceTest extends ArrangeTest {
         String updateStartDateTime = TimeUtil.localDateTimeToString(LocalDateTime.now().minusDays(5));
         String updateDueDateTime = TimeUtil.localDateTimeToString(LocalDateTime.now().plusDays(5));
         String updateLocation = "update location";
-        SaveEventRequest updateEventRequest = new SaveEventRequest(updateTitle, tempTag.getId(), updateHashtags, updateDescription, updateStartDateTime, updateDueDateTime, updateLocation);
+        SaveEventRequest updateEventRequest = SaveEventRequest.builder()
+                .title(updateTitle)
+                .tagId(tempTag.getId())
+                .hashtagIds(updateHashtags)
+                .description(updateDescription)
+                .startDateTime(updateStartDateTime)
+                .dueDateTime(updateDueDateTime)
+                .location(updateLocation)
+                .build();
 
 //        Act
         EventResponse updateEventResponse = eventService.updateEvent(eventResponse.getId(), updateEventRequest);
@@ -201,7 +267,15 @@ class EventServiceTest extends ArrangeTest {
         String startDateTime = TimeUtil.localDateTimeToString(LocalDateTime.now().minusDays(10));
         String dueDateTime = TimeUtil.localDateTimeToString(LocalDateTime.now().plusDays(10));
         String location = "test location";
-        SaveEventRequest saveEventRequest = new SaveEventRequest(title, tempTag.getId(), hashtags, description, startDateTime, dueDateTime, location);
+        SaveEventRequest saveEventRequest = SaveEventRequest.builder()
+                .title(title)
+                .tagId(tempTag.getId())
+                .hashtagIds(hashtags)
+                .description(description)
+                .startDateTime(startDateTime)
+                .dueDateTime(dueDateTime)
+                .location(location)
+                .build();
 
         EventResponse eventResponse = eventService.save(tempUser, saveEventRequest);
 
@@ -235,22 +309,54 @@ class EventServiceTest extends ArrangeTest {
         // Event 1 within the same month
         String startDateTime1 = TimeUtil.localDateTimeToString(TimeUtil.stringToLocalDateTime(firstDayOfMonth));
         String dueDateTime1 = TimeUtil.localDateTimeToString(TimeUtil.stringToLocalDateTime(startDateTime1).plusDays(10));
-        SaveEventRequest saveEventRequest1 = new SaveEventRequest(title, tempTag.getId(), hashtags, description, startDateTime1, dueDateTime1, location);
+        SaveEventRequest saveEventRequest1 = SaveEventRequest.builder()
+                .title(title)
+                .tagId(tempTag.getId())
+                .hashtagIds(hashtags)
+                .description(description)
+                .startDateTime(startDateTime1)
+                .dueDateTime(dueDateTime1)
+                .location(location)
+                .build();
 
         // Event 2 within the same month
         String startDateTime2 = TimeUtil.localDateTimeToString(TimeUtil.stringToLocalDateTime(startDateTime1).plusDays(15));
         String dueDateTime2 = TimeUtil.localDateTimeToString(TimeUtil.stringToLocalDateTime(startDateTime2).plusDays(5));
-        SaveEventRequest saveEventRequest2 = new SaveEventRequest(title, tempTag.getId(), hashtags, description, startDateTime2, dueDateTime2, location);
+        SaveEventRequest saveEventRequest2 = SaveEventRequest.builder()
+                .title(title)
+                .tagId(tempTag.getId())
+                .hashtagIds(hashtags)
+                .description(description)
+                .startDateTime(startDateTime2)
+                .dueDateTime(dueDateTime2)
+                .location(location)
+                .build();
 
         // Event 3 starting in the previous month and ending in the current month
         String startDateTime3 = TimeUtil.localDateTimeToString(TimeUtil.stringToLocalDateTime(startDateTime1).minusDays(5));
         String dueDateTime3 = TimeUtil.localDateTimeToString(TimeUtil.stringToLocalDateTime(startDateTime1).plusDays(5));
-        SaveEventRequest saveEventRequest3 = new SaveEventRequest(title, tempTag.getId(), hashtags, description, startDateTime3, dueDateTime3, location);
+        SaveEventRequest saveEventRequest3 = SaveEventRequest.builder()
+                .title(title)
+                .tagId(tempTag.getId())
+                .hashtagIds(hashtags)
+                .description(description)
+                .startDateTime(startDateTime3)
+                .dueDateTime(dueDateTime3)
+                .location(location)
+                .build();
 
         // Event 4 starting in the current month and ending in the next month
         String startDateTime4 = TimeUtil.localDateTimeToString(TimeUtil.stringToLocalDateTime(lastDayOfMonth).minusDays(5));
         String dueDateTime4 = TimeUtil.localDateTimeToString(TimeUtil.stringToLocalDateTime(lastDayOfMonth).plusDays(5));
-        SaveEventRequest saveEventRequest4 = new SaveEventRequest(title, tempTag.getId(), hashtags, description, startDateTime4, dueDateTime4, location);
+        SaveEventRequest saveEventRequest4 = SaveEventRequest.builder()
+                .title(title)
+                .tagId(tempTag.getId())
+                .hashtagIds(hashtags)
+                .description(description)
+                .startDateTime(startDateTime4)
+                .dueDateTime(dueDateTime4)
+                .location(location)
+                .build();
 
         EventResponse eventResponse1 = eventService.save(tempUser, saveEventRequest1);
         EventResponse eventResponse2 = eventService.save(tempUser, saveEventRequest2);
@@ -299,15 +405,40 @@ class EventServiceTest extends ArrangeTest {
         Long tagId2 = tempTag2.getId();
 
         // Event 1 with tagId1
-        SaveEventRequest saveEventRequest1 = new SaveEventRequest(title, tagId1, hashtags, description, startDateTime, dueDateTime, location);
+        SaveEventRequest saveEventRequest1 = SaveEventRequest.builder()
+                .title(title)
+                .tagId(tagId1)
+                .hashtagIds(hashtags)
+                .description(description)
+                .startDateTime(startDateTime)
+                .dueDateTime(dueDateTime)
+                .location(location)
+                .build();
+
         EventResponse eventResponse1 = eventService.save(tempUser, saveEventRequest1);
 
         // Event 2 with tagId2
-        SaveEventRequest saveEventRequest2 = new SaveEventRequest(title, tagId2, hashtags, description, startDateTime, dueDateTime, location);
+        SaveEventRequest saveEventRequest2 = SaveEventRequest.builder()
+                .title(title)
+                .tagId(tagId2)
+                .hashtagIds(hashtags)
+                .description(description)
+                .startDateTime(startDateTime)
+                .dueDateTime(dueDateTime)
+                .location(location)
+                .build();
         EventResponse eventResponse2 = eventService.save(tempUser, saveEventRequest2);
 
         // Event 3 with both tagId1 and tagId2
-        SaveEventRequest saveEventRequest3 = new SaveEventRequest(title, tagId1, hashtags, description, startDateTime, dueDateTime, location);
+        SaveEventRequest saveEventRequest3 = SaveEventRequest.builder()
+                .title(title)
+                .tagId(tagId1)
+                .hashtagIds(hashtags)
+                .description(description)
+                .startDateTime(startDateTime)
+                .dueDateTime(dueDateTime)
+                .location(location)
+                .build();
         EventResponse eventResponse3 = eventService.save(tempUser, saveEventRequest3);
 
 //        Act

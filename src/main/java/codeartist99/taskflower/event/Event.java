@@ -3,6 +3,7 @@ package codeartist99.taskflower.event;
 import codeartist99.taskflower.common.BaseTimeEntity;
 import codeartist99.taskflower.hashtag.Hashtag;
 import codeartist99.taskflower.tag.model.Tag;
+import codeartist99.taskflower.task.model.Task;
 import codeartist99.taskflower.user.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -36,9 +37,12 @@ public class Event extends BaseTimeEntity {
     private String title;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "tag_id", nullable = false)            // If an event is deleted, the mapped tag is not deleted
+    @JoinColumn(name = "tag_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Tag tag;
+
+    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task> tasks = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable

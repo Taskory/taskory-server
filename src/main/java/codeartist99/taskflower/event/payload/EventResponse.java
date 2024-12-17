@@ -3,6 +3,7 @@ package codeartist99.taskflower.event.payload;
 import codeartist99.taskflower.event.Event;
 import codeartist99.taskflower.hashtag.HashtagResponse;
 import codeartist99.taskflower.tag.payload.TagResponse;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,12 +15,20 @@ import java.util.List;
 @Setter
 @ToString
 public class EventResponse {
+    @NotNull(message = "ID cannot be null.")
     private Long id;
+    @NotNull(message = "Title cannot be null.")
     private String title;
+    @NotNull(message = "Tag cannot be null")
     private TagResponse tag;
+    @NotNull(message = "Must not be null. use an empty list if applicable.")
+    private List<TaskInEventDto> tasks = new ArrayList<>();
+    @NotNull(message = "Must not be null. use an empty list if applicable.")
     private List<HashtagResponse> hashtags = new ArrayList<>();
     private String description;
+    @NotNull(message = "Start date time cannot be null.")
     private String startDateTime;
+    @NotNull(message = "Due date time cannot be null.")
     private String dueDateTime;
     private String location;
 
@@ -30,6 +39,9 @@ public class EventResponse {
             this.tag = new TagResponse(event.getTag());
         } else {
             this.tag = null;
+        }
+        if (event.getTasks() != null && !event.getTasks().isEmpty()) {
+            this.tasks = event.getTasks().stream().map(TaskInEventDto::new).toList();
         }
         if (event.getHashtags() != null && !event.getHashtags().isEmpty()) {
             this.hashtags = event.getHashtags().stream().map(HashtagResponse::new).toList();

@@ -11,10 +11,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 public class SaveEventRequest {
     @NotNull(message = "Title cannot be null.")
     private String title;
+    @NotNull(message = "Tag id cannot be null.")
     private Long tagId;
+    @NotNull(message = "Must not be null. use an empty list if applicable.")
+    private List<TaskInEventDto> tasks = new ArrayList<>();
     @NotNull(message = "Must not be null. use an empty list if applicable.")
     private List<Long> hashtagIds = new ArrayList<>();
     private String description;
