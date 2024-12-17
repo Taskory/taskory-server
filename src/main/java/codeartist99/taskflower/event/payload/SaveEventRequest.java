@@ -18,7 +18,9 @@ public class SaveEventRequest {
     @NotNull(message = "Must not be null. use an empty list if applicable.")
     private List<Long> hashtagIds = new ArrayList<>();
     private String description;
+    @NotNull(message = "Start date time cannot be null.")
     private String startDateTime;
+    @NotNull(message = "Due date time cannot be null.")
     private String dueDateTime;
     private String location;
 }
