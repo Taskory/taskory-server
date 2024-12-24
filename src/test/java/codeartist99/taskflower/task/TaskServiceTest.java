@@ -5,6 +5,7 @@ import codeartist99.taskflower.event.EventNotFoundException;
 import codeartist99.taskflower.event.EventRepository;
 import codeartist99.taskflower.setup.ArrangeTest;
 import codeartist99.taskflower.tag.TagNotFoundException;
+import codeartist99.taskflower.task.exception.InvalidDeadlineException;
 import codeartist99.taskflower.task.exception.InvalidStatusNameException;
 import codeartist99.taskflower.task.exception.TaskNotFoundException;
 import codeartist99.taskflower.task.model.Status;
@@ -52,7 +53,7 @@ class TaskServiceTest extends ArrangeTest {
         List<TaskItemDto> items = new ArrayList<>();
         TaskItemDto taskItemDto = new TaskItemDto(null, null, "test item title", false);
         items.add(taskItemDto);
-        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, null, tempTag.getId(), hashtags, description, "TODO", items);
+        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, null, tempTag.getId(), hashtags, description, "BACKLOG", items, null);
 
 //        Act
         TaskResponse taskResponse = taskService.save(tempUser, saveTaskRequest);
@@ -72,13 +73,13 @@ class TaskServiceTest extends ArrangeTest {
         String title = "test title";
         List<Long> hashtags = Collections.emptyList();
         String description = "test description";
-        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, null, tempTag.getId(), hashtags, description, "TODO", null);
+        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, null, tempTag.getId(), hashtags, description, "BACKLOG", null, null);
 
         // Second task
         String title2 = "test title2";
         List<Long> hashTags2 = Collections.emptyList();
         String description2 = "test description2";
-        SaveTaskRequest saveTaskRequest2 = new SaveTaskRequest(title2, null, tempTag.getId(), hashTags2, description2, "PROGRESS", null);
+        SaveTaskRequest saveTaskRequest2 = new SaveTaskRequest(title2, null, tempTag.getId(), hashTags2, description2, "BACKLOG", null, null);
 
         // Save tasks
         TaskResponse taskResponse = taskService.save(tempUser, saveTaskRequest);
@@ -147,7 +148,7 @@ class TaskServiceTest extends ArrangeTest {
      */
     @Test
     @DisplayName("update a task")
-    void updateTask() throws TaskNotFoundException, InvalidStatusNameException, TagNotFoundException, EventNotFoundException {
+    void updateTask() throws TaskNotFoundException, InvalidStatusNameException, TagNotFoundException, EventNotFoundException, InvalidDeadlineException {
 //        Arrange
 //        save a task
         String title = "test title";
@@ -160,7 +161,7 @@ class TaskServiceTest extends ArrangeTest {
         items.add(taskItemDto);
         items.add(taskItemDto2);
         items.add(taskItemDto3);
-        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, null, tempTag.getId(), hashtags, description, "TODO", items);
+        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, null, tempTag.getId(), hashtags, description, "BACKLOG", items, null);
 
         TaskResponse taskResponse = taskService.save(tempUser, saveTaskRequest);
 
@@ -173,10 +174,10 @@ class TaskServiceTest extends ArrangeTest {
         List<TaskItemDto> updateItems = new ArrayList<>();
         items.add(taskItemDto);
         items.add(taskItemDto2);
-        SaveTaskRequest updateTaskRequest = new SaveTaskRequest(updateTitle, null, tempTag.getId(), updateHashtags, updateDescription, "PROGRESS", updateItems);
+        SaveTaskRequest updateTaskRequest = new SaveTaskRequest(updateTitle, null, tempTag.getId(), updateHashtags, updateDescription, "BACKLOG", updateItems, null);
 
 //        Act
-        TaskResponse updateTaskResponse = taskService.updateTask(taskResponse.getId(), updateTaskRequest, tempUser);
+        TaskResponse updateTaskResponse = taskService.updateTask(taskResponse.getId(), updateTaskRequest);
 
 //        Assert
         assertEquals(updateTaskResponse.toString(), taskService.getById(taskResponse.getId()).toString());
@@ -193,7 +194,7 @@ class TaskServiceTest extends ArrangeTest {
         String title = "test title";
         List<Long> hashtags = null;
         String description = "test description";
-        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, null, tempTag.getId(), hashtags, description, "TODO", null);
+        SaveTaskRequest saveTaskRequest = new SaveTaskRequest(title, null, tempTag.getId(), hashtags, description, "BACKLOG", null, null);
 
         TaskResponse taskResponse = taskService.save(tempUser, saveTaskRequest);
         Long taskId = taskResponse.getId();
@@ -212,14 +213,14 @@ class TaskServiceTest extends ArrangeTest {
         // Create first task with a specific tag
         String title1 = "Task 1";
         String description1 = "Description 1";
-        SaveTaskRequest saveTaskRequest1 = new SaveTaskRequest(title1, null, tempTag.getId(), Collections.emptyList(), description1, "TODO", null);
+        SaveTaskRequest saveTaskRequest1 = new SaveTaskRequest(title1, null, tempTag.getId(), Collections.emptyList(), description1, "BACKLOG", null, null);
 
         TaskResponse taskResponse1 = taskService.save(tempUser, saveTaskRequest1);
 
         // Create second task with the same tag
         String title2 = "Task 2";
         String description2 = "Description 2";
-        SaveTaskRequest saveTaskRequest2 = new SaveTaskRequest(title2, null, tempTag.getId(), Collections.emptyList(), description2, "PROGRESS", null);
+        SaveTaskRequest saveTaskRequest2 = new SaveTaskRequest(title2, null, tempTag.getId(), Collections.emptyList(), description2, "BACKLOG", null, null);
 
         TaskResponse taskResponse2 = taskService.save(tempUser, saveTaskRequest2);
 

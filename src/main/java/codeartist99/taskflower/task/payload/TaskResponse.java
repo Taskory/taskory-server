@@ -24,6 +24,7 @@ public class TaskResponse {
     private String description;
     @NotNull private String status;
     private List<TaskItemDto> items = new ArrayList<>();
+    private String deadline;
 
     public TaskResponse(Task task) {
         this.id = task.getId();
@@ -44,6 +45,9 @@ public class TaskResponse {
 
         if (task.getItems() != null && !task.getItems().isEmpty()) {
             this.items = task.getItems().stream().map(TaskItemDto::new).toList();
+        }
+        if (task.getDeadline() != null) {
+            this.deadline = task.getDeadline().toString();
         }
     }
 }

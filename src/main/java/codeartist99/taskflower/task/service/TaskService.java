@@ -7,6 +7,7 @@ import codeartist99.taskflower.hashtag.HashtagRepository;
 import codeartist99.taskflower.tag.TagNotFoundException;
 import codeartist99.taskflower.tag.TagRepository;
 import codeartist99.taskflower.tag.model.Tag;
+import codeartist99.taskflower.task.exception.InvalidDeadlineException;
 import codeartist99.taskflower.task.exception.InvalidStatusNameException;
 import codeartist99.taskflower.task.exception.TaskNotFoundException;
 import codeartist99.taskflower.task.model.Status;
@@ -25,6 +26,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -194,7 +196,6 @@ public class TaskService {
      *
      * @param taskId the ID of the task to be updated
      * @param saveTaskRequest the new task details, including task items
-     * @param user the user performing the update
      * @return a {@link TaskResponse} representing the updated task
      * @throws TaskNotFoundException if no task with the specified ID is found
      * @throws InvalidStatusNameException if the provided status name is invalid
@@ -202,9 +203,11 @@ public class TaskService {
      * @throws TagNotFoundException if no tag with the specified ID is found
      */
     @Transactional
-    public TaskResponse updateTask(Long taskId, SaveTaskRequest saveTaskRequest, User user) throws TaskNotFoundException, InvalidStatusNameException, EventNotFoundException, TagNotFoundException {
-        // Validate and get Status, Event, and Tag
+    public TaskResponse updateTask(Long taskId, SaveTaskRequest saveTaskRequest) throws TaskNotFoundException, InvalidStatusNameException, EventNotFoundException, TagNotFoundException, InvalidDeadlineException {
+        // Validate and get Status, Event, and Tag, deadline
         Status status = validateAndGetStatus(saveTaskRequest.getStatus());
+
+        LocalDate deadline = validateAndGetDeadline(saveTaskRequest.getDeadline(), status);
 
         Event event = validateAndGetEntityById(
                 saveTaskRequest.getEventId(),
@@ -229,6 +232,7 @@ public class TaskService {
         task.setHashtags(hashtagRepository.findAllById(saveTaskRequest.getHashtagIds()));
         task.setDescription(saveTaskRequest.getDescription());
         task.setStatus(status);
+        task.setDeadline(deadline);
 
         // Fetch existing TaskItems associated with the task
         List<TaskItem> existingItems = taskItemRepository.findByTask(task);
@@ -280,14 +284,36 @@ public class TaskService {
         return new TaskResponse(task);
     }
 
+    private LocalDate validateAndGetDeadline(String deadline, Status status) throws InvalidDeadlineException {
+        switch (status) {
+            case PROGRESS, TODO -> {
+                if (deadline == null || deadline.isEmpty()) {
+                    throw new InvalidDeadlineException("Deadline must have value, when status is TODO or PROGRESS");
+                }
+                return LocalDate.parse(deadline);
+            } case DONE -> {
+                if (deadline == null || deadline.isEmpty()) {
+                    return null;
+                } else {
+                    return LocalDate.parse(deadline);
+                }
+            } case BACKLOG -> {
+                return null;
+            } default -> {
+                return null;
+            }
+        }
+    }
 
-
-    public TaskSummary updateTaskStatus(Long taskId, String updateStatus) throws TaskNotFoundException, InvalidStatusNameException {
+    public TaskSummary updateTaskStatus(Long taskId, String updateStatus, String updateDeadline) throws TaskNotFoundException, InvalidStatusNameException, InvalidDeadlineException {
         Status status = validateAndGetStatus(updateStatus);
+
+        LocalDate deadline = validateAndGetDeadline(updateDeadline, status);
 
         Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
 
         task.setStatus(status);
+        task.setDeadline(deadline);
 
         taskRepository.save(task);
 

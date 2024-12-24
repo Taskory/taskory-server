@@ -10,6 +10,7 @@ import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,4 +56,7 @@ public class Task extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "task", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TaskItem> items = new ArrayList<>();
+
+    @Column(name = "deadline")
+    private LocalDate deadline;
 }

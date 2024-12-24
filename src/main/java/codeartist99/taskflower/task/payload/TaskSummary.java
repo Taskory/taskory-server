@@ -24,6 +24,7 @@ public class TaskSummary {
     @NotNull private String status;
     @NotNull private Integer itemsCount;
     private Integer completedItemsCount;
+    private String deadline;
 
     public TaskSummary(Task task) {
         this.id = task.getId();
@@ -39,5 +40,8 @@ public class TaskSummary {
         this.completedItemsCount = (int) task.getItems().stream()
                 .filter(TaskItem::isCompleted)
                 .count();
+        if (task.getDeadline() != null) {
+            this.deadline = task.getDeadline().toString();
+        }
     }
 }

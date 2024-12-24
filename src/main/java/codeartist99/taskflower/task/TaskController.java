@@ -5,6 +5,7 @@ import codeartist99.taskflower.event.EventService;
 import codeartist99.taskflower.event.payload.EventResponse;
 import codeartist99.taskflower.security.model.UserPrincipal;
 import codeartist99.taskflower.tag.TagNotFoundException;
+import codeartist99.taskflower.task.exception.InvalidDeadlineException;
 import codeartist99.taskflower.task.exception.InvalidStatusNameException;
 import codeartist99.taskflower.task.exception.TaskNotFoundException;
 import codeartist99.taskflower.task.payload.SaveTaskRequest;
@@ -127,27 +128,26 @@ public class TaskController {
      * @return the response containing the updated task details
      */
     @PutMapping("/{taskId}")
-    public ResponseEntity<TaskResponse> updateTask(@CurrentUser UserPrincipal userPrincipal, @PathVariable("taskId") Long taskId, @RequestBody SaveTaskRequest saveTaskRequest) {
+    public ResponseEntity<TaskResponse> updateTask(@PathVariable("taskId") Long taskId, @RequestBody SaveTaskRequest saveTaskRequest) {
         TaskResponse response;
-        User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         try {
-            response = taskService.updateTask(taskId, saveTaskRequest, user);
+            response = taskService.updateTask(taskId, saveTaskRequest);
         } catch (TagNotFoundException | EventNotFoundException | TaskNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (InvalidStatusNameException e) {
+        } catch (InvalidStatusNameException | InvalidDeadlineException e) {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }
         return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/status/{taskId}")
-    public ResponseEntity<TaskSummary> updateTaskStatus(@PathVariable("taskId") Long taskId, @RequestParam("status") String status) {
+    public ResponseEntity<TaskSummary> updateTaskStatus(@PathVariable("taskId") Long taskId, @RequestParam("status") String status, @RequestParam("deadline") String deadline) {
         try {
-            TaskSummary response = taskService.updateTaskStatus(taskId, status);
+            TaskSummary response = taskService.updateTaskStatus(taskId, status, deadline);
             return ResponseEntity.ok(response);
         } catch (TaskNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (InvalidStatusNameException e) {
+        } catch (InvalidStatusNameException | InvalidDeadlineException e) {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }
     }
