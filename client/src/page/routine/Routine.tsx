@@ -1,6 +1,0 @@
-export const Routine = () => {
-    return (
-        <>
-        </>
-    );
-};
