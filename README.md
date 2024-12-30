@@ -1,168 +1,139 @@
-# Taskflower
+**Taskory Server**
 
-## 🌟 About the project
-
-### 📷 Screenshots
-
-### 🛠️ Tech Stack
-
-Client
-
-<p>
-<img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
-<img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" />
-<img src="https://img.shields.io/badge/ts--node-3178C6?style=for-the-badge&logo=ts-node&logoColor=white" />
-<img src="https://img.shields.io/badge/Node%20js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" />
-<img src="https://img.shields.io/badge/Yarn-2C8EBB?style=for-the-badge&logo=yarn&logoColor=white" />
-<img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
-<img src="https://img.shields.io/badge/daisyUI-1ad1a5?style=for-the-badge&logo=daisyui&logoColor=white" />
-<img src="https://img.shields.io/badge/json-5E5C5C?style=for-the-badge&logo=json&logoColor=white" />
-<img src="https://img.shields.io/badge/eslint-3A33D1?style=for-the-badge&logo=eslint&logoColor=white" />
-</p>
-
-Server
-
-<p>
-<img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white" />
-<img src="https://img.shields.io/badge/Spring_Boot-F2F4F9?style=for-the-badge&logo=spring-boot" />
-<img src="https://img.shields.io/badge/Spring_Security-6DB33F?style=for-the-badge&logo=Spring-Security&logoColor=white" />
-<img src="https://img.shields.io/badge/Google_Cloud-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white" />
-<img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white" />
-<img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white" />
-<img src="https://img.shields.io/badge/json-5E5C5C?style=for-the-badge&logo=json&logoColor=white" />
-<img src="https://img.shields.io/badge/OpenJDK-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" />
-<img src="https://img.shields.io/badge/SonarLint-CB2029?style=for-the-badge&logo=sonarlint&logoColor=white" />
-<img src="https://img.shields.io/badge/Hibernate-59666C?style=for-the-badge&logo=Hibernate&logoColor=white" />
-<img src="https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white" />
-</p>
-
-UI/UX Design
-
-<p>
-    <img src="https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white" />
-</p>
+Taskory is a schedule and task management web application designed to emphasize simplicity and productivity. This repository contains the backend server codebase for the Taskory project.
 
 
-Tool
 
-<p>
-<img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white" />
-<img src="https://img.shields.io/badge/NeoVim-%2357A143.svg?&style=for-the-badge&logo=neovim&logoColor=white" />
-<img src="https://img.shields.io/badge/WebStorm-000000?style=for-the-badge&logo=WebStorm&logoColor=white" />
-</p>
+**📚 Project Overview**
+
+The Taskory Server provides RESTful APIs and supports the following key features:
+
+- Management of tasks and schedules
+
+- Tag and status management
+
+- User authentication and authorization using OAuth2 and JWT
+
+- Validation and error handling
 
 
-### 🎯 Features
 
-[Project Feature Design](./document/Project_Feature_Design.md)
+**🛠️ Tech Stack**
 
-### 🔑 Environment Variables
+- **Language:** Java 17
 
-To run this project, you will need to add the following environment variables to your "application-secrets.yml" file.
+- **Framework:** Spring Boot 3.3.1
 
-```
+- **Database:** MariaDB
+
+- **Build Tool:** Gradle
+
+- **API Design:** RESTful
+
+- **Others:** JPA, Hibernate, OAuth2, JWT, Lombok
+
+
+
+**🛠️ Dependencies**
+
+The project uses the following key dependencies:
+
+- **Spring Boot**: Starter libraries for Web, JPA, Security, OAuth2 Client, and Validation.
+
+- **Lombok**: Simplifies Java development by reducing boilerplate code.
+
+- **MariaDB**: Runtime dependency for database connectivity.
+
+- **JUnit 5**: For testing.
+
+- **JWT (Java JSON Web Token)**: For authentication and token management.
+
+Refer to the build.gradle file for the complete list of dependencies.
+
+
+
+**🚀 Getting Started**
+
+**1. Prerequisites**
+
+**Requirements:**
+
+- Java 17 or higher
+- Gradle 7.x or higher
+- MariaDB installed
+
+
+
+**Database Configuration**
+
+Set your database connection details in the application.yml file.
+
+```yaml
 spring:
-  datasource:
-    url: jdbc:mariadb://localhost:3306/taskflower?useSSL=false%serverTimeZone=UTC&useLegacyDatetimeCode=false
-    username: [db-username]
-    password: [db-passowrd]
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: "[client id]"
-            client-secret: "[client secret]"
-            redirect-uri: "{baseUrl}/oauth2/code/{registrationId}"
-            scope: email, profile, https://www.googleapis.com/auth/calendar
-
-app:
-  token:
-    expire-ms: 86400000
-    secret-key: [token secret key]
-  cors:
-    allowed-origins:
-      http://localhost:3000,
-      http://localhost:8080
-  oauth2:
-    jwt-set-uri: https://www.googleapis.com/oauth2/v3/certs
-    userinfo-uri: https://www.googleapis.com/oauth2/v3/userinfo
-    token-uri: https://www.googleapis.com/oauth2/v4/token
-    authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
-    authorized-redirect-uris: http://localhost:3000/oauth2/redirect
+ datasource:
+  url: jdbc:mariadb://localhost:3306/taskory
+  username: your_username
+  password: your_password
+ jpa:
+  hibernate:
+   ddl-auto: update
 ```
 
 
 
-## 🧰  Getting started
+**2. Running the Server**
 
-### ‼️ Prerequisites
+1. Build the project using Gradle:
 
-This client project uses Yarn as package manager
-
-```
-npm install --global yarn
+```cmd
+./gradlew build
 ```
 
-### ⚙️ Installation & Running
-
-Clone the project
+2. Run the server:
 
 ```
-git clone https://github.com/codeartitect/taskflower.git
+./gradlew bootRun
 ```
 
-Go to the project directory
 
+
+**3. API Testing**
+
+Once the server is running, the default base URL is http://localhost:8080. You can explore the API documentation via [Swagger](http://localhost:8080/swagger-ui/).
+
+
+
+**🧪 Testing**
+
+Run the tests using the following command:
+
+```cmd
+./gradlew test
 ```
-cd taskflower
-```
 
-1. client
+**Notes:**
 
-   Go to the client project directory
-
-   ```
-   cd client
-   ```
-
-   Install dependency
-
-   ```
-   yarn install
-   ```
-
-   Start the server
-
-   ```
-   yarn start
-   ```
-
-2. server
-
-   Start the server
-
-   ```
-   ./gradlew bootRun
-   ```
+- JUnit 5 is used for unit and integration testing.
+- The project is configured to use the JUnit platform launcher for enhanced testing capabilities.
 
 
-## 👋 Contributing
 
-Seongwon Yang
+**🤝 Contributing**
 
-- https://github.com/codeartitect
-- https://codeartitect.github.io/resume
-- ysw991106@gmail.com
+1. Create an issue to describe your feature or bug fix.
+2. Create a new branch (feat/your-feature-name).
+3. Commit your changes (git commit -m 'Add your message here').
+4. Push the branch (git push origin your-branch-name).
+5. Open a Pull Request.
 
-## ⚠️ License
 
-[Apache-2.0 license](./LICENSE)
 
-## 🤝 Contact
+**📄 License**
 
-Seongwon Yang
+Taskory Server is licensed under the MIT License. See the LICENSE file for details.
 
-- https://github.com/codeartitect
-- https://codeartitect.github.io/resume
-- ysw991106@gmail.com
+
+
+**📞 Contact**
+
+- Email: ysw991106@gmail.com
