@@ -1,6 +1,6 @@
 spring:
   application:
-    name: taskfllower
+    name: taskory
   config:
     import: application-secret.yml
   jpa:
